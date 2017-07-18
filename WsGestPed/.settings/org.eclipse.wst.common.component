@@ -2,7 +2,7 @@
     <wb-module deploy-name="WsGestPed">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <property name="context-root" value="WsGestPed"/>
         <property name="java-output-path" value="/WsGestPed/build/classes"/>
+        <property name="context-root" value="WsGestPed"/>
     </wb-module>
 </project-modules>

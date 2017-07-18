@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://webservice.gpw" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://webservice.gpw" xmlns:intf="http://webservice.gpw" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://webservice.gpw" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="retornoPrueba">
+    <complexType/>
+   </element>
+   <element name="retornoPruebaResponse">
+    <complexType>
+     <sequence>
+      <element name="retornoPruebaReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="retornoPruebaResponse">
+
+      <wsdl:part element="impl:retornoPruebaResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="retornoPruebaRequest">
+
+      <wsdl:part element="impl:retornoPrueba" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="WsGestPed">
+
+      <wsdl:operation name="retornoPrueba">
+
+         <wsdl:input message="impl:retornoPruebaRequest" name="retornoPruebaRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:retornoPruebaResponse" name="retornoPruebaResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="WsGestPedSoapBinding" type="impl:WsGestPed">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="retornoPrueba">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="retornoPruebaRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="retornoPruebaResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="WsGestPedService">
+
+      <wsdl:port binding="impl:WsGestPedSoapBinding" name="WsGestPed">
+
+         <wsdlsoap:address location="http://localhost:8080/WsGestPed/services/WsGestPed"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>
