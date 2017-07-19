@@ -8,16 +8,14 @@ import gpw.ejb.SincronizadorStatelessLocal;
 
 //import gpw.ejb.sincronizacion.SincronizadorStatelessRemote;
 
-public class LookUps {
+public abstract class LookUps {
 	
-	public String lookupEjb() {
+	
+	public static SincronizadorStatelessLocal lookUpEjb() {
 		
 		try {
-//			Context ctx = new InitialContext();
-			SincronizadorStatelessLocal sh = InitialContext.doLookup("java:app/GestPedWebEJB/SincronizadorStateless!gpw.ejb.SincronizadorStatelessLocal");
-			String mensaje = sh.devolverMensaje("no puedo creer que anda...");
-			
-			return mensaje;
+			SincronizadorStatelessLocal sincStLoc = InitialContext.doLookup("java:app/GestPedWebEJB/SincronizadorStateless!gpw.ejb.SincronizadorStatelessLocal");
+			return sincStLoc;
 		} catch (NamingException e) {
 			e.printStackTrace();
 		} catch (Exception e) {

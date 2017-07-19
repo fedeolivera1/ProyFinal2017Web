@@ -3,8 +3,6 @@
 	<name>GestPedWebEAR</name>
 	<comment></comment>
 	<projects>
-		<project>WsGestPed</project>
-		<project>GestPedWebEJB</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

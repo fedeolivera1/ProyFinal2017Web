@@ -5,6 +5,7 @@ import javax.ejb.Local;
 @Local
 public interface SincronizadorStatelessLocal {
 	
-	public String devolverMensaje(String nombre) throws Exception;
+	public Boolean servicioFuncional() throws Exception;
+	public void guardadoPrueba() throws Exception;
 
 }

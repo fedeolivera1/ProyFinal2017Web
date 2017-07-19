@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ejb-jar xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/ejb-jar_3_2.xsd" version="3.2">
-  <display-name>GestPedWebEJB </display-name>
+  <display-name>GestPedWebEJB</display-name>
+	<enterprise-beans>
+	  	<session>
+	    	<ejb-name>SincronizadorStateless</ejb-name>
+	    	<ejb-class>gpw.ejb.SincronizadorStateless</ejb-class>
+	  		<session-type>Stateless</session-type>
+	  		<transaction-type>Container</transaction-type>
+	  		<resource-ref>
+	  			<description />
+	  			<res-ref-name>dsGestPedWeb</res-ref-name>
+	  			<res-type>javax.sql.DataSource</res-type>
+	  			<res-auth>Container</res-auth>
+	  			<res-sharing-scope>Shareable</res-sharing-scope>
+  			</resource-ref>
+	  	</session>
+  	</enterprise-beans>
 </ejb-jar>
