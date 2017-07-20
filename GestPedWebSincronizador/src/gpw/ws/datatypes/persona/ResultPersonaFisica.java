@@ -2,11 +2,16 @@ package gpw.ws.datatypes.persona;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import gpw.dominio.persona.Localidad;
-import gpw.types.Fecha;
-
+@XmlType(name = "ResultPersonaFisica", propOrder = {
+	    "documento", "tipoDoc", "tipoDocDesc", "apellido1", "apellido2",
+	    "nombre1", "nombre2", "fechaNac", "sexo", "documentoAnt",
+	    "direccion", "puerta", "solar", "manzana", "km",
+	    "complemento", "telefono", "celular", "email", "fechaReg",
+	    "tipoPers", "localidad", "origen", "sinc", "ultAct"})
 public class ResultPersonaFisica implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -14,14 +19,16 @@ public class ResultPersonaFisica implements Serializable {
 	private Long documento;
 	//TipoDoc
 	private Integer tipoDoc;
-	private String descTipoDoc;
+	@XmlElement(name = "tipoDocDesc")
+	private String tipoDocDesc;
 	//
 	private String apellido1;
 	private String apellido2;
 	private String nombre1;
 	private String nombre2;
 	private XMLGregorianCalendar fechaNac;
-	private Character sexo;
+	//Sexo (char)
+	private String sexo;
 	private Long documentoAnt;
 	//Persona
 	private String direccion;
@@ -33,14 +40,14 @@ public class ResultPersonaFisica implements Serializable {
 	private String telefono;
 	private String celular;
 	private String email;
-	private Fecha fechaReg;
-	//TipoPersona
-	private Character tipoPers;
-	private Localidad localidad;
-	//Origen
-	private Character origen;
-	//Sinc
-	private Character sinc;
+	private XMLGregorianCalendar fechaReg;
+	//TipoPersona (char)
+	private String tipoPers;
+	private Integer localidad;
+	//Origen (char)
+	private String origen;
+	//Sinc (char)
+	private String sinc;
 	private XMLGregorianCalendar ultAct;
 	
 	
@@ -56,11 +63,11 @@ public class ResultPersonaFisica implements Serializable {
 	public void setTipoDoc(Integer tipoDoc) {
 		this.tipoDoc = tipoDoc;
 	}
-	public String getDescTipoDoc() {
-		return descTipoDoc;
+	public String geTipoDocDesc() {
+		return tipoDocDesc;
 	}
-	public void setDescTipoDoc(String descTipoDoc) {
-		this.descTipoDoc = descTipoDoc;
+	public void setTipoDocDesc(String tipoDocDesc) {
+		this.tipoDocDesc = tipoDocDesc;
 	}
 	public String getApellido1() {
 		return apellido1;
@@ -92,10 +99,10 @@ public class ResultPersonaFisica implements Serializable {
 	public void setFechaNac(XMLGregorianCalendar fechaNac) {
 		this.fechaNac = fechaNac;
 	}
-	public Character getSexo() {
+	public String getSexo() {
 		return sexo;
 	}
-	public void setSexo(Character sexo) {
+	public void setSexo(String sexo) {
 		this.sexo = sexo;
 	}
 	public Long getDocumentoAnt() {
@@ -158,34 +165,34 @@ public class ResultPersonaFisica implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public Fecha getFechaReg() {
+	public XMLGregorianCalendar getFechaReg() {
 		return fechaReg;
 	}
-	public void setFechaReg(Fecha fechaReg) {
+	public void setFechaReg(XMLGregorianCalendar fechaReg) {
 		this.fechaReg = fechaReg;
 	}
-	public Character getTipoPers() {
+	public String getTipoPers() {
 		return tipoPers;
 	}
-	public void setTipoPers(Character tipoPers) {
+	public void setTipoPers(String tipoPers) {
 		this.tipoPers = tipoPers;
 	}
-	public Localidad getLocalidad() {
+	public Integer getLocalidad() {
 		return localidad;
 	}
-	public void setLocalidad(Localidad localidad) {
+	public void setLocalidad(Integer localidad) {
 		this.localidad = localidad;
 	}
-	public Character getOrigen() {
+	public String getOrigen() {
 		return origen;
 	}
-	public void setOrigen(Character origen) {
+	public void setOrigen(String origen) {
 		this.origen = origen;
 	}
-	public Character getSinc() {
+	public String getSinc() {
 		return sinc;
 	}
-	public void setSinc(Character sinc) {
+	public void setSinc(String sinc) {
 		this.sinc = sinc;
 	}
 	public XMLGregorianCalendar getUltAct() {

@@ -2,10 +2,15 @@ package gpw.ws.datatypes.persona;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import gpw.types.Fecha;
-
+@XmlType(name = "ResultPersonaJuridica", propOrder = {
+	    "rut", "nombre", "razonSocial", "bps", "bse",
+	    "esProv", "rutAnt", "direccion", "puerta", "solar", 
+	    "manzana", "km", "complemento", "telefono", "celular", 
+	    "email", "fechaReg", "tipoPers", "localidad", "origen", 
+	    "sinc", "ultAct"})
 public class ResultPersonaJuridica implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -27,15 +32,15 @@ public class ResultPersonaJuridica implements Serializable {
 	private String telefono;
 	private String celular;
 	private String email;
-	private Fecha fechaReg;
-	//TipoPersona
-	private Character tipoPers;
+	private XMLGregorianCalendar fechaReg;
+	//TipoPersona (char)
+	private String tipoPers;
 	//Localidad
 	private Integer localidad;
-	//Origen
-	private Character origen;
-	//Sinc
-	private Character sinc;
+	//Origen (char)
+	private String origen;
+	//Sinc (char)
+	private String sinc;
 	private XMLGregorianCalendar ultAct;
 	
 	
@@ -135,16 +140,16 @@ public class ResultPersonaJuridica implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public Fecha getFechaReg() {
+	public XMLGregorianCalendar getFechaReg() {
 		return fechaReg;
 	}
-	public void setFechaReg(Fecha fechaReg) {
+	public void setFechaReg(XMLGregorianCalendar fechaReg) {
 		this.fechaReg = fechaReg;
 	}
-	public Character getTipoPers() {
+	public String getTipoPers() {
 		return tipoPers;
 	}
-	public void setTipoPers(Character tipoPers) {
+	public void setTipoPers(String tipoPers) {
 		this.tipoPers = tipoPers;
 	}
 	public Integer getLocalidad() {
@@ -153,16 +158,16 @@ public class ResultPersonaJuridica implements Serializable {
 	public void setLocalidad(Integer localidad) {
 		this.localidad = localidad;
 	}
-	public Character getOrigen() {
+	public String getOrigen() {
 		return origen;
 	}
-	public void setOrigen(Character origen) {
+	public void setOrigen(String origen) {
 		this.origen = origen;
 	}
-	public Character getSinc() {
+	public String getSinc() {
 		return sinc;
 	}
-	public void setSinc(Character sinc) {
+	public void setSinc(String sinc) {
 		this.sinc = sinc;
 	}
 	public XMLGregorianCalendar getUltAct() {

@@ -9,8 +9,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
 public class ParamObtPersonasNoSinc implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private XMLGregorianCalendar fechaDesde;//FIXME ver si vale la pena pasar las fechas
-	private XMLGregorianCalendar fechaHasta;//FIXME ver si vale la pena pasar las fechas
+	private XMLGregorianCalendar fechaDesde;
+	private XMLGregorianCalendar fechaHasta;
 	
 	
 	public XMLGregorianCalendar getFechaDesde() {

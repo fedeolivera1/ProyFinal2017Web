@@ -29,7 +29,8 @@ public class WsGestPed {
 		logger.info(">>> # WS # >>> Inicia operacion obtenerClientesNoSincr...");
 		ResultObtPersonasNoSinc result = new ResultObtPersonasNoSinc();
 		
-//		SincronizadorPersona sinc = new SincronizadorPersona();
+		SincronizadorPersona sinc = new SincronizadorPersona();
+		result = sinc.obtPersonasNoSinc(paramObtPersonasNoSinc);
 				
 		logger.info(">>> # WS # >>> Finaliza operacion obtenerClientesNoSincr...");
 		return result;

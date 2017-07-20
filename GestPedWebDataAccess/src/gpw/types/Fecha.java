@@ -6,6 +6,10 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+
 public class Fecha extends GregorianCalendar {
 
 	private static final long serialVersionUID = 1L;
@@ -188,6 +192,24 @@ public class Fecha extends GregorianCalendar {
 	    long tim = fec.getTimeInMillis();
 	    java.sql.Timestamp tsSql = new java.sql.Timestamp(tim);
 	    return tsSql;
+	}
+	
+	/**
+	 * 
+	 * @return XMLGregorianCalendar
+	 * retorna la instancia en el formato XMLGregorianCalendar
+	 */
+	public XMLGregorianCalendar getAsXMLGregorianCalendar() {
+		Fecha fec = new Fecha(get(1), get(2) + 1, get(5));
+		XMLGregorianCalendar xmlgc = null;
+		GregorianCalendar gc = new GregorianCalendar();
+		gc.setTime(fec.getTime());
+		try {
+			xmlgc = DatatypeFactory.newInstance().newXMLGregorianCalendar(gc);
+		} catch (DatatypeConfigurationException e) {
+			e.printStackTrace();
+		}
+		return xmlgc;
 	}
 	
 	/**
