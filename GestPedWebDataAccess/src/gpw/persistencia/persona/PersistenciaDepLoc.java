@@ -35,7 +35,7 @@ public class PersistenciaDepLoc extends Conector implements IPersDepLoc, CnstQry
 				listaDep.add(departamento);
 			}
 		} catch (ConectorException | SQLException e) {
-			Conector.rollbackConn();
+//			Conector.rollbackConn(conn);//TODO sacar
 			logger.fatal("Excepcion al obtenerListaDepartamentos: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
 		}
@@ -55,7 +55,7 @@ public class PersistenciaDepLoc extends Conector implements IPersDepLoc, CnstQry
 				departamento.setNombreDepartamento(rs.getString("nombre"));
 			}
 		} catch (ConectorException | SQLException e) {
-			Conector.rollbackConn();
+//			Conector.rollbackConn(conn);//TODO sacar
 			logger.fatal("Excepcion al obtenerDepartamentoPorId: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
 		}
@@ -77,7 +77,7 @@ public class PersistenciaDepLoc extends Conector implements IPersDepLoc, CnstQry
 				listaLoc.add(localidad);
 			}
 		} catch (ConectorException | SQLException e) {
-			Conector.rollbackConn();
+//			Conector.rollbackConn(conn);//TODO sacar
 			logger.fatal("Excepcion al obtenerListaLocPorDep: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
 		}
@@ -98,7 +98,7 @@ public class PersistenciaDepLoc extends Conector implements IPersDepLoc, CnstQry
 				localidad.setDepartamento(obtenerDepartamentoPorId(conn, rs.getInt("id_dep")));
 			}
 		} catch (ConectorException | SQLException e) {
-			Conector.rollbackConn();
+//			Conector.rollbackConn(conn);//TODO sacar
 			logger.fatal("Excepcion al obtenerLocalidadPorId: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
 		}

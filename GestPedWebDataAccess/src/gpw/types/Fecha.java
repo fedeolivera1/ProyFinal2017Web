@@ -160,6 +160,19 @@ public class Fecha extends GregorianCalendar {
 	
 	/**
 	 * 
+	 * @param XMLGregorianCalendar
+	 * setea una fecha a partir de un XMLGregorianCalendar por datos
+	 */
+	public Fecha(XMLGregorianCalendar xmlGc, int formato) {
+		if(xmlGc != null) {
+			GregorianCalendar gc = xmlGc.toGregorianCalendar();
+			super.setTime(gc.getTime());
+			setFormato(formato);
+		}
+	}
+	
+	/**
+	 * 
 	 * @return java.sql.Date
 	 * retorna la instancia en el formato de java.sql.Date
 	 */

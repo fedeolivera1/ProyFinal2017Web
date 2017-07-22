@@ -35,7 +35,7 @@ public class PersistenciaTipoDoc extends Conector implements IPersTipoDoc, CnstQ
 				tipoDoc.setNombre(rs.getString("nombre"));
 			}
 		} catch (ConectorException | SQLException e) {
-			Conector.rollbackConn();
+//			Conector.rollbackConn(conn);//TODO sacar
 			logger.fatal("Excepcion al obtenerListaTipoDoc: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
 		} finally {
@@ -53,7 +53,7 @@ public class PersistenciaTipoDoc extends Conector implements IPersTipoDoc, CnstQ
 		try {
 			resultado = (Integer) runGeneric(conn, genExec);
 		} catch (ConectorException e) {
-			Conector.rollbackConn();
+//			Conector.rollbackConn(conn);//TODO sacar
 			logger.fatal("Excepcion al guardarTipoProd: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
 		}
@@ -69,7 +69,7 @@ public class PersistenciaTipoDoc extends Conector implements IPersTipoDoc, CnstQ
 		try {
 			resultado = (Integer) runGeneric(conn, genExec);
 		} catch (ConectorException e) {
-			Conector.rollbackConn();
+//			Conector.rollbackConn(conn);//TODO sacar
 			logger.fatal("Excepcion al modificarTipoProd: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
 		}
@@ -84,7 +84,7 @@ public class PersistenciaTipoDoc extends Conector implements IPersTipoDoc, CnstQ
 		try {
 			resultado = (Integer) runGeneric(conn, genExec);
 		} catch (ConectorException e) {
-			Conector.rollbackConn();
+//			Conector.rollbackConn(conn);//TODO sacar
 			logger.fatal("Excepcion al eliminarTipoProd: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
 		}
@@ -104,7 +104,7 @@ public class PersistenciaTipoDoc extends Conector implements IPersTipoDoc, CnstQ
 				listaTipoDoc.add(tipoDoc);
 			}
 		} catch (ConectorException | SQLException e) {
-			Conector.rollbackConn();
+//			Conector.rollbackConn(conn);//TODO sacar
 			logger.fatal("Excepcion al obtenerListaTipoDoc: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
 		} finally {

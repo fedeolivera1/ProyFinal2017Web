@@ -27,13 +27,13 @@ public abstract class Conector {
 	/**
 	 * Hace rollback de la conexion activa
 	 */
-	public static void rollbackConn() {
+//	public static void rollbackConn(Connection conn) {
 //		try {
 //			conn.rollback();
 //		} catch (SQLException e) {
 //			logger.error(e.getMessage(), e);
 //		}
-	}
+//	}
 	
 	/**
 	 * @param nameOp
@@ -248,7 +248,7 @@ public abstract class Conector {
 					resultado = (Integer) executeNonQuery(conn, genExec);
 				}
 			} else {
-				rollbackConn();
+//				rollbackConn(conn);
 				throw new ConectorException("'runGeneric' ha sido mal implementado!");
 			}
 		} catch (ConectorException e) {

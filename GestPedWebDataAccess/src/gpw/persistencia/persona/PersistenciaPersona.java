@@ -26,7 +26,7 @@ import gpw.types.Fecha;
 public class PersistenciaPersona extends Conector implements IPersPersona, CnstQryPersona {
 
 	private static final Logger logger = Logger.getLogger(PersistenciaPersona.class);
-//	private Integer resultado;
+	private Integer resultado;
 	private ResultSet rs;
 	
 	
@@ -35,13 +35,13 @@ public class PersistenciaPersona extends Conector implements IPersPersona, CnstQ
 		List<PersonaFisica> listaPf = new ArrayList<>();
 		try {
 			GenSqlSelectType genType = new GenSqlSelectType(QRY_SELECT_PF_NOSINC);
-//			genType.setParam(fechaDesde);
-//			genType.setParam(fechaHasta);
+			genType.setParam(fechaDesde);
+			genType.setParam(fechaHasta);
 			
 			rs = (ResultSet) runGeneric(conn, genType);
 			listaPf.addAll(cargarPfDesdeRs(conn, rs));
 		} catch (ConectorException e) {
-			Conector.rollbackConn();
+//			Conector.rollbackConn(conn);//TODO sacar
 			logger.fatal("Excepcion al obtPersonaFisicaNoSinc: " + e.getMessage());
 			throw new PersistenciaException(e);
 		} finally {
@@ -55,19 +55,35 @@ public class PersistenciaPersona extends Conector implements IPersPersona, CnstQ
 		List<PersonaJuridica> listaPj = new ArrayList<>();
 		try {
 			GenSqlSelectType genType = new GenSqlSelectType(QRY_SELECT_PJ_NOSINC);
-//			genType.setParam(fechaDesde);
-//			genType.setParam(fechaHasta);
+			genType.setParam(fechaDesde);
+			genType.setParam(fechaHasta);
 			
 			rs = (ResultSet) runGeneric(conn, genType);
 			listaPj.addAll(cargarPjDesdeRs(conn, rs));
 		} catch (ConectorException e) {
-			Conector.rollbackConn();
+//			Conector.rollbackConn(conn);//TODO sacar
 			logger.fatal("Excepcion al obtPersonaJuridicaNoSinc: " + e.getMessage());
 			throw new PersistenciaException(e);
 		} finally {
 			closeRs(rs);
 		}
 		return listaPj;
+	}
+	
+	@Override
+	public Integer actualizarPersonaSinc(Connection conn, Long idPersona) throws PersistenciaException {
+		try {
+			GenSqlSelectType genExec = new GenSqlSelectType(QRY_UPDATE_PERS_SINC);
+			genExec.setParam(Sinc.S.getAsChar());
+			genExec.setParam(new Fecha(Fecha.AMDHMS));
+			genExec.setParam(idPersona);
+			resultado = (Integer) runGeneric(conn, genExec);
+		} catch (ConectorException e) {
+//			Conector.rollbackConn(conn);//TODO sacar
+			logger.fatal("Excepcion al obtPersonaJuridicaNoSinc: " + e.getMessage());
+			throw new PersistenciaException(e);
+		}
+		return resultado;
 	}
 	
 	/**
@@ -122,7 +138,7 @@ public class PersistenciaPersona extends Conector implements IPersPersona, CnstQ
 				listaPf.add(pf);
 			}
 		} catch (SQLException | PersistenciaException | IOException e) {
-			Conector.rollbackConn();
+//			Conector.rollbackConn(conn);//TODO sacar
 			logger.fatal("Excepcion al cargarRsConPf: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
 		}
@@ -177,7 +193,7 @@ public class PersistenciaPersona extends Conector implements IPersPersona, CnstQ
 				listaPj.add(pj);
 			}
 		} catch (SQLException | PersistenciaException | IOException e) {
-			Conector.rollbackConn();
+//			Conector.rollbackConn(conn);//TODO sacar
 			logger.fatal("Excepcion al cargarRsConPf: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
 		}

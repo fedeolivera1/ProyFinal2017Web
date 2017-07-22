@@ -7,14 +7,19 @@ public interface CnstQryPersona {
 														+ "p.email, p.fecha_reg, p.tipo, p.id_loc, p.origen, p.sinc, p.ult_act "
 													+ "FROM pers_fisica pf "
 													+ "INNER JOIN persona p "
-													+ "on pf.documento = p.id_persona "
-													+ "where p.sinc = 'N'";
+													+ "ON pf.documento = p.id_persona "
+													+ "WHERE p.sinc = 'N' "
+													+ "AND p.fecha_reg::date BETWEEN ? AND ?";
 	
 	public static final String QRY_SELECT_PJ_NOSINC = "SELECT pj.rut, pj.nombre, pj.razon_social, pj.bps, pj.bse, pj.es_prov, p.direccion, p.puerta, p.solar, "
 														+ "p.manzana, p.km, p.complemento, p.telefono, p.celular, p.email, p.fecha_reg, p.tipo, "
 														+ "p.id_loc, p.origen, p.sinc, p.ult_act "
 													+ "FROM pers_juridica pj "
 													+ "INNER JOIN persona p "
-													+ "on pj.rut = p.id_persona "
-													+ "WHERE p.sinc = 'N'";
+													+ "ON pj.rut = p.id_persona "
+													+ "WHERE p.sinc = 'N'"
+													+ "AND p.fecha_reg::date BETWEEN ? AND ?";
+	
+	public static final String QRY_UPDATE_PERS_SINC = "UPDATE persona SET sinc = ?, ult_act = ? "
+													+ "WHERE id_persona = ?";
 }

@@ -1,6 +1,7 @@
 package gpw.ws.datatypes.persona;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlType;
@@ -29,6 +30,9 @@ public class ResultObtPersonasNoSinc implements Serializable {
 		this.listaPersJuridica = listaPersJuridica;
 	}
 	public List<ErrorServicio> getErroresServ() {
+		if(erroresServ == null) {
+			erroresServ = new ArrayList<>();
+		}
 		return erroresServ;
 	}
 	public void setErroresServ(List<ErrorServicio> erroresServ) {
