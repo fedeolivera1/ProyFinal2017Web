@@ -126,7 +126,7 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	@Transactional(rollbackOn={Exception.class}, dontRollbackOn={SQLWarning.class})
 	public Map<Long, EstadoSinc> recPersonasSinc(List<Long> listaPersAConfSinc) throws EjbException {
 		Map<Long, EstadoSinc> mapResultados = null;

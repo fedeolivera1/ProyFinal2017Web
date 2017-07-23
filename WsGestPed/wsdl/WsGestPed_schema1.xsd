@@ -1,0 +1,202 @@
+<xs:schema xmlns:tns="http://localhost:8080" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://localhost:8080" version="1.0">
+
+  <xs:element name="obtenerPersonasNoSinc" type="tns:obtenerPersonasNoSinc"></xs:element>
+
+  <xs:element name="obtenerPersonasNoSincResponse" type="tns:obtenerPersonasNoSincResponse"></xs:element>
+
+  <xs:element name="recibirPersonasSinc" type="tns:recibirPersonasSinc"></xs:element>
+
+  <xs:element name="recibirPersonasSincResponse" type="tns:recibirPersonasSincResponse"></xs:element>
+
+  <xs:element name="recibirProductosASinc" type="tns:recibirProductosASinc"></xs:element>
+
+  <xs:element name="recibirProductosASincResponse" type="tns:recibirProductosASincResponse"></xs:element>
+
+  <xs:element name="servicioFuncional" type="tns:servicioFuncional"></xs:element>
+
+  <xs:element name="servicioFuncionalResponse" type="tns:servicioFuncionalResponse"></xs:element>
+
+  <xs:complexType name="obtenerPersonasNoSinc">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="paramObtPersonasNoSinc" type="tns:ParamObtPersonasNoSinc"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ParamObtPersonasNoSinc">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="fechaDesde" type="xs:anySimpleType"></xs:element>
+      <xs:element minOccurs="0" name="fechaHasta" type="xs:anySimpleType"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="obtenerPersonasNoSincResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="resultObtPersonasNoSinc" type="tns:ResultObtPersonasNoSinc"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ResultObtPersonasNoSinc">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="erroresServ" nillable="true" type="tns:ErrorServicio"></xs:element>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="listaPersFisica" nillable="true" type="tns:ResultPersonaFisica"></xs:element>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="listaPersJuridica" nillable="true" type="tns:ResultPersonaJuridica"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ErrorServicio">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codigo" type="xs:int"></xs:element>
+      <xs:element minOccurs="0" name="descripcion" type="xs:string"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ResultPersonaFisica">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="documento" type="xs:long"></xs:element>
+      <xs:element minOccurs="0" name="tipoDoc" type="xs:int"></xs:element>
+      <xs:element minOccurs="0" name="tipoDocDesc" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="apellido1" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="apellido2" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="nombre1" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="nombre2" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="fechaNac" type="xs:anySimpleType"></xs:element>
+      <xs:element minOccurs="0" name="sexo" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="documentoAnt" type="xs:long"></xs:element>
+      <xs:element minOccurs="0" name="direccion" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="puerta" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="solar" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="manzana" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="km" type="xs:float"></xs:element>
+      <xs:element minOccurs="0" name="complemento" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="telefono" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="celular" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="email" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="fechaReg" type="xs:anySimpleType"></xs:element>
+      <xs:element minOccurs="0" name="tipoPers" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="localidad" type="xs:int"></xs:element>
+      <xs:element minOccurs="0" name="origen" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="sinc" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="ultAct" type="xs:anySimpleType"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ResultPersonaJuridica">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="rut" type="xs:long"></xs:element>
+      <xs:element minOccurs="0" name="nombre" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="razonSocial" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="bps" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="bse" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="esProv" type="xs:boolean"></xs:element>
+      <xs:element minOccurs="0" name="rutAnt" type="xs:long"></xs:element>
+      <xs:element minOccurs="0" name="direccion" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="puerta" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="solar" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="manzana" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="km" type="xs:float"></xs:element>
+      <xs:element minOccurs="0" name="complemento" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="telefono" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="celular" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="email" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="fechaReg" type="xs:anySimpleType"></xs:element>
+      <xs:element minOccurs="0" name="tipoPers" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="localidad" type="xs:int"></xs:element>
+      <xs:element minOccurs="0" name="origen" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="sinc" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="ultAct" type="xs:anySimpleType"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="recibirPersonasSinc">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="paramRecPersonasSinc" type="tns:ParamRecPersonasSinc"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ParamRecPersonasSinc">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="listaPersSinc" nillable="true" type="tns:ParamPersonaSinc"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ParamPersonaSinc">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="idPersona" type="xs:long"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="recibirPersonasSincResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="resultRecPersonasSinc" type="tns:ResultRecPersonasSinc"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ResultRecPersonasSinc">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="erroresServ" nillable="true" type="tns:ErrorServicio"></xs:element>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="listaPersonaSinc" nillable="true" type="tns:resultPersonaSinc"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="resultPersonaSinc">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="estadoSinc" type="xs:int"></xs:element>
+      <xs:element minOccurs="0" name="idPersona" type="xs:long"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="recibirProductosASinc">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="paramRecProductosASinc" type="tns:ParamRecProductosASinc"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ParamRecProductosASinc">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="listaProducto" nillable="true" type="tns:ParamProducto"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ParamProducto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="aplIva" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="aplIvaDesc" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="cantUnidad" type="xs:int"></xs:element>
+      <xs:element minOccurs="0" name="codigo" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="descripcion" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="idProducto" type="xs:int"></xs:element>
+      <xs:element minOccurs="0" name="nombre" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="precio" type="xs:double"></xs:element>
+      <xs:element minOccurs="0" name="sinc" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="stockMin" type="xs:float"></xs:element>
+      <xs:element minOccurs="0" name="tipoProd" type="xs:int"></xs:element>
+      <xs:element minOccurs="0" name="tipoProdDesc" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="ultAct" type="xs:anySimpleType"></xs:element>
+      <xs:element minOccurs="0" name="unidad" type="xs:int"></xs:element>
+      <xs:element minOccurs="0" name="unidadDesc" type="xs:string"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="recibirProductosASincResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="resultRecProductosASinc" type="tns:ResultRecProductosASinc"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ResultRecProductosASinc">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="erroresServ" nillable="true" type="tns:ErrorServicio"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="servicioFuncional">
+    <xs:sequence></xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="servicioFuncionalResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

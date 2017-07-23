@@ -3,7 +3,7 @@ package gpw.ws.validators;
 import java.util.ArrayList;
 import java.util.List;
 
-import gpw.types.ErrorServicio;
+import gpw.ws.datatypes.errors.ErrorServicio;
 import gpw.ws.datatypes.persona.ParamObtPersonasNoSinc;
 import gpw.ws.datatypes.persona.ParamRecPersonasSinc;
 import gpw.ws.datatypes.persona.ResultObtPersonasNoSinc;

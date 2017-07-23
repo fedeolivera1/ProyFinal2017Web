@@ -14,8 +14,8 @@ import gpw.dominio.util.EstadoSinc;
 import gpw.ejb.SincronizadorStatelessLocal;
 import gpw.exceptions.EjbException;
 import gpw.lookup.LookUps;
-import gpw.types.ErrorServicio;
 import gpw.types.Fecha;
+import gpw.ws.datatypes.errors.ErrorServicio;
 import gpw.ws.datatypes.persona.ParamObtPersonasNoSinc;
 import gpw.ws.datatypes.persona.ParamPersonaSinc;
 import gpw.ws.datatypes.persona.ParamRecPersonasSinc;
@@ -24,13 +24,15 @@ import gpw.ws.datatypes.persona.ResultPersonaFisica;
 import gpw.ws.datatypes.persona.ResultPersonaJuridica;
 import gpw.ws.datatypes.persona.ResultPersonaSinc;
 import gpw.ws.datatypes.persona.ResultRecPersonasSinc;
+import gpw.ws.datatypes.producto.ParamRecProductosASinc;
+import gpw.ws.datatypes.producto.ResultRecProductosASinc;
 import gpw.ws.parsers.ParsePersona;
 import gpw.ws.validators.ParamGenValidator;
 
 public class SincronizadorPersona {
 
 	Logger logger = Logger.getLogger(SincronizadorPersona.class);
-	
+	private static final int ERROR_SRV_GENERICO = -99;
 	
 	public String controlFuncionalidad() {
 		SincronizadorStatelessLocal sincSl = LookUps.lookUpEjb();
@@ -38,7 +40,7 @@ public class SincronizadorPersona {
 		try {
 			Boolean res = sincSl.servicioFuncional();
 			mensaje = res ? "Servicio funcional" : "Servicio NO DISPONIBLE";
-			sincSl.guardadoPrueba();
+//			sincSl.guardadoPrueba();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -78,10 +80,10 @@ public class SincronizadorPersona {
 			}
 		} catch (EjbException e) {
 			logger.fatal("Excepcion de EJB al obtPersonasNoSinc [SincronizadorPersona]: " + e.getMessage(), e);
-			result.getErroresServ().add(new ErrorServicio(-99, e.getMessage()));
+			result.getErroresServ().add(new ErrorServicio(ERROR_SRV_GENERICO, e.getMessage()));
 		} catch (Exception e) {
 			logger.fatal("Excepcion al obtPersonasNoSinc [SincronizadorPersona]: " + e.getMessage(), e);
-			result.getErroresServ().add(new ErrorServicio(-99, e.getMessage()));
+			result.getErroresServ().add(new ErrorServicio(ERROR_SRV_GENERICO, e.getMessage()));
 		}
 		return result;
 	}
@@ -115,12 +117,17 @@ public class SincronizadorPersona {
 			}
 		} catch (EjbException e) {
 			logger.fatal("Excepcion de EJB al obtPersonasNoSinc [SincronizadorPersona]: " + e.getMessage(), e);
-			result.getErroresServ().add(new ErrorServicio(-99, e.getMessage()));
+			result.getErroresServ().add(new ErrorServicio(ERROR_SRV_GENERICO, e.getMessage()));
 		} catch (Exception e) {
 			logger.fatal("Excepcion al recPersonasSinc [SincronizadorPersona]: " + e.getMessage(), e);
-			result.getErroresServ().add(new ErrorServicio(-99, e.getMessage()));
+			result.getErroresServ().add(new ErrorServicio(ERROR_SRV_GENERICO, e.getMessage()));
 		}
 		return result;
+	}
+
+	public ResultRecProductosASinc recProductosASinc(ParamRecProductosASinc paramProductosASinc) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

@@ -10,6 +10,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import gpw.db.constantes.CnstQryPersona;
+import gpw.db.generic.GenSqlExecType;
 import gpw.db.generic.GenSqlSelectType;
 import gpw.dominio.persona.PersonaFisica;
 import gpw.dominio.persona.PersonaJuridica;
@@ -73,7 +74,7 @@ public class PersistenciaPersona extends Conector implements IPersPersona, CnstQ
 	@Override
 	public Integer actualizarPersonaSinc(Connection conn, Long idPersona) throws PersistenciaException {
 		try {
-			GenSqlSelectType genExec = new GenSqlSelectType(QRY_UPDATE_PERS_SINC);
+			GenSqlExecType genExec = new GenSqlExecType(QRY_UPDATE_PERS_SINC);
 			genExec.setParam(Sinc.S.getAsChar());
 			genExec.setParam(new Fecha(Fecha.AMDHMS));
 			genExec.setParam(idPersona);

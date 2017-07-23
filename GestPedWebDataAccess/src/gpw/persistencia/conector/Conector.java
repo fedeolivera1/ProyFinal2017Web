@@ -95,7 +95,7 @@ public abstract class Conector {
 				Object value = (Object) genType.getSelectDatosCond().get(key);
 				fillPreparedStatement(ps, key, value);
 			}
-			logger.debug("Ejecucion query: " + ps.toString());
+			logger.debug("Ejecucion query: " + genType.getStatement());
 			rs = ps.executeQuery();
 		} catch (SQLException e) {
 			logger.error("Excepcion de SQL al ejecutar 'selectGeneric': " + e.getMessage(), e);

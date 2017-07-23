@@ -1,4 +1,4 @@
-package gpw.types;
+package gpw.ws.datatypes.errors;
 
 import javax.xml.bind.annotation.XmlType;
 

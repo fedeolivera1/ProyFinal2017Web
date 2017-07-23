@@ -12,6 +12,8 @@ import gpw.ws.datatypes.persona.ParamObtPersonasNoSinc;
 import gpw.ws.datatypes.persona.ParamRecPersonasSinc;
 import gpw.ws.datatypes.persona.ResultObtPersonasNoSinc;
 import gpw.ws.datatypes.persona.ResultRecPersonasSinc;
+import gpw.ws.datatypes.producto.ParamRecProductosASinc;
+import gpw.ws.datatypes.producto.ResultRecProductosASinc;
 
 @WebService(targetNamespace = "http://localhost:8080", portName = "WsGestPed", serviceName = "WsGestPed")
 public class WsGestPed {
@@ -25,10 +27,10 @@ public class WsGestPed {
 		return retorno;
 	}
 	
-	@WebMethod(operationName = "obtPersonasNoSinc", action = "obtPersonasNoSinc", exclude = false)
+	@WebMethod(operationName = "obtenerPersonasNoSinc", action = "obtenerPersonasNoSinc", exclude = false)
 	@WebResult(name = "resultObtPersonasNoSinc")
-	public ResultObtPersonasNoSinc obtenerClientesNoSincr(@WebParam(name = "paramObtPersonasNoSinc") ParamObtPersonasNoSinc paramObtPersonasNoSinc) {
-		logger.info(">>> # WS # >>> Inicia operacion obtenerClientesNoSincr...");
+	public ResultObtPersonasNoSinc obtenerPersonasNoSinc(@WebParam(name = "paramObtPersonasNoSinc") ParamObtPersonasNoSinc paramObtPersonasNoSinc) {
+		logger.info(">>> # WS # >>> Inicia operacion obtenerClientesNoSinc...");
 		ResultObtPersonasNoSinc result = new ResultObtPersonasNoSinc();
 		
 		SincronizadorPersona sinc = new SincronizadorPersona();
@@ -38,16 +40,29 @@ public class WsGestPed {
 		return result;
 	}
 	
-	@WebMethod(operationName = "recPersonasSinc", action = "recPersonasSinc", exclude = false)
+	@WebMethod(operationName = "recibirPersonasSinc", action = "recibirPersonasSinc", exclude = false)
 	@WebResult(name = "resultRecPersonasSinc")
-	public ResultRecPersonasSinc recPersonasSinc(@WebParam(name = "paramRecPersonasSinc") ParamRecPersonasSinc paramRecPersonasSinc) {
-		logger.info(">>> # WS # >>> Inicia operacion recPersonasSinc...");
+	public ResultRecPersonasSinc recibirPersonasSinc(@WebParam(name = "paramRecPersonasSinc") ParamRecPersonasSinc paramRecPersonasSinc) {
+		logger.info(">>> # WS # >>> Inicia operacion recibirPersonasSinc...");
 		ResultRecPersonasSinc result = new ResultRecPersonasSinc();
 
 		SincronizadorPersona sinc = new SincronizadorPersona();
 		result = sinc.recPersonasSinc(paramRecPersonasSinc);
 
-		logger.info(">>> # WS # >>> Finaliza operacion recPersonasSinc...");
+		logger.info(">>> # WS # >>> Finaliza operacion recibirPersonasSinc...");
+		return result;
+	}
+	
+	@WebMethod(operationName = "recibirProductosASinc", action = "recibirProductosASinc", exclude = false)
+	@WebResult(name = "resultRecProductosASinc")
+	public ResultRecProductosASinc recibirProductosASinc(@WebParam(name = "paramRecProductosASinc") ParamRecProductosASinc paramRecProductosASinc) {
+		logger.info(">>> # WS # >>> Inicia operacion recibirProductosASinc...");
+		ResultRecProductosASinc result = new ResultRecProductosASinc();
+
+		SincronizadorPersona sinc = new SincronizadorPersona();
+		result = sinc.recProductosASinc(paramRecProductosASinc);
+
+		logger.info(">>> # WS # >>> Finaliza operacion recibirProductosASinc...");
 		return result;
 	}
 	

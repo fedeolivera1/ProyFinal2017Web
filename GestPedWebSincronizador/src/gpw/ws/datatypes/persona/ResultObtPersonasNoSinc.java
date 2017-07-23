@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlType;
 
-import gpw.types.ErrorServicio;
+import gpw.ws.datatypes.errors.ErrorServicio;
 
 @XmlType(name = "ResultObtPersonasNoSinc")
 public class ResultObtPersonasNoSinc implements Serializable {

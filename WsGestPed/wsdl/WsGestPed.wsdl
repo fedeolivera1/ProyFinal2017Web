@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="WsGestPed" targetNamespace="http://localhost:8080" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://localhost:8080" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+<schema xmlns="http://www.w3.org/2001/XMLSchema">
+  <import namespace="http://localhost:8080" schemaLocation="WsGestPed_schema1.xsd"></import>
+</schema>
+  </wsdl:types>
+  <wsdl:message name="obtenerPersonasNoSinc">
+    <wsdl:part name="parameters" element="tns:obtenerPersonasNoSinc">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="recibirPersonasSinc">
+    <wsdl:part name="parameters" element="tns:recibirPersonasSinc">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="recibirProductosASincResponse">
+    <wsdl:part name="parameters" element="tns:recibirProductosASincResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="obtenerPersonasNoSincResponse">
+    <wsdl:part name="parameters" element="tns:obtenerPersonasNoSincResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="recibirPersonasSincResponse">
+    <wsdl:part name="parameters" element="tns:recibirPersonasSincResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="servicioFuncional">
+    <wsdl:part name="parameters" element="tns:servicioFuncional">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="servicioFuncionalResponse">
+    <wsdl:part name="parameters" element="tns:servicioFuncionalResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="recibirProductosASinc">
+    <wsdl:part name="parameters" element="tns:recibirProductosASinc">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="WsGestPed">
+    <wsdl:operation name="obtenerPersonasNoSinc">
+      <wsdl:input name="obtenerPersonasNoSinc" message="tns:obtenerPersonasNoSinc">
+    </wsdl:input>
+      <wsdl:output name="obtenerPersonasNoSincResponse" message="tns:obtenerPersonasNoSincResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="recibirPersonasSinc">
+      <wsdl:input name="recibirPersonasSinc" message="tns:recibirPersonasSinc">
+    </wsdl:input>
+      <wsdl:output name="recibirPersonasSincResponse" message="tns:recibirPersonasSincResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="recibirProductosASinc">
+      <wsdl:input name="recibirProductosASinc" message="tns:recibirProductosASinc">
+    </wsdl:input>
+      <wsdl:output name="recibirProductosASincResponse" message="tns:recibirProductosASincResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="servicioFuncional">
+      <wsdl:input name="servicioFuncional" message="tns:servicioFuncional">
+    </wsdl:input>
+      <wsdl:output name="servicioFuncionalResponse" message="tns:servicioFuncionalResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WsGestPedSoapBinding" type="tns:WsGestPed">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="obtenerPersonasNoSinc">
+      <soap:operation soapAction="obtenerPersonasNoSinc" style="document"/>
+      <wsdl:input name="obtenerPersonasNoSinc">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="obtenerPersonasNoSincResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="recibirPersonasSinc">
+      <soap:operation soapAction="recibirPersonasSinc" style="document"/>
+      <wsdl:input name="recibirPersonasSinc">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="recibirPersonasSincResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="recibirProductosASinc">
+      <soap:operation soapAction="recibirProductosASinc" style="document"/>
+      <wsdl:input name="recibirProductosASinc">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="recibirProductosASincResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="servicioFuncional">
+      <soap:operation soapAction="servicioFuncional" style="document"/>
+      <wsdl:input name="servicioFuncional">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="servicioFuncionalResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WsGestPed">
+    <wsdl:port name="WsGestPed" binding="tns:WsGestPedSoapBinding">
+      <soap:address location="http://localhost:9090/WsGestPed"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

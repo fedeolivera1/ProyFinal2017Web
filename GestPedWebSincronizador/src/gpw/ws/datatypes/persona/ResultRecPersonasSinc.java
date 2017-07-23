@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlType;
 
-import gpw.types.ErrorServicio;
+import gpw.ws.datatypes.errors.ErrorServicio;
 
 @XmlType(name = "ResultRecPersonasSinc")
 public class ResultRecPersonasSinc implements Serializable {
@@ -16,6 +16,9 @@ public class ResultRecPersonasSinc implements Serializable {
 	private List<ErrorServicio> erroresServ;
 	
 	public List<ResultPersonaSinc> getListaPersonaSinc() {
+		if(listaPersonaSinc == null) {
+			listaPersonaSinc = new ArrayList<>();
+		}
 		return listaPersonaSinc;
 	}
 	public void setListaPersonaSinc(List<ResultPersonaSinc> listaPersonaSinc) {
