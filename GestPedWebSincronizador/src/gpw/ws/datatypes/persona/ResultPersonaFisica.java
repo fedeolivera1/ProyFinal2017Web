@@ -3,6 +3,7 @@ package gpw.ws.datatypes.persona;
 import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -50,7 +51,6 @@ public class ResultPersonaFisica implements Serializable {
 	private String sinc;
 	private XMLGregorianCalendar ultAct;
 	
-	
 	public Long getDocumento() {
 		return documento;
 	}
@@ -93,6 +93,7 @@ public class ResultPersonaFisica implements Serializable {
 	public void setNombre2(String nombre2) {
 		this.nombre2 = nombre2;
 	}
+	@XmlSchemaType(name = "date")
 	public XMLGregorianCalendar getFechaNac() {
 		return fechaNac;
 	}
@@ -165,6 +166,7 @@ public class ResultPersonaFisica implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	@XmlSchemaType(name = "date")
 	public XMLGregorianCalendar getFechaReg() {
 		return fechaReg;
 	}
@@ -195,6 +197,7 @@ public class ResultPersonaFisica implements Serializable {
 	public void setSinc(String sinc) {
 		this.sinc = sinc;
 	}
+	@XmlSchemaType(name = "date")
 	public XMLGregorianCalendar getUltAct() {
 		return ultAct;
 	}

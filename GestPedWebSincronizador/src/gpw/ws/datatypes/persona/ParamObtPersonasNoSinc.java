@@ -2,6 +2,7 @@ package gpw.ws.datatypes.persona;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -12,13 +13,14 @@ public class ParamObtPersonasNoSinc implements Serializable {
 	private XMLGregorianCalendar fechaDesde;
 	private XMLGregorianCalendar fechaHasta;
 	
-	
+	@XmlSchemaType(name = "date")
 	public XMLGregorianCalendar getFechaDesde() {
 		return fechaDesde;
 	}
 	public void setFechaDesde(XMLGregorianCalendar fechaDesde) {
 		this.fechaDesde = fechaDesde;
 	}
+	@XmlSchemaType(name = "date")
 	public XMLGregorianCalendar getFechaHasta() {
 		return fechaHasta;
 	}

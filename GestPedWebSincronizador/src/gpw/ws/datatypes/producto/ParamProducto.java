@@ -2,6 +2,7 @@ package gpw.ws.datatypes.producto;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -116,6 +117,7 @@ public class ParamProducto implements Serializable {
 	public void setSinc(String sinc) {
 		this.sinc = sinc;
 	}
+	@XmlSchemaType(name = "date")
 	public XMLGregorianCalendar getUltAct() {
 		return ultAct;
 	}

@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
@@ -24,7 +25,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="apellido2" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="nombre1" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="nombre2" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="fechaNac" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" minOccurs="0"/&gt;
+ *         &lt;element name="fechaNac" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/&gt;
  *         &lt;element name="sexo" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="documentoAnt" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
  *         &lt;element name="direccion" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
@@ -36,12 +37,12 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="telefono" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="celular" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="email" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="fechaReg" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" minOccurs="0"/&gt;
+ *         &lt;element name="fechaReg" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/&gt;
  *         &lt;element name="tipoPers" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="localidad" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/&gt;
  *         &lt;element name="origen" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="sinc" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="ultAct" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" minOccurs="0"/&gt;
+ *         &lt;element name="ultAct" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -87,8 +88,8 @@ public class ResultPersonaFisica {
     protected String apellido2;
     protected String nombre1;
     protected String nombre2;
-    @XmlSchemaType(name = "anySimpleType")
-    protected Object fechaNac;
+    @XmlSchemaType(name = "date")
+    protected XMLGregorianCalendar fechaNac;
     protected String sexo;
     protected Long documentoAnt;
     protected String direccion;
@@ -100,14 +101,14 @@ public class ResultPersonaFisica {
     protected String telefono;
     protected String celular;
     protected String email;
-    @XmlSchemaType(name = "anySimpleType")
-    protected Object fechaReg;
+    @XmlSchemaType(name = "date")
+    protected XMLGregorianCalendar fechaReg;
     protected String tipoPers;
     protected Integer localidad;
     protected String origen;
     protected String sinc;
-    @XmlSchemaType(name = "anySimpleType")
-    protected Object ultAct;
+    @XmlSchemaType(name = "date")
+    protected XMLGregorianCalendar ultAct;
 
     /**
      * Obtiene el valor de la propiedad documento.
@@ -282,10 +283,10 @@ public class ResultPersonaFisica {
      * 
      * @return
      *     possible object is
-     *     {@link Object }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public Object getFechaNac() {
+    public XMLGregorianCalendar getFechaNac() {
         return fechaNac;
     }
 
@@ -294,10 +295,10 @@ public class ResultPersonaFisica {
      * 
      * @param value
      *     allowed object is
-     *     {@link Object }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setFechaNac(Object value) {
+    public void setFechaNac(XMLGregorianCalendar value) {
         this.fechaNac = value;
     }
 
@@ -570,10 +571,10 @@ public class ResultPersonaFisica {
      * 
      * @return
      *     possible object is
-     *     {@link Object }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public Object getFechaReg() {
+    public XMLGregorianCalendar getFechaReg() {
         return fechaReg;
     }
 
@@ -582,10 +583,10 @@ public class ResultPersonaFisica {
      * 
      * @param value
      *     allowed object is
-     *     {@link Object }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setFechaReg(Object value) {
+    public void setFechaReg(XMLGregorianCalendar value) {
         this.fechaReg = value;
     }
 
@@ -690,10 +691,10 @@ public class ResultPersonaFisica {
      * 
      * @return
      *     possible object is
-     *     {@link Object }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public Object getUltAct() {
+    public XMLGregorianCalendar getUltAct() {
         return ultAct;
     }
 
@@ -702,10 +703,10 @@ public class ResultPersonaFisica {
      * 
      * @param value
      *     allowed object is
-     *     {@link Object }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setUltAct(Object value) {
+    public void setUltAct(XMLGregorianCalendar value) {
         this.ultAct = value;
     }
 

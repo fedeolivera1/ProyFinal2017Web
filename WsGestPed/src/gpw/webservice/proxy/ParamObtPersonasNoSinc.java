@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
@@ -17,8 +18,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="fechaDesde" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" minOccurs="0"/&gt;
- *         &lt;element name="fechaHasta" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" minOccurs="0"/&gt;
+ *         &lt;element name="fechaDesde" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/&gt;
+ *         &lt;element name="fechaHasta" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -34,20 +35,20 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class ParamObtPersonasNoSinc {
 
-    @XmlSchemaType(name = "anySimpleType")
-    protected Object fechaDesde;
-    @XmlSchemaType(name = "anySimpleType")
-    protected Object fechaHasta;
+    @XmlSchemaType(name = "date")
+    protected XMLGregorianCalendar fechaDesde;
+    @XmlSchemaType(name = "date")
+    protected XMLGregorianCalendar fechaHasta;
 
     /**
      * Obtiene el valor de la propiedad fechaDesde.
      * 
      * @return
      *     possible object is
-     *     {@link Object }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public Object getFechaDesde() {
+    public XMLGregorianCalendar getFechaDesde() {
         return fechaDesde;
     }
 
@@ -56,10 +57,10 @@ public class ParamObtPersonasNoSinc {
      * 
      * @param value
      *     allowed object is
-     *     {@link Object }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setFechaDesde(Object value) {
+    public void setFechaDesde(XMLGregorianCalendar value) {
         this.fechaDesde = value;
     }
 
@@ -68,10 +69,10 @@ public class ParamObtPersonasNoSinc {
      * 
      * @return
      *     possible object is
-     *     {@link Object }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public Object getFechaHasta() {
+    public XMLGregorianCalendar getFechaHasta() {
         return fechaHasta;
     }
 
@@ -80,10 +81,10 @@ public class ParamObtPersonasNoSinc {
      * 
      * @param value
      *     allowed object is
-     *     {@link Object }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setFechaHasta(Object value) {
+    public void setFechaHasta(XMLGregorianCalendar value) {
         this.fechaHasta = value;
     }
 

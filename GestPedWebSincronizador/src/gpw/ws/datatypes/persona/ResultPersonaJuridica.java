@@ -2,6 +2,7 @@ package gpw.ws.datatypes.persona;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -140,6 +141,7 @@ public class ResultPersonaJuridica implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	@XmlSchemaType(name = "date")
 	public XMLGregorianCalendar getFechaReg() {
 		return fechaReg;
 	}
@@ -170,6 +172,7 @@ public class ResultPersonaJuridica implements Serializable {
 	public void setSinc(String sinc) {
 		this.sinc = sinc;
 	}
+	@XmlSchemaType(name = "date")
 	public XMLGregorianCalendar getUltAct() {
 		return ultAct;
 	}

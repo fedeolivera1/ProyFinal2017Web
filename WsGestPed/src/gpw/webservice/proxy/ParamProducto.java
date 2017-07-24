@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
@@ -29,7 +30,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="stockMin" type="{http://www.w3.org/2001/XMLSchema}float" minOccurs="0"/&gt;
  *         &lt;element name="tipoProd" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/&gt;
  *         &lt;element name="tipoProdDesc" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="ultAct" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" minOccurs="0"/&gt;
+ *         &lt;element name="ultAct" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/&gt;
  *         &lt;element name="unidad" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/&gt;
  *         &lt;element name="unidadDesc" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
@@ -72,8 +73,8 @@ public class ParamProducto {
     protected Float stockMin;
     protected Integer tipoProd;
     protected String tipoProdDesc;
-    @XmlSchemaType(name = "anySimpleType")
-    protected Object ultAct;
+    @XmlSchemaType(name = "date")
+    protected XMLGregorianCalendar ultAct;
     protected Integer unidad;
     protected String unidadDesc;
 
@@ -370,10 +371,10 @@ public class ParamProducto {
      * 
      * @return
      *     possible object is
-     *     {@link Object }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public Object getUltAct() {
+    public XMLGregorianCalendar getUltAct() {
         return ultAct;
     }
 
@@ -382,10 +383,10 @@ public class ParamProducto {
      * 
      * @param value
      *     allowed object is
-     *     {@link Object }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setUltAct(Object value) {
+    public void setUltAct(XMLGregorianCalendar value) {
         this.ultAct = value;
     }
 

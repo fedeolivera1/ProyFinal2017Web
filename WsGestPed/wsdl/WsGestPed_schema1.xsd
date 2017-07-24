@@ -24,8 +24,8 @@
 
   <xs:complexType name="ParamObtPersonasNoSinc">
     <xs:sequence>
-      <xs:element minOccurs="0" name="fechaDesde" type="xs:anySimpleType"></xs:element>
-      <xs:element minOccurs="0" name="fechaHasta" type="xs:anySimpleType"></xs:element>
+      <xs:element minOccurs="0" name="fechaDesde" type="xs:date"></xs:element>
+      <xs:element minOccurs="0" name="fechaHasta" type="xs:date"></xs:element>
     </xs:sequence>
   </xs:complexType>
 
@@ -59,7 +59,7 @@
       <xs:element minOccurs="0" name="apellido2" type="xs:string"></xs:element>
       <xs:element minOccurs="0" name="nombre1" type="xs:string"></xs:element>
       <xs:element minOccurs="0" name="nombre2" type="xs:string"></xs:element>
-      <xs:element minOccurs="0" name="fechaNac" type="xs:anySimpleType"></xs:element>
+      <xs:element minOccurs="0" name="fechaNac" type="xs:date"></xs:element>
       <xs:element minOccurs="0" name="sexo" type="xs:string"></xs:element>
       <xs:element minOccurs="0" name="documentoAnt" type="xs:long"></xs:element>
       <xs:element minOccurs="0" name="direccion" type="xs:string"></xs:element>
@@ -71,12 +71,12 @@
       <xs:element minOccurs="0" name="telefono" type="xs:string"></xs:element>
       <xs:element minOccurs="0" name="celular" type="xs:string"></xs:element>
       <xs:element minOccurs="0" name="email" type="xs:string"></xs:element>
-      <xs:element minOccurs="0" name="fechaReg" type="xs:anySimpleType"></xs:element>
+      <xs:element minOccurs="0" name="fechaReg" type="xs:date"></xs:element>
       <xs:element minOccurs="0" name="tipoPers" type="xs:string"></xs:element>
       <xs:element minOccurs="0" name="localidad" type="xs:int"></xs:element>
       <xs:element minOccurs="0" name="origen" type="xs:string"></xs:element>
       <xs:element minOccurs="0" name="sinc" type="xs:string"></xs:element>
-      <xs:element minOccurs="0" name="ultAct" type="xs:anySimpleType"></xs:element>
+      <xs:element minOccurs="0" name="ultAct" type="xs:date"></xs:element>
     </xs:sequence>
   </xs:complexType>
 
@@ -98,12 +98,12 @@
       <xs:element minOccurs="0" name="telefono" type="xs:string"></xs:element>
       <xs:element minOccurs="0" name="celular" type="xs:string"></xs:element>
       <xs:element minOccurs="0" name="email" type="xs:string"></xs:element>
-      <xs:element minOccurs="0" name="fechaReg" type="xs:anySimpleType"></xs:element>
+      <xs:element minOccurs="0" name="fechaReg" type="xs:date"></xs:element>
       <xs:element minOccurs="0" name="tipoPers" type="xs:string"></xs:element>
       <xs:element minOccurs="0" name="localidad" type="xs:int"></xs:element>
       <xs:element minOccurs="0" name="origen" type="xs:string"></xs:element>
       <xs:element minOccurs="0" name="sinc" type="xs:string"></xs:element>
-      <xs:element minOccurs="0" name="ultAct" type="xs:anySimpleType"></xs:element>
+      <xs:element minOccurs="0" name="ultAct" type="xs:date"></xs:element>
     </xs:sequence>
   </xs:complexType>
 
@@ -171,7 +171,7 @@
       <xs:element minOccurs="0" name="stockMin" type="xs:float"></xs:element>
       <xs:element minOccurs="0" name="tipoProd" type="xs:int"></xs:element>
       <xs:element minOccurs="0" name="tipoProdDesc" type="xs:string"></xs:element>
-      <xs:element minOccurs="0" name="ultAct" type="xs:anySimpleType"></xs:element>
+      <xs:element minOccurs="0" name="ultAct" type="xs:date"></xs:element>
       <xs:element minOccurs="0" name="unidad" type="xs:int"></xs:element>
       <xs:element minOccurs="0" name="unidadDesc" type="xs:string"></xs:element>
     </xs:sequence>
