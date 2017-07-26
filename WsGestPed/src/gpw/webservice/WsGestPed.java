@@ -8,6 +8,7 @@ import javax.jws.WebService;
 import org.jboss.logging.Logger;
 
 import gpw.sincronizador.SincronizadorPersona;
+import gpw.sincronizador.SincronizadorProducto;
 import gpw.ws.datatypes.persona.ParamObtPersonasNoSinc;
 import gpw.ws.datatypes.persona.ParamRecPersonasSinc;
 import gpw.ws.datatypes.persona.ResultObtPersonasNoSinc;
@@ -59,7 +60,7 @@ public class WsGestPed {
 		logger.info(">>> # WS # >>> Inicia operacion recibirProductosASinc...");
 		ResultRecProductosASinc result = new ResultRecProductosASinc();
 
-		SincronizadorPersona sinc = new SincronizadorPersona();
+		SincronizadorProducto sinc = new SincronizadorProducto();
 		result = sinc.recProductosASinc(paramRecProductosASinc);
 
 		logger.info(">>> # WS # >>> Finaliza operacion recibirProductosASinc...");

@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 @XmlType(name = "ParamProducto")
-public class ParamProducto implements Serializable {
+public class ParamProductoASinc implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Integer idProducto;
@@ -26,12 +26,12 @@ public class ParamProducto implements Serializable {
 	private Integer cantUnidad;
 	//AplicaIva
 	private String aplIva;
-	private String aplIvaDesc;
 	//
 	private Double precio;
 	//sinc (char)
 	private String sinc;
 	private XMLGregorianCalendar ultAct;
+	private Integer estadoProd;
 	
 	public Integer getIdProducto() {
 		return idProducto;
@@ -99,12 +99,6 @@ public class ParamProducto implements Serializable {
 	public void setAplIva(String aplIva) {
 		this.aplIva = aplIva;
 	}
-	public String getAplIvaDesc() {
-		return aplIvaDesc;
-	}
-	public void setAplIvaDesc(String aplIvaDesc) {
-		this.aplIvaDesc = aplIvaDesc;
-	}
 	public Double getPrecio() {
 		return precio;
 	}
@@ -123,6 +117,12 @@ public class ParamProducto implements Serializable {
 	}
 	public void setUltAct(XMLGregorianCalendar ultAct) {
 		this.ultAct = ultAct;
+	}
+	public Integer getEstadoProd() {
+		return estadoProd;
+	}
+	public void setEstadoProd(Integer estadoProd) {
+		this.estadoProd = estadoProd;
 	}
 	
 	

@@ -12,8 +12,18 @@ import gpw.ws.datatypes.errors.ErrorServicio;
 public class ResultRecProductosASinc implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	private List<ResultProductoASinc> listaProdSinc;
 	private List<ErrorServicio> erroresServ;
 	
+	public List<ResultProductoASinc> getListaProdSinc() {
+		if(listaProdSinc == null) {
+			listaProdSinc = new ArrayList<>();
+		}
+		return listaProdSinc;
+	}
+	public void setListaProdSinc(List<ResultProductoASinc> listaProdSinc) {
+		this.listaProdSinc = listaProdSinc;
+	}
 	public List<ErrorServicio> getErroresServ() {
 		if(erroresServ == null) {
 			erroresServ = new ArrayList<>();

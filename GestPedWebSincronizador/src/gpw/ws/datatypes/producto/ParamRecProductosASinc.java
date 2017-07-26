@@ -8,12 +8,12 @@ import javax.xml.bind.annotation.XmlType;
 public class ParamRecProductosASinc implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private List<ParamProducto> listaProducto;
+	private List<ParamProductoASinc> listaProducto;
 	
-	public List<ParamProducto> getListaProducto() {
+	public List<ParamProductoASinc> getListaProducto() {
 		return listaProducto;
 	}
-	public void setListaProducto(List<ParamProducto> listaProducto) {
+	public void setListaProducto(List<ParamProductoASinc> listaProducto) {
 		this.listaProducto = listaProducto;
 	}
 	

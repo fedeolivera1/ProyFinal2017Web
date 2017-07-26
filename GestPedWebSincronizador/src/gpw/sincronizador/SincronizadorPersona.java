@@ -24,8 +24,6 @@ import gpw.ws.datatypes.persona.ResultPersonaFisica;
 import gpw.ws.datatypes.persona.ResultPersonaJuridica;
 import gpw.ws.datatypes.persona.ResultPersonaSinc;
 import gpw.ws.datatypes.persona.ResultRecPersonasSinc;
-import gpw.ws.datatypes.producto.ParamRecProductosASinc;
-import gpw.ws.datatypes.producto.ResultRecProductosASinc;
 import gpw.ws.parsers.ParsePersona;
 import gpw.ws.validators.ParamGenValidator;
 
@@ -53,14 +51,8 @@ public class SincronizadorPersona {
 		try {
 			if(ParamGenValidator.validarParam(param, result)) {
 				SincronizadorStatelessLocal sincSl = LookUps.lookUpEjb();
-				Fecha fechaDesde = null;
-				Fecha fechaHasta = null;
-				if(param.getFechaDesde() != null) {
-					fechaDesde = new Fecha(param.getFechaDesde(), Fecha.AMD);
-				}
-				if(param.getFechaHasta() != null) {
-					fechaHasta = new Fecha(param.getFechaHasta(), Fecha.AMD);
-				}
+				Fecha fechaDesde = new Fecha(param.getFechaDesde(), Fecha.AMD);
+				Fecha fechaHasta = new Fecha(param.getFechaHasta(), Fecha.AMD);
 				List<Persona> listaPersonasNoSinc = sincSl.obtPersonasNoSinc(fechaDesde, fechaHasta);
 				if(listaPersonasNoSinc != null && !listaPersonasNoSinc.isEmpty()) {
 					List<ResultPersonaFisica> listaResultPf = new ArrayList<>();
@@ -95,24 +87,22 @@ public class SincronizadorPersona {
 			if(ParamGenValidator.validarParam(param, result)) {
 				List<Long> listaPersSincOk = null;
 				SincronizadorStatelessLocal sincSl = LookUps.lookUpEjb();
-				if(param.getListaPersSinc() != null && !param.getListaPersSinc().isEmpty()) {
-					listaPersSincOk = new ArrayList<>();
-					for(ParamPersonaSinc paramPers : param.getListaPersSinc()) {
-						logger.info("Se agrega nueva persona al sincronizador - idPersona: " + paramPers.getIdPersona());
+				listaPersSincOk = new ArrayList<>();
+				for(ParamPersonaSinc paramPers : param.getListaPersSinc()) {
+					logger.info("Se agrega nueva persona al sincronizador - idPersona: " + paramPers.getIdPersona());
 //						if(paramPers.getEstadoSinc().equals(EstadoSinc.O)) {
-							listaPersSincOk.add(paramPers.getIdPersona());
+						listaPersSincOk.add(paramPers.getIdPersona());
 //						}
-					}
-					HashMap<Long, EstadoSinc> mapSinc = (HashMap<Long, EstadoSinc>) sincSl.recPersonasSinc(listaPersSincOk);
-					for(Map.Entry<Long, EstadoSinc> entry : mapSinc.entrySet()) {
-						Long idPersona = entry.getKey();
-						EstadoSinc estSinc = entry.getValue();
-						logger.info("Se recibe del sincronizador la persona - idPersona: " + idPersona + " - con estado: " + estSinc.getSinc());
-						ResultPersonaSinc resultPs = new ResultPersonaSinc();
-						resultPs.setIdPersona(idPersona);
-						resultPs.setEstadoSinc(estSinc.getAsInt());
-						result.getListaPersonaSinc().add(resultPs);
-					}
+				}
+				HashMap<Long, EstadoSinc> mapSinc = (HashMap<Long, EstadoSinc>) sincSl.recPersonasSinc(listaPersSincOk);
+				for(Map.Entry<Long, EstadoSinc> entry : mapSinc.entrySet()) {
+					Long idPersona = entry.getKey();
+					EstadoSinc estSinc = entry.getValue();
+					logger.info("Se recibe del sincronizador la persona - idPersona: " + idPersona + " - con estado: " + estSinc.getSinc());
+					ResultPersonaSinc resultPs = new ResultPersonaSinc();
+					resultPs.setIdPersona(idPersona);
+					resultPs.setEstadoSinc(estSinc.getAsInt());
+					result.getListaPersonaSinc().add(resultPs);
 				}
 			}
 		} catch (EjbException e) {
@@ -123,11 +113,6 @@ public class SincronizadorPersona {
 			result.getErroresServ().add(new ErrorServicio(ERROR_SRV_GENERICO, e.getMessage()));
 		}
 		return result;
-	}
-
-	public ResultRecProductosASinc recProductosASinc(ParamRecProductosASinc paramProductosASinc) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 }
