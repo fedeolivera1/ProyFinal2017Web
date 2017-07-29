@@ -67,9 +67,12 @@ public class PersistenciaUnidad extends Conector implements IPersUnidad, CnstQry
 	}
 
 	@Override
-	public Integer guardarUnidad(Connection conn, Unidad Unidad) throws PersistenciaException {
+	public Integer guardarUnidad(Connection conn, Unidad unidad) throws PersistenciaException {
 		GenSqlExecType genExec = new GenSqlExecType(QRY_INSERT_UNI);
-		genExec.setParam(Unidad.getNombre());
+		genExec.setParam(unidad.getIdUnidad());
+		genExec.setParam(unidad.getNombre());
+		genExec.setParam(unidad.getSinc().getAsChar());
+		genExec.setParam(unidad.getEstado().getAsInt());
 		try {
 			resultado = (Integer) runGeneric(conn, genExec);
 		} catch (ConectorException e) {
@@ -78,6 +81,36 @@ public class PersistenciaUnidad extends Conector implements IPersUnidad, CnstQry
 		}
 		return resultado;
 	}
+	
+	@Override
+	public Integer modificarUnidad(Connection conn, Unidad unidad) throws PersistenciaException {
+		Integer resultado = null;
+		GenSqlExecType genExec = new GenSqlExecType(QRY_UPDATE_UNI);
+		genExec.setParam(unidad.getNombre());
+		genExec.setParam(unidad.getIdUnidad());
+		try {
+			resultado = (Integer) runGeneric(conn, genExec);
+		} catch (ConectorException e) {
+			logger.fatal("Excepcion al modificarUnidad: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return resultado;
+	}
+
+//	@Override
+//	public Integer modificarSincUnidad(Connection conn, Unidad unidad) throws PersistenciaException {
+//		Integer resultado = null;
+//		GenSqlExecType genExec = new GenSqlExecType(QRY_UPDATE_SINC_UNI);
+//		genExec.setParam(unidad.getSinc().getAsChar());
+//		genExec.setParam(unidad.getIdUnidad());
+//		try {
+//			resultado = (Integer) runGeneric(conn, genExec);
+//		} catch (ConectorException e) {
+//			logger.fatal("Excepcion al modificarUnidad: " + e.getMessage(), e);
+//			throw new PersistenciaException(e);
+//		}
+//		return resultado;
+//	}
 
 	@Override
 	public Integer eliminarUnidad(Connection conn, Unidad Unidad) throws PersistenciaException {

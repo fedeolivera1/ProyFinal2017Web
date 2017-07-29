@@ -1,18 +1,17 @@
-package gpw.dominio.producto;
+package gpw.ws.datatypes.producto;
 
 import java.io.Serializable;
 
-import gpw.dominio.util.Estado;
-import gpw.dominio.util.Sinc;
+import javax.xml.bind.annotation.XmlType;
 
-public class Unidad implements Serializable {
+@XmlType(name = "ParamUnidadASinc")
+public class ParamUnidadASinc implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Integer idUnidad;
 	private String nombre;
-	private Sinc sinc;
-	private Estado estado;
-	
+	private String sinc;
+	private Integer estado;
 	
 	public Integer getIdUnidad() {
 		return idUnidad;
@@ -20,31 +19,22 @@ public class Unidad implements Serializable {
 	public void setIdUnidad(Integer idUnidad) {
 		this.idUnidad = idUnidad;
 	}
-	
 	public String getNombre() {
 		return nombre;
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	
-	public Sinc getSinc() {
+	public String getSinc() {
 		return sinc;
 	}
-	public void setSinc(Sinc sinc) {
+	public void setSinc(String sinc) {
 		this.sinc = sinc;
 	}
-	
-	public Estado getEstado() {
+	public Integer getEstado() {
 		return estado;
 	}
-	public void setEstado(Estado estado) {
+	public void setEstado(Integer estado) {
 		this.estado = estado;
 	}
-	
-	@Override
-	public String toString() {
-		return nombre;
-	}
-	
 }

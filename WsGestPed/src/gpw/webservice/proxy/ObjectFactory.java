@@ -185,11 +185,27 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ParamProducto }
+     * Create an instance of {@link ParamProductoASinc }
      * 
      */
-    public ParamProducto createParamProducto() {
-        return new ParamProducto();
+    public ParamProductoASinc createParamProductoASinc() {
+        return new ParamProductoASinc();
+    }
+
+    /**
+     * Create an instance of {@link ParamTipoProdASinc }
+     * 
+     */
+    public ParamTipoProdASinc createParamTipoProdASinc() {
+        return new ParamTipoProdASinc();
+    }
+
+    /**
+     * Create an instance of {@link ParamUnidadASinc }
+     * 
+     */
+    public ParamUnidadASinc createParamUnidadASinc() {
+        return new ParamUnidadASinc();
     }
 
     /**
@@ -198,6 +214,30 @@ public class ObjectFactory {
      */
     public ResultRecProductosASinc createResultRecProductosASinc() {
         return new ResultRecProductosASinc();
+    }
+
+    /**
+     * Create an instance of {@link ResultProductoASinc }
+     * 
+     */
+    public ResultProductoASinc createResultProductoASinc() {
+        return new ResultProductoASinc();
+    }
+
+    /**
+     * Create an instance of {@link ResultTipoProdASinc }
+     * 
+     */
+    public ResultTipoProdASinc createResultTipoProdASinc() {
+        return new ResultTipoProdASinc();
+    }
+
+    /**
+     * Create an instance of {@link ResultUnidadASinc }
+     * 
+     */
+    public ResultUnidadASinc createResultUnidadASinc() {
+        return new ResultUnidadASinc();
     }
 
     /**

@@ -153,27 +153,45 @@
 
   <xs:complexType name="ParamRecProductosASinc">
     <xs:sequence>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="listaProducto" nillable="true" type="tns:ParamProducto"></xs:element>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="listaProducto" nillable="true" type="tns:ParamProductoASinc"></xs:element>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="listaTipoProd" nillable="true" type="tns:ParamTipoProdASinc"></xs:element>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="listaUnidad" nillable="true" type="tns:ParamUnidadASinc"></xs:element>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="ParamProducto">
+  <xs:complexType name="ParamProductoASinc">
     <xs:sequence>
       <xs:element minOccurs="0" name="aplIva" type="xs:string"></xs:element>
-      <xs:element minOccurs="0" name="aplIvaDesc" type="xs:string"></xs:element>
       <xs:element minOccurs="0" name="cantUnidad" type="xs:int"></xs:element>
       <xs:element minOccurs="0" name="codigo" type="xs:string"></xs:element>
       <xs:element minOccurs="0" name="descripcion" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="estadoProd" type="xs:int"></xs:element>
       <xs:element minOccurs="0" name="idProducto" type="xs:int"></xs:element>
       <xs:element minOccurs="0" name="nombre" type="xs:string"></xs:element>
       <xs:element minOccurs="0" name="precio" type="xs:double"></xs:element>
       <xs:element minOccurs="0" name="sinc" type="xs:string"></xs:element>
       <xs:element minOccurs="0" name="stockMin" type="xs:float"></xs:element>
       <xs:element minOccurs="0" name="tipoProd" type="xs:int"></xs:element>
-      <xs:element minOccurs="0" name="tipoProdDesc" type="xs:string"></xs:element>
       <xs:element minOccurs="0" name="ultAct" type="xs:date"></xs:element>
       <xs:element minOccurs="0" name="unidad" type="xs:int"></xs:element>
-      <xs:element minOccurs="0" name="unidadDesc" type="xs:string"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ParamTipoProdASinc">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="descripcion" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="estado" type="xs:int"></xs:element>
+      <xs:element minOccurs="0" name="idTipoProd" type="xs:int"></xs:element>
+      <xs:element minOccurs="0" name="sinc" type="xs:string"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ParamUnidadASinc">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="estado" type="xs:int"></xs:element>
+      <xs:element minOccurs="0" name="idUnidad" type="xs:int"></xs:element>
+      <xs:element minOccurs="0" name="nombre" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="sinc" type="xs:string"></xs:element>
     </xs:sequence>
   </xs:complexType>
 
@@ -186,6 +204,30 @@
   <xs:complexType name="ResultRecProductosASinc">
     <xs:sequence>
       <xs:element maxOccurs="unbounded" minOccurs="0" name="erroresServ" nillable="true" type="tns:ErrorServicio"></xs:element>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="listaProdSinc" nillable="true" type="tns:ResultProductoASinc"></xs:element>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="listaTpSinc" nillable="true" type="tns:ResultTipoProdASinc"></xs:element>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="listaUnidadSinc" nillable="true" type="tns:ResultUnidadASinc"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ResultProductoASinc">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="estadoSinc" type="xs:int"></xs:element>
+      <xs:element minOccurs="0" name="idProducto" type="xs:int"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ResultTipoProdASinc">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="estadoSinc" type="xs:int"></xs:element>
+      <xs:element minOccurs="0" name="idTipoProd" type="xs:int"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ResultUnidadASinc">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="estadoSinc" type="xs:int"></xs:element>
+      <xs:element minOccurs="0" name="idUnidad" type="xs:int"></xs:element>
     </xs:sequence>
   </xs:complexType>
 

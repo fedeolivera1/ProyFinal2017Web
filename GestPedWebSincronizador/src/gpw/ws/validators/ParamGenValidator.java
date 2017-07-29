@@ -10,6 +10,8 @@ import gpw.ws.datatypes.persona.ResultObtPersonasNoSinc;
 import gpw.ws.datatypes.persona.ResultRecPersonasSinc;
 import gpw.ws.datatypes.producto.ParamProductoASinc;
 import gpw.ws.datatypes.producto.ParamRecProductosASinc;
+import gpw.ws.datatypes.producto.ParamTipoProdASinc;
+import gpw.ws.datatypes.producto.ParamUnidadASinc;
 import gpw.ws.datatypes.producto.ResultRecProductosASinc;
 
 public class ParamGenValidator {
@@ -69,6 +71,26 @@ public class ParamGenValidator {
 				for(ParamProductoASinc paramProd : param.getListaProducto()) {
 					if(paramProd.getIdProducto() == null) {
 						ErrorServicio error = new ErrorServicio(1, "El Id producto no puede ser nulo.");
+						listaErrores.add(error);
+					}
+				}
+			}
+			//control tipo prod
+			if(!param.getListaTipoProd().isEmpty()) {
+				for(ParamTipoProdASinc ptpas : param.getListaTipoProd()) {
+					if(ptpas.getIdTipoProd() == null || ptpas.getDescripcion() == null ||
+							ptpas.getSinc() == null || ptpas.getEstado() == null) {
+						ErrorServicio error = new ErrorServicio(1, "Falta alguno/todos de los datos de TipoProd.");
+						listaErrores.add(error);
+					}
+				}
+			}
+			//control unidad
+			if(!param.getListaUnidad().isEmpty()) {
+				for(ParamUnidadASinc puas : param.getListaUnidad()) {
+					if(puas.getIdUnidad() == null || puas.getNombre() == null ||
+							puas.getSinc() == null || puas.getEstado() == null) {
+						ErrorServicio error = new ErrorServicio(1, "Falta alguno/todos de los datos de Unidad.");
 						listaErrores.add(error);
 					}
 				}

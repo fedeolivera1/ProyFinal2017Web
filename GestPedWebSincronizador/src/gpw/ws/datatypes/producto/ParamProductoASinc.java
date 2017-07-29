@@ -6,14 +6,13 @@ import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-@XmlType(name = "ParamProducto")
+@XmlType(name = "ParamProductoASinc")
 public class ParamProductoASinc implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Integer idProducto;
 	//TipoProd
 	private Integer tipoProd;
-	private String tipoProdDesc;
 	//
 	private String codigo;
 	private String nombre;
@@ -21,7 +20,6 @@ public class ParamProductoASinc implements Serializable {
 	private Float stockMin;
 	//Unidad
 	private Integer unidad;
-	private String unidadDesc;
 	//
 	private Integer cantUnidad;
 	//AplicaIva
@@ -44,12 +42,6 @@ public class ParamProductoASinc implements Serializable {
 	}
 	public void setTipoProd(Integer tipoProd) {
 		this.tipoProd = tipoProd;
-	}
-	public String getTipoProdDesc() {
-		return tipoProdDesc;
-	}
-	public void setTipoProdDesc(String tipoProdDesc) {
-		this.tipoProdDesc = tipoProdDesc;
 	}
 	public String getCodigo() {
 		return codigo;
@@ -80,12 +72,6 @@ public class ParamProductoASinc implements Serializable {
 	}
 	public void setUnidad(Integer unidad) {
 		this.unidad = unidad;
-	}
-	public String getUnidadDesc() {
-		return unidadDesc;
-	}
-	public void setUnidadDesc(String unidadDesc) {
-		this.unidadDesc = unidadDesc;
 	}
 	public Integer getCantUnidad() {
 		return cantUnidad;

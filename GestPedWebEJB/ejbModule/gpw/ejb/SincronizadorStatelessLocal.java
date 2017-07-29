@@ -7,7 +7,10 @@ import javax.ejb.Local;
 
 import gpw.dominio.persona.Persona;
 import gpw.dominio.producto.Producto;
+import gpw.dominio.producto.TipoProd;
+import gpw.dominio.producto.Unidad;
 import gpw.dominio.util.EstadoSinc;
+import gpw.ejb.hlp.HlpSincProd;
 import gpw.exceptions.EjbException;
 import gpw.types.Fecha;
 
@@ -19,5 +22,5 @@ public interface SincronizadorStatelessLocal {
 	public List<Persona> obtPersonasNoSinc(Fecha fechaDesde, Fecha fechaHasta) throws Exception;
 	public Map<Long, EstadoSinc> recPersonasSinc(List<Long> listaPersAConfSinc) throws Exception;
 	
-	public Map<Integer, EstadoSinc> recProductosSinc(List<Producto> listaProductosASinc) throws EjbException;
+	public HlpSincProd recProductosSinc(List<TipoProd> listaTipoProd, List<Unidad> listaUnidad, List<Producto> listaProductosASinc) throws EjbException;
 }

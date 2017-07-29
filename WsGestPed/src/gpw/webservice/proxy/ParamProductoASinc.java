@@ -9,12 +9,12 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>Clase Java para ParamProducto complex type.
+ * <p>Clase Java para ParamProductoASinc complex type.
  * 
  * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.
  * 
  * <pre>
- * &lt;complexType name="ParamProducto"&gt;
+ * &lt;complexType name="ParamProductoASinc"&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
@@ -29,10 +29,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="sinc" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="stockMin" type="{http://www.w3.org/2001/XMLSchema}float" minOccurs="0"/&gt;
  *         &lt;element name="tipoProd" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/&gt;
- *         &lt;element name="tipoProdDesc" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="ultAct" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/&gt;
  *         &lt;element name="unidad" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/&gt;
- *         &lt;element name="unidadDesc" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -42,7 +40,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ParamProducto", propOrder = {
+@XmlType(name = "ParamProductoASinc", propOrder = {
     "aplIva",
     "cantUnidad",
     "codigo",
@@ -54,12 +52,10 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "sinc",
     "stockMin",
     "tipoProd",
-    "tipoProdDesc",
     "ultAct",
-    "unidad",
-    "unidadDesc"
+    "unidad"
 })
-public class ParamProducto {
+public class ParamProductoASinc {
 
     protected String aplIva;
     protected Integer cantUnidad;
@@ -72,11 +68,9 @@ public class ParamProducto {
     protected String sinc;
     protected Float stockMin;
     protected Integer tipoProd;
-    protected String tipoProdDesc;
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar ultAct;
     protected Integer unidad;
-    protected String unidadDesc;
 
     /**
      * Obtiene el valor de la propiedad aplIva.
@@ -343,30 +337,6 @@ public class ParamProducto {
     }
 
     /**
-     * Obtiene el valor de la propiedad tipoProdDesc.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getTipoProdDesc() {
-        return tipoProdDesc;
-    }
-
-    /**
-     * Define el valor de la propiedad tipoProdDesc.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setTipoProdDesc(String value) {
-        this.tipoProdDesc = value;
-    }
-
-    /**
      * Obtiene el valor de la propiedad ultAct.
      * 
      * @return
@@ -412,30 +382,6 @@ public class ParamProducto {
      */
     public void setUnidad(Integer value) {
         this.unidad = value;
-    }
-
-    /**
-     * Obtiene el valor de la propiedad unidadDesc.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getUnidadDesc() {
-        return unidadDesc;
-    }
-
-    /**
-     * Define el valor de la propiedad unidadDesc.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setUnidadDesc(String value) {
-        this.unidadDesc = value;
     }
 
 }

@@ -26,6 +26,7 @@ public class PersistenciaProducto extends Conector implements IPersProducto, Cns
 	@Override
 	public Integer guardarProducto(Connection conn, Producto producto) throws PersistenciaException {
 		GenSqlExecType genExec = new GenSqlExecType(QRY_INSERT_PROD);
+		genExec.setParam(producto.getIdProducto());
 		genExec.setParam(producto.getTipoProd().getIdTipoProd());
 		genExec.setParam(producto.getCodigo());
 		genExec.setParam(producto.getNombre());
