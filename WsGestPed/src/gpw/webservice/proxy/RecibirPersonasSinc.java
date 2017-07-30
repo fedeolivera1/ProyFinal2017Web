@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="paramRecPersonasSinc" type="{http://localhost:8080}ParamRecPersonasSinc" minOccurs="0"/&gt;
+ *         &lt;element name="paramRecPersonasASinc" type="{http://localhost:8080}ParamRecPersonasASinc" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -27,34 +27,34 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "recibirPersonasSinc", propOrder = {
-    "paramRecPersonasSinc"
+    "paramRecPersonasASinc"
 })
 public class RecibirPersonasSinc {
 
-    protected ParamRecPersonasSinc paramRecPersonasSinc;
+    protected ParamRecPersonasASinc paramRecPersonasASinc;
 
     /**
-     * Obtiene el valor de la propiedad paramRecPersonasSinc.
+     * Obtiene el valor de la propiedad paramRecPersonasASinc.
      * 
      * @return
      *     possible object is
-     *     {@link ParamRecPersonasSinc }
+     *     {@link ParamRecPersonasASinc }
      *     
      */
-    public ParamRecPersonasSinc getParamRecPersonasSinc() {
-        return paramRecPersonasSinc;
+    public ParamRecPersonasASinc getParamRecPersonasASinc() {
+        return paramRecPersonasASinc;
     }
 
     /**
-     * Define el valor de la propiedad paramRecPersonasSinc.
+     * Define el valor de la propiedad paramRecPersonasASinc.
      * 
      * @param value
      *     allowed object is
-     *     {@link ParamRecPersonasSinc }
+     *     {@link ParamRecPersonasASinc }
      *     
      */
-    public void setParamRecPersonasSinc(ParamRecPersonasSinc value) {
-        this.paramRecPersonasSinc = value;
+    public void setParamRecPersonasASinc(ParamRecPersonasASinc value) {
+        this.paramRecPersonasASinc = value;
     }
 
 }

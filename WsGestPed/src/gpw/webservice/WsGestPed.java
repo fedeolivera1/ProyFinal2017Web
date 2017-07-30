@@ -7,12 +7,12 @@ import javax.jws.WebService;
 
 import org.jboss.logging.Logger;
 
-import gpw.sincronizador.SincronizadorPersona;
-import gpw.sincronizador.SincronizadorProducto;
+import gpw.ejb.SincronizadorStatelessLocal;
+import gpw.ejblookup.LookUps;
 import gpw.ws.datatypes.persona.ParamObtPersonasNoSinc;
-import gpw.ws.datatypes.persona.ParamRecPersonasSinc;
+import gpw.ws.datatypes.persona.ParamRecPersonasASinc;
 import gpw.ws.datatypes.persona.ResultObtPersonasNoSinc;
-import gpw.ws.datatypes.persona.ResultRecPersonasSinc;
+import gpw.ws.datatypes.persona.ResultRecPersonasASinc;
 import gpw.ws.datatypes.producto.ParamRecProductosASinc;
 import gpw.ws.datatypes.producto.ResultRecProductosASinc;
 
@@ -23,8 +23,8 @@ public class WsGestPed {
 	
 	@WebMethod(operationName = "servicioFuncional", action = "servicioFuncional", exclude = false)
 	public String servicioFuncional() {
-		SincronizadorPersona sp = new SincronizadorPersona();
-		String retorno = sp.controlFuncionalidad();
+		SincronizadorStatelessLocal sincSl = LookUps.lookUpEjb();
+		String retorno = sincSl.servicioFuncional();
 		return retorno;
 	}
 	
@@ -34,21 +34,21 @@ public class WsGestPed {
 		logger.info(">>> # WS # >>> Inicia operacion obtenerClientesNoSinc...");
 		ResultObtPersonasNoSinc result = new ResultObtPersonasNoSinc();
 		
-		SincronizadorPersona sinc = new SincronizadorPersona();
-		result = sinc.obtPersonasNoSinc(paramObtPersonasNoSinc);
+		SincronizadorStatelessLocal sincSl = LookUps.lookUpEjb();
+		result = sincSl.obtPersonasNoSinc(paramObtPersonasNoSinc);
 				
 		logger.info(">>> # WS # >>> Finaliza operacion obtenerClientesNoSincr...");
 		return result;
 	}
 	
 	@WebMethod(operationName = "recibirPersonasSinc", action = "recibirPersonasSinc", exclude = false)
-	@WebResult(name = "resultRecPersonasSinc")
-	public ResultRecPersonasSinc recibirPersonasSinc(@WebParam(name = "paramRecPersonasSinc") ParamRecPersonasSinc paramRecPersonasSinc) {
+	@WebResult(name = "resultRecPersonasASinc")
+	public ResultRecPersonasASinc recibirPersonasSinc(@WebParam(name = "paramRecPersonasASinc") ParamRecPersonasASinc paramRecPersonasASinc) {
 		logger.info(">>> # WS # >>> Inicia operacion recibirPersonasSinc...");
-		ResultRecPersonasSinc result = new ResultRecPersonasSinc();
+		ResultRecPersonasASinc result = new ResultRecPersonasASinc();
 
-		SincronizadorPersona sinc = new SincronizadorPersona();
-		result = sinc.recPersonasSinc(paramRecPersonasSinc);
+		SincronizadorStatelessLocal sincSl = LookUps.lookUpEjb();
+		result = sincSl.recPersonasASinc(paramRecPersonasASinc);
 
 		logger.info(">>> # WS # >>> Finaliza operacion recibirPersonasSinc...");
 		return result;
@@ -60,8 +60,8 @@ public class WsGestPed {
 		logger.info(">>> # WS # >>> Inicia operacion recibirProductosASinc...");
 		ResultRecProductosASinc result = new ResultRecProductosASinc();
 
-		SincronizadorProducto sinc = new SincronizadorProducto();
-		result = sinc.recProductosASinc(paramRecProductosASinc);
+		SincronizadorStatelessLocal sincSl = LookUps.lookUpEjb();
+		result = sincSl.recProductosASinc(paramRecProductosASinc);
 
 		logger.info(">>> # WS # >>> Finaliza operacion recibirProductosASinc...");
 		return result;

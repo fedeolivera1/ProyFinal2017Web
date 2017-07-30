@@ -18,7 +18,7 @@ public interface CnstQryTipoProd {
 	
 //	public static final String QRY_UPDATE_SINC_TIPOPROD = "UPDATE tipo_prod SET sinc = ? WHERE id_tipo_prod = ?";
 	
-	public static final String QRY_DELETE_TIPOPROD = "DELETE FROM tipo_prod WHERE id_tipo_prod = ?";
+	public static final String QRY_DELETE_TIPOPROD = "UPDATE tipo_prod SET activo = ? WHERE id_tipo_prod = ?";
 	
 	public static final String QRY_CHECK_EXIST_TIPOPROD = "SELECT (1) AS existe FROM tipo_prod WHERE id_tipo_prod = ? AND activo = 1";
 	

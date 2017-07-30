@@ -145,11 +145,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ParamRecPersonasSinc }
+     * Create an instance of {@link ParamRecPersonasASinc }
      * 
      */
-    public ParamRecPersonasSinc createParamRecPersonasSinc() {
-        return new ParamRecPersonasSinc();
+    public ParamRecPersonasASinc createParamRecPersonasASinc() {
+        return new ParamRecPersonasASinc();
     }
 
     /**
@@ -161,11 +161,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ResultRecPersonasSinc }
+     * Create an instance of {@link ResultRecPersonasASinc }
      * 
      */
-    public ResultRecPersonasSinc createResultRecPersonasSinc() {
-        return new ResultRecPersonasSinc();
+    public ResultRecPersonasASinc createResultRecPersonasASinc() {
+        return new ResultRecPersonasASinc();
     }
 
     /**

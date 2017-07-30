@@ -87,6 +87,7 @@ public class PersistenciaTipoProd extends Conector implements IPersTipoProd, Cns
 		Integer resultado = null;
 		GenSqlExecType genExec = new GenSqlExecType(QRY_UPDATE_TIPOPROD);
 		genExec.setParam(tipoProd.getDescripcion());
+		genExec.setParam(tipoProd.getSinc().getAsChar());
 		genExec.setParam(tipoProd.getIdTipoProd());
 		try {
 			resultado = (Integer) runGeneric(conn, genExec);
@@ -116,6 +117,7 @@ public class PersistenciaTipoProd extends Conector implements IPersTipoProd, Cns
 	public Integer eliminarTipoProd(Connection conn, TipoProd tipoProd) throws PersistenciaException {
 		Integer resultado = null;
 		GenSqlExecType genExec = new GenSqlExecType(QRY_DELETE_TIPOPROD);
+		genExec.setParam(tipoProd.getEstado().getAsInt());
 		genExec.setParam(tipoProd.getIdTipoProd());
 		try {
 			resultado = (Integer) runGeneric(conn, genExec);

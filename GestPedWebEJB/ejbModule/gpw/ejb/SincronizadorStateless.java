@@ -4,13 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLWarning;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.ejb.EJBContext;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -18,7 +18,6 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.sql.DataSource;
-import javax.transaction.Transactional;
 
 import org.apache.log4j.Logger;
 
@@ -33,6 +32,8 @@ import gpw.dominio.util.Estado;
 import gpw.dominio.util.EstadoSinc;
 import gpw.dominio.util.Sinc;
 import gpw.ejb.hlp.HlpSincProd;
+import gpw.ejb.result.manager.MgrResultSincPers;
+import gpw.ejb.result.manager.MgrResultSincProd;
 import gpw.exceptions.EjbException;
 import gpw.exceptions.PersistenciaException;
 import gpw.interfaces.persona.IPersPersona;
@@ -45,6 +46,20 @@ import gpw.persistencia.producto.PersistenciaProducto;
 import gpw.persistencia.producto.PersistenciaTipoProd;
 import gpw.persistencia.producto.PersistenciaUnidad;
 import gpw.types.Fecha;
+import gpw.ws.datatypes.errors.ErrorServicio;
+import gpw.ws.datatypes.persona.ParamObtPersonasNoSinc;
+import gpw.ws.datatypes.persona.ParamPersonaSinc;
+import gpw.ws.datatypes.persona.ParamRecPersonasASinc;
+import gpw.ws.datatypes.persona.ResultObtPersonasNoSinc;
+import gpw.ws.datatypes.persona.ResultPersonaSinc;
+import gpw.ws.datatypes.persona.ResultRecPersonasASinc;
+import gpw.ws.datatypes.producto.ParamProductoASinc;
+import gpw.ws.datatypes.producto.ParamRecProductosASinc;
+import gpw.ws.datatypes.producto.ParamTipoProdASinc;
+import gpw.ws.datatypes.producto.ParamUnidadASinc;
+import gpw.ws.datatypes.producto.ResultRecProductosASinc;
+import gpw.ws.parsers.ParseProducto;
+import gpw.ws.validators.ParamGenValidator;
 
 /**
  * Session Bean implementation class SincronizadorStateless
@@ -55,10 +70,13 @@ import gpw.types.Fecha;
 public class SincronizadorStateless implements SincronizadorStatelessRemote, SincronizadorStatelessLocal {
 
 	private static Logger logger = Logger.getLogger(SincronizadorStateless.class);
+	private static final int ERROR_SRV_GENERICO = -99;
 	
 	@Resource(mappedName="java:jboss/datasources/dsGestPedWeb")
 	private DataSource ds;
 	private Connection conn;
+	@Resource 
+    private EJBContext context;
 	
 	private static IPersPersona interfacePersona;
 	private static IPersProducto interfaceProducto;
@@ -97,7 +115,8 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
     }
 
 	
-	public Boolean servicioFuncional() throws Exception {
+	public String servicioFuncional() {
+		String mensaje = null;
 		ResultSet resultado = null;
 		PreparedStatement sentencia = null;
 		String consulta = "select count(1) from unidad";
@@ -105,161 +124,220 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 			sentencia = ds.getConnection().prepareStatement(consulta, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			resultado = sentencia.executeQuery();
 			if(resultado.next()) {
-				return true;
+				mensaje = "Servicio funcional";
+			} else {
+				mensaje = "Servicio NO DISPONIBLE";
+				
 			}
-			return false;
 		} catch (SQLException e) {
 //			Conector.rollbackConn(conn);
 			logger.fatal("Excepcion en EJB > obtPersonasNoSinc: " + e.getMessage(), e);
 		} finally {
 			Conector.closeConn(ds, sentencia, resultado);
 		}
-		return false;
+		return mensaje;
 	}
 
-	/*********************************************************************************************************************************************************************/
+	/***************************************************************************************************************************/
+	/** SINC PERSONA **/
+	/***************************************************************************************************************************/
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Persona> obtPersonasNoSinc(Fecha fechaDesde, Fecha fechaHasta) throws EjbException {
+	public ResultObtPersonasNoSinc obtPersonasNoSinc(ParamObtPersonasNoSinc param) {
+		ResultObtPersonasNoSinc result = new ResultObtPersonasNoSinc();
 		List<Persona> listaPersona = new ArrayList<>();
 		try {
-			conn = ds.getConnection();
-			List<PersonaFisica> listaPf = getInterfacePersona().obtPersonaFisicaNoSinc(conn, fechaDesde, fechaHasta);
-			listaPersona.addAll((List<Persona>) (List<? extends Persona>) listaPf);
-			List<PersonaJuridica> listaPj = getInterfacePersona().obtPersonaJuridicaNoSinc(conn, fechaDesde, fechaHasta);
-			listaPersona.addAll((List<Persona>) (List<? extends Persona>) listaPj);
+			
+			if(ParamGenValidator.validarParam(param, result)) {
+				Fecha fechaDesde = new Fecha(param.getFechaDesde(), Fecha.AMD);
+				Fecha fechaHasta = new Fecha(param.getFechaHasta(), Fecha.AMD);
+				//
+				conn = ds.getConnection();
+				List<PersonaFisica> listaPf = getInterfacePersona().obtPersonaFisicaNoSinc(conn, fechaDesde, fechaHasta);
+				listaPersona.addAll((List<Persona>) (List<? extends Persona>) listaPf);
+				List<PersonaJuridica> listaPj = getInterfacePersona().obtPersonaJuridicaNoSinc(conn, fechaDesde, fechaHasta);
+				listaPersona.addAll((List<Persona>) (List<? extends Persona>) listaPj);
+				result = MgrResultSincPers.manageResultObtPersonasNoSinc(listaPersona);
+			}
 			Conector.closeConn(ds, null, null);
-		} catch (PersistenciaException | SQLException e) {
-//			Conector.rollbackConn(conn);
+		} catch (PersistenciaException | SQLException | EjbException e) {
 			logger.fatal("Excepcion en EJB > obtPersonasNoSinc: " + e.getMessage(), e);
-			throw new EjbException(e);
+			result.getErroresServ().add(new ErrorServicio(ERROR_SRV_GENERICO, e.getMessage()));
 		}
-		return listaPersona;
+		return result;
 	}
 
 
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	@Transactional(rollbackOn={Exception.class}, dontRollbackOn={SQLWarning.class})
-	public Map<Long, EstadoSinc> recPersonasSinc(List<Long> listaPersAConfSinc) throws EjbException {
+	public ResultRecPersonasASinc recPersonasASinc(ParamRecPersonasASinc param) {
+		ResultRecPersonasASinc result = new ResultRecPersonasASinc();
 		Map<Long, EstadoSinc> mapResultados = null;
 		try {
-			conn = ds.getConnection();
-			if(listaPersAConfSinc != null && !listaPersAConfSinc.isEmpty()) {
-				mapResultados = new HashMap<>();
-				for(Long idPers : listaPersAConfSinc) {
-					Integer resultado = getInterfacePersona().actualizarPersonaSinc(conn, idPers);
-					mapResultados.put(idPers, resultado > 0 ? EstadoSinc.O : EstadoSinc.E);
+			
+			if(ParamGenValidator.validarParam(param, result)) {
+				List<Long> listaPersSincOk = null;
+//				SincronizadorStatelessLocal sincSl = LookUps.lookUpEjb();
+				listaPersSincOk = new ArrayList<>();
+				for(ParamPersonaSinc paramPers : param.getListaPersSinc()) {
+					logger.info("Se agrega nueva persona al sincronizador - idPersona: " + paramPers.getIdPersona());
+//						if(paramPers.getEstadoSinc().equals(EstadoSinc.O)) {
+						listaPersSincOk.add(paramPers.getIdPersona());
+//						}
+				}
+				conn = ds.getConnection();
+				if(listaPersSincOk != null && !listaPersSincOk.isEmpty()) {
+					mapResultados = new HashMap<>();
+					for(Long idPers : listaPersSincOk) {
+						Integer resultado = getInterfacePersona().actualizarPersonaSinc(conn, idPers);
+						mapResultados.put(idPers, resultado > 0 ? EstadoSinc.O : EstadoSinc.E);
+					}
+				}
+				for(Map.Entry<Long, EstadoSinc> entry : mapResultados.entrySet()) {
+					Long idPersona = entry.getKey();
+					EstadoSinc estSinc = entry.getValue();
+					logger.info("Se recibe del sincronizador la persona - idPersona: " + idPersona + " - con estado: " + estSinc.getSinc());
+					ResultPersonaSinc resultPs = new ResultPersonaSinc();
+					resultPs.setIdPersona(idPersona);
+					resultPs.setEstadoSinc(estSinc.getAsInt());
+					result.getListaPersonaSinc().add(resultPs);
 				}
 			}
 		} catch (PersistenciaException | SQLException e) {
-//			Conector.rollbackConn(conn);
+			context.setRollbackOnly();
 			logger.fatal("Excepcion en EJB > obtPersonasNoSinc: " + e.getMessage(), e);
-			throw new EjbException(e);
+			result.getErroresServ().add(new ErrorServicio(ERROR_SRV_GENERICO, e.getMessage()));
 		}
-		return mapResultados;
+		return result;
 	}
+	
+	/***************************************************************************************************************************/
+	/** SINC PRODUCTO **/
+	/***************************************************************************************************************************/
 	
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	@Transactional(rollbackOn={Exception.class}, dontRollbackOn={SQLWarning.class})
-	public HlpSincProd recProductosSinc(List<TipoProd> listaTipoProd, List<Unidad> listaUnidad, List<Producto> listaProductosASinc) throws EjbException {
-		HlpSincProd hsp = new HlpSincProd();
+	public ResultRecProductosASinc recProductosASinc(ParamRecProductosASinc param) {
+		ResultRecProductosASinc result = new ResultRecProductosASinc();
 		try {
-			conn = ds.getConnection();
-			if(listaProductosASinc != null && !listaProductosASinc.isEmpty()) {
-				if(listaTipoProd != null && !listaTipoProd.isEmpty()) {
-					for(TipoProd tp : listaTipoProd) {
-						Integer resQry = 0;
-						tp.setSinc(Sinc.S);
-						if(Estado.A.equals(tp.getEstado())) {
-							if(getInterfaceTipoProd().checkExistTipoProd(conn, tp.getIdTipoProd())) {
-								resQry = getInterfaceTipoProd().modificarTipoProd(conn, tp);
+			if(ParamGenValidator.validarParam(param, result)) {
+				List<TipoProd> listaTipoProd = new ArrayList<>();
+				List<Unidad> listaUnidad = new ArrayList<>();
+				List<Producto> listaProducto = new ArrayList<>();
+				if(param.getListaTipoProd() != null && !param.getListaTipoProd().isEmpty()) {
+					for(ParamTipoProdASinc paramTpas : param.getListaTipoProd()) {
+						listaTipoProd.add(ParseProducto.parseParamTipoProd(paramTpas));
+					}
+				}
+				if(param.getListaUnidad() != null && !param.getListaUnidad().isEmpty()) {
+					for(ParamUnidadASinc paramUas : param.getListaUnidad()) {
+						listaUnidad.add(ParseProducto.parseParamUnidad(paramUas));
+					}
+				}
+				for(ParamProductoASinc paramProd : param.getListaProducto()) {
+					listaProducto.add(ParseProducto.parseParamProducto(paramProd));
+				}
+				//
+				HlpSincProd hsp = new HlpSincProd();
+				conn = ds.getConnection();
+				if(listaProducto != null && !listaProducto.isEmpty()) {
+					if(listaTipoProd != null && !listaTipoProd.isEmpty()) {
+						for(TipoProd tp : listaTipoProd) {
+							Integer resQry = 0;
+							tp.setSinc(Sinc.S);
+							if(Estado.A.equals(tp.getEstado())) {
+								if(getInterfaceTipoProd().checkExistTipoProd(conn, tp.getIdTipoProd())) {
+									resQry = getInterfaceTipoProd().modificarTipoProd(conn, tp);
+								} else {
+									resQry = getInterfaceTipoProd().guardarTipoProd(conn, tp);
+								}
 							} else {
-								resQry = getInterfaceTipoProd().guardarTipoProd(conn, tp);
+								resQry = getInterfaceTipoProd().eliminarTipoProd(conn, tp);
 							}
-						} else {
-							resQry = getInterfaceTipoProd().eliminarTipoProd(conn, tp);
+							//chequeo si genero un movimiento en la base
+							EstadoSinc estSinc = resQry > 0 ? EstadoSinc.O : EstadoSinc.E;
+							//guardo en el mapa del helper dependiendo del estado
+							if(hsp.getMapTipoProd().containsKey(estSinc)) {
+								hsp.getMapTipoProd().get(estSinc).add(tp);
+							} else {
+								ArrayList<TipoProd> listaTpSinc = new ArrayList<>();
+								listaTpSinc.add(tp);
+								hsp.getMapTipoProd().put(estSinc, listaTpSinc);
+							}
+						}
+					}
+					if(listaUnidad != null && !listaUnidad.isEmpty()) {
+						for(Unidad unidad : listaUnidad) {
+							Integer resQry = 0;
+							unidad.setSinc(Sinc.S);
+							if(Estado.A.equals(unidad.getEstado())) {
+								if(getInterfaceUnidad().checkExistUnidad(conn, unidad.getIdUnidad())) {
+									resQry = getInterfaceUnidad().modificarUnidad(conn, unidad);
+								} else {
+									resQry = getInterfaceUnidad().guardarUnidad(conn, unidad);
+								}
+							} else {
+								resQry = getInterfaceUnidad().eliminarUnidad(conn, unidad);
+							}
+							//chequeo si genero un movimiento en la base
+							EstadoSinc estSinc = resQry > 0 ? EstadoSinc.O : EstadoSinc.E;
+							//guardo en el mapa del helper dependiendo del estado
+							if(hsp.getMapUnidad().containsKey(estSinc)) {
+								hsp.getMapUnidad().get(estSinc).add(unidad);
+							} else {
+								ArrayList<Unidad> listaUniSinc = new ArrayList<>();
+								listaUniSinc.add(unidad);
+								hsp.getMapUnidad().put(estSinc, listaUniSinc);
+							}
+						}
+					}
+					for(Producto prod : listaProducto) {
+						Integer resQry = 0;
+						if(EstadoProd.A.equals(prod.getEstadoProd())) { // << chequeo si el producto tiene estado 'activo' (existente)
+							if(controlarDatosProducto(prod)) {
+								logger.debug("El control de los productos funciona ok, se procede con la sincronizacion web...");
+								if(getInterfaceProducto().checkExistProducto(conn, prod.getIdProducto())) {
+									logger.debug("El producto ya existe en base web, se actualiza...");
+									prod.setSinc(Sinc.S);
+									resQry = getInterfaceProducto().modificarProducto(conn, prod);
+								} else {
+									logger.debug("El producto no existe en base web, se agrega...");
+									prod.setSinc(Sinc.S);
+									resQry = getInterfaceProducto().guardarProducto(conn, prod);
+								}
+							} else {
+								logger.warn("El producto queda como no sincronizado porque el metodo controlarDatosProducto falla.");
+							}
+						} else { // << caso producto con estado 'Eliminado', fue dado de baja
+							prod.setSinc(Sinc.S);
+							resQry = getInterfaceProducto().desactivarProducto(conn, prod);
 						}
 						//chequeo si genero un movimiento en la base
 						EstadoSinc estSinc = resQry > 0 ? EstadoSinc.O : EstadoSinc.E;
+						logger.info("Estado sincronizacion para el producto [" + prod.getCodigo() + "] es " + estSinc.getSinc());
 						//guardo en el mapa del helper dependiendo del estado
-						if(hsp.getMapTipoProd().containsKey(estSinc)) {
-							hsp.getMapTipoProd().get(estSinc).add(tp);
+						if(hsp.getMapProd().containsKey(estSinc)) {
+							hsp.getMapProd().get(estSinc).add(prod);
 						} else {
-							ArrayList<TipoProd> listaTpSinc = new ArrayList<>();
-							listaTpSinc.add(tp);
-							hsp.getMapTipoProd().put(estSinc, listaTpSinc);
+							ArrayList<Producto> listaProdSinc = new ArrayList<>();
+							listaProdSinc.add(prod);
+							hsp.getMapProd().put(estSinc, listaProdSinc);
 						}
 					}
 				}
-				if(listaUnidad != null && !listaUnidad.isEmpty()) {
-					for(Unidad unidad : listaUnidad) {
-						Integer resQry = 0;
-						unidad.setSinc(Sinc.S);
-						if(Estado.A.equals(unidad.getEstado())) {
-							if(getInterfaceUnidad().checkExistUnidad(conn, unidad.getIdUnidad())) {
-								resQry = getInterfaceUnidad().modificarUnidad(conn, unidad);
-							} else {
-								resQry = getInterfaceUnidad().guardarUnidad(conn, unidad);
-							}
-						} else {
-							resQry = getInterfaceUnidad().eliminarUnidad(conn, unidad);
-						}
-						//chequeo si genero un movimiento en la base
-						EstadoSinc estSinc = resQry > 0 ? EstadoSinc.O : EstadoSinc.E;
-						//guardo en el mapa del helper dependiendo del estado
-						if(hsp.getMapUnidad().containsKey(estSinc)) {
-							hsp.getMapUnidad().get(estSinc).add(unidad);
-						} else {
-							ArrayList<Unidad> listaUniSinc = new ArrayList<>();
-							listaUniSinc.add(unidad);
-							hsp.getMapUnidad().put(estSinc, listaUniSinc);
-						}
-					}
-				}
-				for(Producto prod : listaProductosASinc) {
-					Integer resQry = 0;
-					if(EstadoProd.A.equals(prod.getEstadoProd())) { // << chequeo si el producto tiene estado 'activo' (existente)
-						if(controlarDatosProducto(prod)) {
-							logger.debug("El control de los productos funciona ok, se procede con la sincronizacion web...");
-							if(getInterfaceProducto().checkExistProducto(conn, prod.getIdProducto())) {
-								logger.debug("El producto ya existe en base web, se actualiza...");
-								prod.setSinc(Sinc.S);
-								resQry = getInterfaceProducto().modificarProducto(conn, prod);
-							} else {
-								logger.debug("El producto no existe en base web, se agrega...");
-								prod.setSinc(Sinc.S);
-								resQry = getInterfaceProducto().guardarProducto(conn, prod);
-							}
-						} else {
-							logger.warn("El producto queda como no sincronizado porque el metodo controlarDatosProducto falla.");
-						}
-					} else { // << caso producto con estado 'Eliminado', fue dado de baja
-						prod.setSinc(Sinc.S);
-						resQry = getInterfaceProducto().desactivarProducto(conn, prod);
-					}
-					//chequeo si genero un movimiento en la base
-					EstadoSinc estSinc = resQry > 0 ? EstadoSinc.O : EstadoSinc.E;
-					logger.info("Estado sincronizacion para el producto [" + prod.getCodigo() + "] es " + estSinc.getSinc());
-					//guardo en el mapa del helper dependiendo del estado
-					if(hsp.getMapProd().containsKey(estSinc)) {
-						hsp.getMapProd().get(estSinc).add(prod);
-					} else {
-						ArrayList<Producto> listaProdSinc = new ArrayList<>();
-						listaProdSinc.add(prod);
-						hsp.getMapProd().put(estSinc, listaProdSinc);
-					}
-				}
+				result =  MgrResultSincProd.manageResult(hsp);
 			}
-		} catch (PersistenciaException | SQLException e) {
-//			//Conector.rollbackConn(conn);
+		} catch (PersistenciaException | SQLException | EjbException e) {
+			context.setRollbackOnly();
 			logger.fatal("Excepcion en EJB > recProductosSinc: " + e.getMessage(), e);
-			throw new EjbException(e);
+			result.getErroresServ().add(new ErrorServicio(ERROR_SRV_GENERICO, e.getMessage()));
 		}
-		return hsp;
+		return result;
 	}
+	
+	
+	/***************************************************************************************************************************/
 	
 	/**
 	 * metodo para chequear que antes de sincronizaar el producto, los datos de los cuales depende

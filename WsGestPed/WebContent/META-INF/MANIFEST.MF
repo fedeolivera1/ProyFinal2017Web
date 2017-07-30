@@ -1,4 +1,5 @@
 Manifest-Version: 1.0
-Class-Path: GestPedWebSincronizador.jar
+Class-Path: GestPedWebEJB.jar 
+ GestPedWebServiceTypes.jar
 Dependencies: org.apache.log4j
 

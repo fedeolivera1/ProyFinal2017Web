@@ -87,6 +87,7 @@ public class PersistenciaUnidad extends Conector implements IPersUnidad, CnstQry
 		Integer resultado = null;
 		GenSqlExecType genExec = new GenSqlExecType(QRY_UPDATE_UNI);
 		genExec.setParam(unidad.getNombre());
+		genExec.setParam(unidad.getSinc().getAsChar());
 		genExec.setParam(unidad.getIdUnidad());
 		try {
 			resultado = (Integer) runGeneric(conn, genExec);

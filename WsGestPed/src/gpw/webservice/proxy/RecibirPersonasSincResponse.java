@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="resultRecPersonasSinc" type="{http://localhost:8080}ResultRecPersonasSinc" minOccurs="0"/&gt;
+ *         &lt;element name="resultRecPersonasASinc" type="{http://localhost:8080}ResultRecPersonasASinc" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -27,34 +27,34 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "recibirPersonasSincResponse", propOrder = {
-    "resultRecPersonasSinc"
+    "resultRecPersonasASinc"
 })
 public class RecibirPersonasSincResponse {
 
-    protected ResultRecPersonasSinc resultRecPersonasSinc;
+    protected ResultRecPersonasASinc resultRecPersonasASinc;
 
     /**
-     * Obtiene el valor de la propiedad resultRecPersonasSinc.
+     * Obtiene el valor de la propiedad resultRecPersonasASinc.
      * 
      * @return
      *     possible object is
-     *     {@link ResultRecPersonasSinc }
+     *     {@link ResultRecPersonasASinc }
      *     
      */
-    public ResultRecPersonasSinc getResultRecPersonasSinc() {
-        return resultRecPersonasSinc;
+    public ResultRecPersonasASinc getResultRecPersonasASinc() {
+        return resultRecPersonasASinc;
     }
 
     /**
-     * Define el valor de la propiedad resultRecPersonasSinc.
+     * Define el valor de la propiedad resultRecPersonasASinc.
      * 
      * @param value
      *     allowed object is
-     *     {@link ResultRecPersonasSinc }
+     *     {@link ResultRecPersonasASinc }
      *     
      */
-    public void setResultRecPersonasSinc(ResultRecPersonasSinc value) {
-        this.resultRecPersonasSinc = value;
+    public void setResultRecPersonasASinc(ResultRecPersonasASinc value) {
+        this.resultRecPersonasASinc = value;
     }
 
 }

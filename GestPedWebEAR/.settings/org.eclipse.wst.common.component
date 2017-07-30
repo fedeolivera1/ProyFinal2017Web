@@ -9,10 +9,10 @@
             <dependent-object/>
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="GestPedWebSincronizador.jar" deploy-path="/" handle="module:/resource/GestPedWebSincronizador/GestPedWebSincronizador">
+        <dependent-module archiveName="GestPedWebDataAccess.jar" deploy-path="/" handle="module:/resource/GestPedWebDataAccess/GestPedWebDataAccess">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="GestPedWebDataAccess.jar" deploy-path="/" handle="module:/resource/GestPedWebDataAccess/GestPedWebDataAccess">
+        <dependent-module archiveName="GestPedWebServiceTypes.jar" deploy-path="/" handle="module:/resource/GestPedWebServiceTypes/GestPedWebServiceTypes">
             <dependency-type>uses</dependency-type>
         </dependent-module>
     </wb-module>
