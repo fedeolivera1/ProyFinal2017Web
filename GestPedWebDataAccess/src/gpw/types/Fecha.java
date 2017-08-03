@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -219,6 +220,7 @@ public class Fecha extends GregorianCalendar {
 		gc.setTime(fec.getTime());
 		try {
 			xmlgc = DatatypeFactory.newInstance().newXMLGregorianCalendar(gc);
+			xmlgc.setTimezone(DatatypeConstants.FIELD_UNDEFINED);
 		} catch (DatatypeConfigurationException e) {
 			e.printStackTrace();
 		}

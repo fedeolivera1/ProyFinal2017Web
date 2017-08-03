@@ -21,6 +21,7 @@ import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 
+import gpw.dominio.pedido.Pedido;
 import gpw.dominio.persona.Persona;
 import gpw.dominio.persona.PersonaFisica;
 import gpw.dominio.persona.PersonaJuridica;
@@ -32,21 +33,28 @@ import gpw.dominio.util.Estado;
 import gpw.dominio.util.EstadoSinc;
 import gpw.dominio.util.Sinc;
 import gpw.ejb.hlp.HlpSincProd;
+import gpw.ejb.result.manager.MgrResultSincPedido;
 import gpw.ejb.result.manager.MgrResultSincPers;
 import gpw.ejb.result.manager.MgrResultSincProd;
 import gpw.exceptions.EjbException;
 import gpw.exceptions.PersistenciaException;
+import gpw.interfaces.pedido.IPersPedido;
 import gpw.interfaces.persona.IPersPersona;
 import gpw.interfaces.producto.IPersProducto;
 import gpw.interfaces.producto.IPersTipoProd;
 import gpw.interfaces.producto.IPersUnidad;
 import gpw.persistencia.conector.Conector;
+import gpw.persistencia.pedido.PersistenciaPedido;
 import gpw.persistencia.persona.PersistenciaPersona;
 import gpw.persistencia.producto.PersistenciaProducto;
 import gpw.persistencia.producto.PersistenciaTipoProd;
 import gpw.persistencia.producto.PersistenciaUnidad;
 import gpw.types.Fecha;
 import gpw.ws.datatypes.errors.ErrorServicio;
+import gpw.ws.datatypes.pedido.ParamObtPedidosNoSinc;
+import gpw.ws.datatypes.pedido.ParamRecPedidosASinc;
+import gpw.ws.datatypes.pedido.ResultObtPedidosNoSinc;
+import gpw.ws.datatypes.pedido.ResultRecPedidosASinc;
 import gpw.ws.datatypes.persona.ParamObtPersonasNoSinc;
 import gpw.ws.datatypes.persona.ParamPersonaSinc;
 import gpw.ws.datatypes.persona.ParamRecPersonasASinc;
@@ -82,6 +90,7 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 	private static IPersProducto interfaceProducto;
 	private static IPersTipoProd interfaceTipoProd;
 	private static IPersUnidad interfaceUnidad;
+	private static IPersPedido interfacePedido;
 	
 	private static IPersPersona getInterfacePersona() {
 		if(interfacePersona == null) {
@@ -107,6 +116,12 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 		}
 		return interfaceUnidad;
 	}
+	private static IPersPedido getInterfacePedido() {
+		if(interfacePedido == null) {
+			interfacePedido = new PersistenciaPedido();
+		}
+		return interfacePedido;
+	}
 	
     /**
      * Default constructor. 
@@ -130,8 +145,8 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 				
 			}
 		} catch (SQLException e) {
-//			Conector.rollbackConn(conn);
 			logger.fatal("Excepcion en EJB > obtPersonasNoSinc: " + e.getMessage(), e);
+			mensaje = e.getMessage();
 		} finally {
 			Conector.closeConn(ds, sentencia, resultado);
 		}
@@ -142,6 +157,9 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 	/** SINC PERSONA **/
 	/***************************************************************************************************************************/
 	
+	/**
+	 * 
+	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public ResultObtPersonasNoSinc obtPersonasNoSinc(ParamObtPersonasNoSinc param) {
@@ -168,7 +186,9 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 		return result;
 	}
 
-
+	/**
+	 * 
+	 */
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public ResultRecPersonasASinc recPersonasASinc(ParamRecPersonasASinc param) {
@@ -216,6 +236,9 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 	/** SINC PRODUCTO **/
 	/***************************************************************************************************************************/
 	
+	/**
+	 * 
+	 */
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public ResultRecProductosASinc recProductosASinc(ParamRecProductosASinc param) {
@@ -336,8 +359,46 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 		return result;
 	}
 	
+	/***************************************************************************************************************************/
+	/** SINC PEDIDO **/
+	/***************************************************************************************************************************/
+	
+	/**
+	 * 
+	 */
+	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	public ResultObtPedidosNoSinc obtPedidosNoSinc(ParamObtPedidosNoSinc param) {
+		ResultObtPedidosNoSinc result = new ResultObtPedidosNoSinc();
+		List<Pedido> listaPedido = new ArrayList<>();
+		try {
+			if(ParamGenValidator.validarParam(param, result)) {
+				Fecha fechaDesde = new Fecha(param.getFechaDesde(), Fecha.AMD);
+				Fecha fechaHasta = new Fecha(param.getFechaHasta(), Fecha.AMD);
+				conn = ds.getConnection();
+				listaPedido = getInterfacePedido().obtenerListaPedidoNoSinc(conn, fechaDesde, fechaHasta);
+				
+				result = MgrResultSincPedido.manageResultObtPedidosNoSinc(listaPedido);
+			}
+		} catch (PersistenciaException | SQLException | EjbException e) {
+			logger.fatal("Excepcion en EJB > obtPedidosASinc: " + e.getMessage(), e);
+			result.getErroresServ().add(new ErrorServicio(ERROR_SRV_GENERICO, e.getMessage()));
+		}
+		return result;
+	}
+	
+	/**
+	 * 
+	 */
+	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	public ResultRecPedidosASinc recPedidosASinc(ParamRecPedidosASinc param) {
+		ResultRecPedidosASinc result = new ResultRecPedidosASinc();
+		return result;
+	}
 	
 	/***************************************************************************************************************************/
+	/** UTILES **/
 	
 	/**
 	 * metodo para chequear que antes de sincronizaar el producto, los datos de los cuales depende

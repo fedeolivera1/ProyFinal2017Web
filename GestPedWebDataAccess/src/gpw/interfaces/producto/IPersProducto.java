@@ -7,6 +7,7 @@ import gpw.exceptions.PersistenciaException;
 
 public interface IPersProducto {
 
+	public Producto obtenerProductoPorId(Connection conn, Integer id) throws PersistenciaException;
 	public Integer guardarProducto(Connection conn, Producto producto) throws PersistenciaException;
 	public Integer modificarProducto(Connection conn, Producto producto) throws PersistenciaException;
 	public Integer desactivarProducto(Connection conn, Producto producto) throws PersistenciaException;

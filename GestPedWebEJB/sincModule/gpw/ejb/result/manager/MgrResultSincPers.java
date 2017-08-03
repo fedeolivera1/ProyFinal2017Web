@@ -25,23 +25,28 @@ public class MgrResultSincPers {
 	public static ResultObtPersonasNoSinc manageResultObtPersonasNoSinc(List<Persona> listaPersonasNoSinc) throws EjbException {
 		logger.debug("Se ingresa a manejar el resultado para ResultObtPersonasNoSinc...");
 		ResultObtPersonasNoSinc result = null;
-		if(listaPersonasNoSinc != null && !listaPersonasNoSinc.isEmpty()) {
-			result = new ResultObtPersonasNoSinc();
-			List<ResultPersonaFisica> listaResultPf = new ArrayList<>();
-			List<ResultPersonaJuridica> listaResultPj = new ArrayList<>();
-			for(Persona pers : listaPersonasNoSinc) {
-				if(pers instanceof PersonaFisica) {
-					logger.info("Se parsea a result la persona fisica - idPersona: " + pers.getIdPersona());
-					PersonaFisica pf = (PersonaFisica) pers;
-					listaResultPf.add(ParsePersona.parsePersonaFisica(pf));
-				} else if(pers instanceof PersonaJuridica) {
-					logger.info("Se parsea a result la persona juridica - idPersona: " + pers.getIdPersona());
-					PersonaJuridica pj = (PersonaJuridica) pers;
-					listaResultPj.add(ParsePersona.parsePersonaJuridica(pj));
+		try {
+			if(listaPersonasNoSinc != null && !listaPersonasNoSinc.isEmpty()) {
+				result = new ResultObtPersonasNoSinc();
+				List<ResultPersonaFisica> listaResultPf = new ArrayList<>();
+				List<ResultPersonaJuridica> listaResultPj = new ArrayList<>();
+				for(Persona pers : listaPersonasNoSinc) {
+					if(pers instanceof PersonaFisica) {
+						logger.info("Se parsea a result la persona fisica - idPersona: " + pers.getIdPersona());
+						PersonaFisica pf = (PersonaFisica) pers;
+						listaResultPf.add(ParsePersona.parsePersonaFisica(pf));
+					} else if(pers instanceof PersonaJuridica) {
+						logger.info("Se parsea a result la persona juridica - idPersona: " + pers.getIdPersona());
+						PersonaJuridica pj = (PersonaJuridica) pers;
+						listaResultPj.add(ParsePersona.parsePersonaJuridica(pj));
+					}
 				}
+				result.setListaPersFisica(listaResultPf);
+				result.setListaPersJuridica(listaResultPj);
 			}
-			result.setListaPersFisica(listaResultPf);
-			result.setListaPersJuridica(listaResultPj);
+		} catch (Exception e) {
+			logger.error("Excepcion generica al parsear datos en 'MgrResultSincPers' > manageResultObtPersonasNoSinc: " + e.getMessage());
+			throw new EjbException(e);
 		}
 		return result;
 		
@@ -50,17 +55,22 @@ public class MgrResultSincPers {
 	public static ResultRecPersonasASinc manageResultRecPersonasSinc(Map<Long, EstadoSinc> mapPersSinc) throws EjbException {
 		logger.debug("Se ingresa a manejar el resultado para ResultRecPersonasASinc...");
 		ResultRecPersonasASinc result = null;
-		if(mapPersSinc != null && !mapPersSinc.isEmpty()) {
-			result = new ResultRecPersonasASinc();
-			for(Map.Entry<Long, EstadoSinc> entry : mapPersSinc.entrySet()) {
-				Long idPersona = entry.getKey();
-				EstadoSinc estSinc = entry.getValue();
-				logger.info("Se recibe del sincronizador la persona - idPersona: " + idPersona + " - con estado: " + estSinc.getSinc());
-				ResultPersonaSinc resultPs = new ResultPersonaSinc();
-				resultPs.setIdPersona(idPersona);
-				resultPs.setEstadoSinc(estSinc.getAsInt());
-				result.getListaPersonaSinc().add(resultPs);
+		try {
+			if(mapPersSinc != null && !mapPersSinc.isEmpty()) {
+				result = new ResultRecPersonasASinc();
+				for(Map.Entry<Long, EstadoSinc> entry : mapPersSinc.entrySet()) {
+					Long idPersona = entry.getKey();
+					EstadoSinc estSinc = entry.getValue();
+					logger.info("Se recibe del sincronizador la persona - idPersona: " + idPersona + " - con estado: " + estSinc.getSinc());
+					ResultPersonaSinc resultPs = new ResultPersonaSinc();
+					resultPs.setIdPersona(idPersona);
+					resultPs.setEstadoSinc(estSinc.getAsInt());
+					result.getListaPersonaSinc().add(resultPs);
+				}
 			}
+		} catch (Exception e) {
+			logger.error("Excepcion generica al parsear datos en 'MgrResultSincPers' > manageResultRecPersonasSinc: " + e.getMessage());
+			throw new EjbException(e);
 		}
 		return result;
 	}

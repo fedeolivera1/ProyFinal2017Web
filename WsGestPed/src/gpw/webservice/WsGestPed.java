@@ -9,6 +9,10 @@ import org.jboss.logging.Logger;
 
 import gpw.ejb.SincronizadorStatelessLocal;
 import gpw.ejblookup.LookUps;
+import gpw.ws.datatypes.pedido.ParamObtPedidosNoSinc;
+import gpw.ws.datatypes.pedido.ParamRecPedidosASinc;
+import gpw.ws.datatypes.pedido.ResultObtPedidosNoSinc;
+import gpw.ws.datatypes.pedido.ResultRecPedidosASinc;
 import gpw.ws.datatypes.persona.ParamObtPersonasNoSinc;
 import gpw.ws.datatypes.persona.ParamRecPersonasASinc;
 import gpw.ws.datatypes.persona.ResultObtPersonasNoSinc;
@@ -31,39 +35,60 @@ public class WsGestPed {
 	@WebMethod(operationName = "obtenerPersonasNoSinc", action = "obtenerPersonasNoSinc", exclude = false)
 	@WebResult(name = "resultObtPersonasNoSinc")
 	public ResultObtPersonasNoSinc obtenerPersonasNoSinc(@WebParam(name = "paramObtPersonasNoSinc") ParamObtPersonasNoSinc paramObtPersonasNoSinc) {
-		logger.info(">>> # WS # >>> Inicia operacion obtenerClientesNoSinc...");
-		ResultObtPersonasNoSinc result = new ResultObtPersonasNoSinc();
+		logger.info("<<< # WS # >>> Inicia operacion obtenerClientesNoSinc...");
 		
 		SincronizadorStatelessLocal sincSl = LookUps.lookUpEjb();
-		result = sincSl.obtPersonasNoSinc(paramObtPersonasNoSinc);
+		ResultObtPersonasNoSinc result = sincSl.obtPersonasNoSinc(paramObtPersonasNoSinc);
 				
-		logger.info(">>> # WS # >>> Finaliza operacion obtenerClientesNoSincr...");
+		logger.info("<<< # WS # >>> Finaliza operacion obtenerClientesNoSincr...");
 		return result;
 	}
 	
-	@WebMethod(operationName = "recibirPersonasSinc", action = "recibirPersonasSinc", exclude = false)
+	@WebMethod(operationName = "recibirPersonasASinc", action = "recibirPersonasASinc", exclude = false)
 	@WebResult(name = "resultRecPersonasASinc")
-	public ResultRecPersonasASinc recibirPersonasSinc(@WebParam(name = "paramRecPersonasASinc") ParamRecPersonasASinc paramRecPersonasASinc) {
-		logger.info(">>> # WS # >>> Inicia operacion recibirPersonasSinc...");
-		ResultRecPersonasASinc result = new ResultRecPersonasASinc();
+	public ResultRecPersonasASinc recibirPersonasASinc(@WebParam(name = "paramRecPersonasASinc") ParamRecPersonasASinc paramRecPersonasASinc) {
+		logger.info("<<< # WS # >>> Inicia operacion recibirPersonasASinc...");
 
 		SincronizadorStatelessLocal sincSl = LookUps.lookUpEjb();
-		result = sincSl.recPersonasASinc(paramRecPersonasASinc);
+		ResultRecPersonasASinc result = sincSl.recPersonasASinc(paramRecPersonasASinc);
 
-		logger.info(">>> # WS # >>> Finaliza operacion recibirPersonasSinc...");
+		logger.info("<<< # WS # >>> Finaliza operacion recibirPersonasASinc...");
 		return result;
 	}
 	
 	@WebMethod(operationName = "recibirProductosASinc", action = "recibirProductosASinc", exclude = false)
 	@WebResult(name = "resultRecProductosASinc")
 	public ResultRecProductosASinc recibirProductosASinc(@WebParam(name = "paramRecProductosASinc") ParamRecProductosASinc paramRecProductosASinc) {
-		logger.info(">>> # WS # >>> Inicia operacion recibirProductosASinc...");
-		ResultRecProductosASinc result = new ResultRecProductosASinc();
+		logger.info("<<< # WS # >>> Inicia operacion recibirProductosASinc...");
 
 		SincronizadorStatelessLocal sincSl = LookUps.lookUpEjb();
-		result = sincSl.recProductosASinc(paramRecProductosASinc);
+		ResultRecProductosASinc result = sincSl.recProductosASinc(paramRecProductosASinc);
 
-		logger.info(">>> # WS # >>> Finaliza operacion recibirProductosASinc...");
+		logger.info("<<< # WS # >>> Finaliza operacion recibirProductosASinc...");
+		return result;
+	}
+	
+	@WebMethod(operationName = "obtenerPedidosNoSinc", action = "obtenerPedidosNoSinc", exclude = false)
+	@WebResult(name = "resultObtPedidosNoSinc")
+	public ResultObtPedidosNoSinc obtenerPedidosNoSinc(@WebParam(name = "paramObtPedidosNoSinc") ParamObtPedidosNoSinc paramObtPedidosNoSinc) {
+		logger.info("<<< # WS # >>> Inicia operacion obtenerPedidosASinc...");
+
+		SincronizadorStatelessLocal sincSl = LookUps.lookUpEjb();
+		ResultObtPedidosNoSinc result = sincSl.obtPedidosNoSinc(paramObtPedidosNoSinc);
+
+		logger.info("<<< # WS # >>> Finaliza operacion obtenerPedidosASinc...");
+		return result;
+	}
+	
+	@WebMethod(operationName = "recibirPedidosASinc", action = "recibirPedidosASinc", exclude = false)
+	@WebResult(name = "resultRecPedidosASinc")
+	public ResultRecPedidosASinc recibirPedidosASinc(@WebParam(name = "paramRecPedidosASinc") ParamRecPedidosASinc paramRecPedidosASinc) {
+		logger.info("<<< # WS # >>> Inicia operacion recibirPedidosASinc...");
+
+		SincronizadorStatelessLocal sincSl = LookUps.lookUpEjb();
+		ResultRecPedidosASinc result = sincSl.recPedidosASinc(paramRecPedidosASinc);
+
+		logger.info("<<< # WS # >>> Finaliza operacion recibirPedidosASinc...");
 		return result;
 	}
 	

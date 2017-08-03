@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import gpw.db.constantes.CnstQryPersona;
 import gpw.db.generic.GenSqlExecType;
 import gpw.db.generic.GenSqlSelectType;
+import gpw.dominio.persona.Persona;
 import gpw.dominio.persona.PersonaFisica;
 import gpw.dominio.persona.PersonaJuridica;
 import gpw.dominio.persona.Sexo;
@@ -30,6 +31,113 @@ public class PersistenciaPersona extends Conector implements IPersPersona, CnstQ
 	private Integer resultado;
 	private ResultSet rs;
 	
+	@Override
+	public PersonaFisica obtenerPersFisicaPorId(Connection conn, Long id) throws PersistenciaException {
+		PersonaFisica pf = null;
+		PersistenciaTipoDoc ptd = new PersistenciaTipoDoc();
+		PersistenciaDepLoc pdl = new PersistenciaDepLoc();
+		try {
+			GenSqlSelectType genSel = new GenSqlSelectType(QRY_SELECT_PF_XID);
+			genSel.setParam(id);
+			rs = (ResultSet) runGeneric(conn, genSel);
+			if(rs.next()) {
+				pf = new PersonaFisica();
+				pf.setDocumento(rs.getLong("documento"));
+				pf.setTipoDoc(ptd.obtenerTipoDocPorId(conn, rs.getInt("id_tipo_doc")));
+				pf.setApellido1(rs.getString("apellido1"));
+				pf.setApellido2(rs.getString("apellido2"));
+				pf.setNombre1(rs.getString("nombre1"));
+				pf.setNombre2(rs.getString("nombre2"));
+				pf.setFechaNac(rs.getDate("fecha_nac") != null ? new Fecha(rs.getDate("fecha_nac")) : null);
+				char[] sexoChar = new char[1];
+				rs.getCharacterStream("sexo").read(sexoChar);
+				Sexo sexoE = Sexo.getSexoPorChar(sexoChar[0]);
+				pf.setSexo(sexoE);
+				//persona
+				pf.setDireccion(rs.getString("direccion"));
+				pf.setPuerta(rs.getString("puerta"));
+				pf.setSolar(rs.getString("solar"));
+				pf.setManzana(rs.getString("manzana"));
+				pf.setKm(rs.getFloat("km"));
+				pf.setComplemento(rs.getString("complemento"));
+				pf.setTelefono(rs.getString("telefono"));
+				pf.setCelular(rs.getString("celular"));
+				pf.setEmail(rs.getString("email"));
+				pf.setFechaReg(new Fecha(rs.getDate("fecha_reg")));
+				char[] tipoChar = new char[1];
+				rs.getCharacterStream("tipo").read(tipoChar);
+				pf.setTipoPers(TipoPersona.getTipoPersonaPorChar(tipoChar[0]));
+				pf.setLocalidad(pdl.obtenerLocalidadPorId(conn, rs.getInt("id_loc")));
+				char[] origenChar = new char[1];
+				rs.getCharacterStream("origen").read(origenChar);
+				Origen origen = Origen.getOrigenPorChar(origenChar[0]);
+				pf.setOrigen(origen);
+				char[] sincChar = new char[1];
+				rs.getCharacterStream("sinc").read(sincChar);
+				Sinc sinc = Sinc.getSincPorChar(sincChar[0]);
+				pf.setSinc(sinc);
+				pf.setUltAct(new Fecha(rs.getTimestamp("ult_act")));
+			}
+		} catch (ConectorException | SQLException | IOException e) {
+			logger.fatal("Excepcion al obtenerProductoPorId: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		} finally {
+			closeRs(rs);
+		}
+		return pf;
+	}
+	
+	@Override
+	public PersonaJuridica obtenerPersJuridicaPorId(Connection conn, Long id) throws PersistenciaException {
+		PersonaJuridica pj = null;
+		PersistenciaDepLoc pdl = new PersistenciaDepLoc();
+		try {
+			GenSqlSelectType genSel = new GenSqlSelectType(QRY_SELECT_PJ_XID);
+			genSel.setParam(id);
+			rs = (ResultSet) runGeneric(conn, genSel);
+			if(rs.next()) {
+				pj = new PersonaJuridica();
+				pj.setRut(rs.getLong("rut"));
+				pj.setNombre(rs.getString("nombre"));
+				pj.setRazonSocial(rs.getString("razon_social"));
+				pj.setBps(rs.getString("bps"));
+				pj.setBse(rs.getString("bse"));
+				char[] esProvChar = new char[1];
+				rs.getCharacterStream("es_prov").read(esProvChar);
+				pj.setEsProv(esProvChar[0] == S_CHAR ? true : false);
+				//persona
+				pj.setDireccion(rs.getString("direccion"));
+				pj.setPuerta(rs.getString("puerta"));
+				pj.setSolar(rs.getString("solar"));
+				pj.setManzana(rs.getString("manzana"));
+				pj.setKm(rs.getFloat("km"));
+				pj.setComplemento(rs.getString("complemento"));
+				pj.setTelefono(rs.getString("telefono"));
+				pj.setCelular(rs.getString("celular"));
+				pj.setEmail(rs.getString("email"));
+				pj.setFechaReg(new Fecha(rs.getDate("fecha_reg")));
+				char[] tipoChar = new char[1];
+				rs.getCharacterStream("tipo").read(tipoChar);
+				pj.setTipoPers(TipoPersona.getTipoPersonaPorChar(tipoChar[0]));
+				pj.setLocalidad(pdl.obtenerLocalidadPorId(conn, rs.getInt("id_loc")));
+				char[] origenChar = new char[1];
+				rs.getCharacterStream("origen").read(origenChar);
+				Origen origen = Origen.getOrigenPorChar(origenChar[0]);
+				pj.setOrigen(origen);
+				char[] sincChar = new char[1];
+				rs.getCharacterStream("sinc").read(sincChar);
+				Sinc sinc = Sinc.getSincPorChar(sincChar[0]);
+				pj.setSinc(sinc);
+				pj.setUltAct(new Fecha(rs.getTimestamp("ult_act")));
+			}
+		} catch (ConectorException | SQLException | IOException e) {
+			logger.fatal("Excepcion al obtenerProductoPorId: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		} finally {
+			closeRs(rs);
+		}
+		return pj;
+	}
 	
 	@Override
 	public List<PersonaFisica> obtPersonaFisicaNoSinc(Connection conn, Fecha fechaDesde, Fecha fechaHasta) throws PersistenciaException {
@@ -85,6 +193,34 @@ public class PersistenciaPersona extends Conector implements IPersPersona, CnstQ
 			throw new PersistenciaException(e);
 		}
 		return resultado;
+	}
+	
+	@Override
+	public Persona obtenerPersGenerico(Connection conn, Long idPersona) throws PersistenciaException {
+		Persona persona = null;
+		try {
+			GenSqlSelectType genType = new GenSqlSelectType(QRY_SELECT_PERS_GENERIC);
+			genType.setParam(idPersona);
+			rs = (ResultSet) runGeneric(conn, genType);
+			if(rs.next()) {
+				char[] tipoChar = new char[1];
+				rs.getCharacterStream("tipo").read(tipoChar);
+				TipoPersona tp = TipoPersona.getTipoPersonaPorChar(tipoChar[0]);
+				if(tp.equals(TipoPersona.F)) {
+					persona = obtenerPersFisicaPorId(conn, idPersona);
+				} else if(tp.equals(TipoPersona.J)) {
+					persona = obtenerPersJuridicaPorId(conn, idPersona);
+				} else {
+					throw new PersistenciaException("Tipo de Persona no soportado...");
+				}
+			}
+		} catch (ConectorException | SQLException | IOException e) {
+			logger.fatal("Excepcion al obtenerPersGenerico: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		} finally {
+			closeRs(rs);
+		}
+		return persona;
 	}
 	
 	/**

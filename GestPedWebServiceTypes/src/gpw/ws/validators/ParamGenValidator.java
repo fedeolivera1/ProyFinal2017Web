@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gpw.ws.datatypes.errors.ErrorServicio;
+import gpw.ws.datatypes.pedido.ParamObtPedidosNoSinc;
+import gpw.ws.datatypes.pedido.ResultObtPedidosNoSinc;
 import gpw.ws.datatypes.persona.ParamObtPersonasNoSinc;
 import gpw.ws.datatypes.persona.ParamRecPersonasASinc;
 import gpw.ws.datatypes.persona.ResultObtPersonasNoSinc;
@@ -16,6 +18,12 @@ import gpw.ws.datatypes.producto.ResultRecProductosASinc;
 
 public class ParamGenValidator {
 
+	/**
+	 * Validador de parametro del tipo 'ParamObtPersonasNoSinc'
+	 * @param param
+	 * @param result
+	 * @return
+	 */
 	public static Boolean validarParam(ParamObtPersonasNoSinc param, ResultObtPersonasNoSinc result) {
 		List<ErrorServicio> listaErrores = new ArrayList<>();
 		if(param == null) {
@@ -39,6 +47,12 @@ public class ParamGenValidator {
 		}
 	}
 	
+	/**
+	 * Validador de parametro del tipo 'ParamRecPersonasASinc'
+	 * @param param
+	 * @param result
+	 * @return
+	 */
 	public static Boolean validarParam(ParamRecPersonasASinc param, ResultRecPersonasASinc result) {
 		List<ErrorServicio> listaErrores = new ArrayList<>();
 		if(param == null) {
@@ -58,6 +72,12 @@ public class ParamGenValidator {
 		}
 	}
 	
+	/**
+	 * Validador de parametro del tipo 'ParamRecProductosASinc'
+	 * @param param
+	 * @param result
+	 * @return
+	 */
 	public static Boolean validarParam(ParamRecProductosASinc param, ResultRecProductosASinc result) {
 		List<ErrorServicio> listaErrores = new ArrayList<>();
 		if(param == null) {
@@ -103,4 +123,34 @@ public class ParamGenValidator {
 			return false;
 		}
 	}
+	
+	/**
+	 * Validador de parametro del tipo 'ParamObtPersonasNoSinc'
+	 * @param param
+	 * @param result
+	 * @return
+	 */
+	public static Boolean validarParam(ParamObtPedidosNoSinc param, ResultObtPedidosNoSinc result) {
+		List<ErrorServicio> listaErrores = new ArrayList<>();
+		if(param == null) {
+			ErrorServicio error = new ErrorServicio(1, "El parametro no puede ser nulo.");
+			listaErrores.add(error);
+		} else {
+			if(param.getFechaDesde() == null) {
+				ErrorServicio error = new ErrorServicio(1, "La fecha desde no puede ser nula.");
+				listaErrores.add(error);
+			}
+			if(param.getFechaHasta() == null) {
+				ErrorServicio error = new ErrorServicio(1, "La fecha hasta no puede ser nula.");
+				listaErrores.add(error);
+			}
+		}
+		if(listaErrores.isEmpty()) {
+			return true;
+		} else {
+			result.setErroresServ(listaErrores);
+			return false;
+		}
+	}
+	
 }
