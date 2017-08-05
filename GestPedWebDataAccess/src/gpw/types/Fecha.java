@@ -214,7 +214,26 @@ public class Fecha extends GregorianCalendar {
 	 * retorna la instancia en el formato XMLGregorianCalendar
 	 */
 	public XMLGregorianCalendar getAsXMLGregorianCalendar() {
-		Fecha fec = new Fecha(get(1), get(2) + 1, get(5));
+		Fecha fec = new Fecha(getAnio(), getMes(), getDia());
+		XMLGregorianCalendar xmlgc = null;
+		GregorianCalendar gc = new GregorianCalendar();
+		gc.setTime(fec.getTime());
+		try {
+			xmlgc = DatatypeFactory.newInstance().newXMLGregorianCalendar(gc);
+			xmlgc.setTimezone(DatatypeConstants.FIELD_UNDEFINED);
+		} catch (DatatypeConfigurationException e) {
+			e.printStackTrace();
+		}
+		return xmlgc;
+	}
+	
+	/**
+	 * 
+	 * @return XMLGregorianCalendar
+	 * retorna la instancia en el formato XMLGregorianCalendar
+	 */
+	public XMLGregorianCalendar getHoraAsXMLGregorianCalendar() {
+		Fecha fec = new Fecha(getHora(), getMinuto());
 		XMLGregorianCalendar xmlgc = null;
 		GregorianCalendar gc = new GregorianCalendar();
 		gc.setTime(fec.getTime());

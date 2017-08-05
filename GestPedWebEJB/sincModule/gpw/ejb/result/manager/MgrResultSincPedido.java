@@ -20,7 +20,6 @@ public class MgrResultSincPedido {
 		logger.debug("Se ingresa a manejar el resultado para ResultObtPedidosNoSinc...");
 		ResultObtPedidosNoSinc result = null;
 		try {
-			
 			if(listaPedidoNoSinc != null && !listaPedidoNoSinc.isEmpty()) {
 				result = new ResultObtPedidosNoSinc();
 				List<ResultPedidoNoSinc> listaResultPedidoNoSinc = new ArrayList<>();
@@ -29,8 +28,8 @@ public class MgrResultSincPedido {
 					resultPns.setIdPersona(pedido.getPersona().getIdPersona());
 					resultPns.setFechaHora(pedido.getFechaHora().getAsXMLGregorianCalendar());
 					resultPns.setEstado(pedido.getEstado().getEstadoPedido());
-					resultPns.setFechaProg(pedido.getFechaProg().getAsXMLGregorianCalendar());
-					resultPns.setHoraProg(pedido.getHoraProg().getAsXMLGregorianCalendar());
+					resultPns.setFechaProg(pedido.getFechaProg() != null ? pedido.getFechaProg().getAsXMLGregorianCalendar() : null);
+					resultPns.setHoraProg(pedido.getHoraProg() != null ? pedido.getHoraProg().getHoraAsXMLGregorianCalendar() : null);
 					resultPns.setOrigen(String.valueOf(pedido.getOrigen().getAsChar()));
 					resultPns.setSubTotal(pedido.getSubTotal());
 					resultPns.setIva(pedido.getIva());
@@ -48,6 +47,7 @@ public class MgrResultSincPedido {
 					}
 					listaResultPedidoNoSinc.add(resultPns);
 				}
+				result.setListaPedidoNoSinc(listaResultPedidoNoSinc);
 			}
 		} catch (Exception e) {
 			logger.error("Excepcion generica al parsear datos en 'MgrResultSincPedido' > manageResultObtPersonasNoSinc: " + e.getMessage());

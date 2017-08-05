@@ -22,6 +22,7 @@ import javax.sql.DataSource;
 import org.apache.log4j.Logger;
 
 import gpw.dominio.pedido.Pedido;
+import gpw.dominio.pedido.PedidoLinea;
 import gpw.dominio.persona.Persona;
 import gpw.dominio.persona.PersonaFisica;
 import gpw.dominio.persona.PersonaJuridica;
@@ -39,12 +40,14 @@ import gpw.ejb.result.manager.MgrResultSincProd;
 import gpw.exceptions.EjbException;
 import gpw.exceptions.PersistenciaException;
 import gpw.interfaces.pedido.IPersPedido;
+import gpw.interfaces.pedido.IPersPedidoLinea;
 import gpw.interfaces.persona.IPersPersona;
 import gpw.interfaces.producto.IPersProducto;
 import gpw.interfaces.producto.IPersTipoProd;
 import gpw.interfaces.producto.IPersUnidad;
 import gpw.persistencia.conector.Conector;
 import gpw.persistencia.pedido.PersistenciaPedido;
+import gpw.persistencia.pedido.PersistenciaPedidoLinea;
 import gpw.persistencia.persona.PersistenciaPersona;
 import gpw.persistencia.producto.PersistenciaProducto;
 import gpw.persistencia.producto.PersistenciaTipoProd;
@@ -91,6 +94,7 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 	private static IPersTipoProd interfaceTipoProd;
 	private static IPersUnidad interfaceUnidad;
 	private static IPersPedido interfacePedido;
+	private static IPersPedidoLinea interfacePedidoLinea;
 	
 	private static IPersPersona getInterfacePersona() {
 		if(interfacePersona == null) {
@@ -121,6 +125,12 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 			interfacePedido = new PersistenciaPedido();
 		}
 		return interfacePedido;
+	}
+	private static IPersPedidoLinea getInterfacePedidoLinea() {
+		if(interfacePedidoLinea == null) {
+			interfacePedidoLinea = new PersistenciaPedidoLinea();
+		}
+		return interfacePedidoLinea;
 	}
 	
     /**
@@ -377,8 +387,13 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 				Fecha fechaHasta = new Fecha(param.getFechaHasta(), Fecha.AMD);
 				conn = ds.getConnection();
 				listaPedido = getInterfacePedido().obtenerListaPedidoNoSinc(conn, fechaDesde, fechaHasta);
-				
-				result = MgrResultSincPedido.manageResultObtPedidosNoSinc(listaPedido);
+				if(listaPedido != null && !listaPedido.isEmpty()) {
+					for(Pedido pedido : listaPedido) {
+						List<PedidoLinea> listaPedidoLin = getInterfacePedidoLinea().obtenerListaPedidoLinea(conn, pedido);
+						pedido.setListaPedidoLinea(listaPedidoLin);
+					}
+					result = MgrResultSincPedido.manageResultObtPedidosNoSinc(listaPedido);
+				}
 			}
 		} catch (PersistenciaException | SQLException | EjbException e) {
 			logger.fatal("Excepcion en EJB > obtPedidosASinc: " + e.getMessage(), e);
@@ -394,6 +409,9 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public ResultRecPedidosASinc recPedidosASinc(ParamRecPedidosASinc param) {
 		ResultRecPedidosASinc result = new ResultRecPedidosASinc();
+		if(ParamGenValidator.validarParam(param, result)) {
+			
+		}
 		return result;
 	}
 	

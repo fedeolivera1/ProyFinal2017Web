@@ -5,12 +5,20 @@
   <import namespace="http://localhost:8080" schemaLocation="WsGestPed_schema1.xsd"></import>
 </schema>
   </wsdl:types>
+  <wsdl:message name="obtenerPedidosNoSincResponse">
+    <wsdl:part name="parameters" element="tns:obtenerPedidosNoSincResponse">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="obtenerPersonasNoSinc">
     <wsdl:part name="parameters" element="tns:obtenerPersonasNoSinc">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="recibirPersonasSinc">
-    <wsdl:part name="parameters" element="tns:recibirPersonasSinc">
+  <wsdl:message name="recibirPersonasASincResponse">
+    <wsdl:part name="parameters" element="tns:recibirPersonasASincResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="recibirPedidosASincResponse">
+    <wsdl:part name="parameters" element="tns:recibirPedidosASincResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="recibirProductosASincResponse">
@@ -21,8 +29,8 @@
     <wsdl:part name="parameters" element="tns:obtenerPersonasNoSincResponse">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="recibirPersonasSincResponse">
-    <wsdl:part name="parameters" element="tns:recibirPersonasSincResponse">
+  <wsdl:message name="recibirPedidosASinc">
+    <wsdl:part name="parameters" element="tns:recibirPedidosASinc">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="servicioFuncional">
@@ -31,6 +39,14 @@
   </wsdl:message>
   <wsdl:message name="servicioFuncionalResponse">
     <wsdl:part name="parameters" element="tns:servicioFuncionalResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="obtenerPedidosNoSinc">
+    <wsdl:part name="parameters" element="tns:obtenerPedidosNoSinc">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="recibirPersonasASinc">
+    <wsdl:part name="parameters" element="tns:recibirPersonasASinc">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="recibirProductosASinc">
@@ -44,22 +60,34 @@
       <wsdl:output name="obtenerPersonasNoSincResponse" message="tns:obtenerPersonasNoSincResponse">
     </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="recibirPersonasSinc">
-      <wsdl:input name="recibirPersonasSinc" message="tns:recibirPersonasSinc">
+    <wsdl:operation name="recibirPedidosASinc">
+      <wsdl:input name="recibirPedidosASinc" message="tns:recibirPedidosASinc">
     </wsdl:input>
-      <wsdl:output name="recibirPersonasSincResponse" message="tns:recibirPersonasSincResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="recibirProductosASinc">
-      <wsdl:input name="recibirProductosASinc" message="tns:recibirProductosASinc">
-    </wsdl:input>
-      <wsdl:output name="recibirProductosASincResponse" message="tns:recibirProductosASincResponse">
+      <wsdl:output name="recibirPedidosASincResponse" message="tns:recibirPedidosASincResponse">
     </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="servicioFuncional">
       <wsdl:input name="servicioFuncional" message="tns:servicioFuncional">
     </wsdl:input>
       <wsdl:output name="servicioFuncionalResponse" message="tns:servicioFuncionalResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="obtenerPedidosNoSinc">
+      <wsdl:input name="obtenerPedidosNoSinc" message="tns:obtenerPedidosNoSinc">
+    </wsdl:input>
+      <wsdl:output name="obtenerPedidosNoSincResponse" message="tns:obtenerPedidosNoSincResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="recibirPersonasASinc">
+      <wsdl:input name="recibirPersonasASinc" message="tns:recibirPersonasASinc">
+    </wsdl:input>
+      <wsdl:output name="recibirPersonasASincResponse" message="tns:recibirPersonasASincResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="recibirProductosASinc">
+      <wsdl:input name="recibirProductosASinc" message="tns:recibirProductosASinc">
+    </wsdl:input>
+      <wsdl:output name="recibirProductosASincResponse" message="tns:recibirProductosASincResponse">
     </wsdl:output>
     </wsdl:operation>
   </wsdl:portType>
@@ -74,21 +102,12 @@
         <soap:body use="literal"/>
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="recibirPersonasSinc">
-      <soap:operation soapAction="recibirPersonasSinc" style="document"/>
-      <wsdl:input name="recibirPersonasSinc">
+    <wsdl:operation name="recibirPedidosASinc">
+      <soap:operation soapAction="recibirPedidosASinc" style="document"/>
+      <wsdl:input name="recibirPedidosASinc">
         <soap:body use="literal"/>
       </wsdl:input>
-      <wsdl:output name="recibirPersonasSincResponse">
-        <soap:body use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="recibirProductosASinc">
-      <soap:operation soapAction="recibirProductosASinc" style="document"/>
-      <wsdl:input name="recibirProductosASinc">
-        <soap:body use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="recibirProductosASincResponse">
+      <wsdl:output name="recibirPedidosASincResponse">
         <soap:body use="literal"/>
       </wsdl:output>
     </wsdl:operation>
@@ -98,6 +117,33 @@
         <soap:body use="literal"/>
       </wsdl:input>
       <wsdl:output name="servicioFuncionalResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="obtenerPedidosNoSinc">
+      <soap:operation soapAction="obtenerPedidosNoSinc" style="document"/>
+      <wsdl:input name="obtenerPedidosNoSinc">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="obtenerPedidosNoSincResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="recibirPersonasASinc">
+      <soap:operation soapAction="recibirPersonasASinc" style="document"/>
+      <wsdl:input name="recibirPersonasASinc">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="recibirPersonasASincResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="recibirProductosASinc">
+      <soap:operation soapAction="recibirProductosASinc" style="document"/>
+      <wsdl:input name="recibirProductosASinc">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="recibirProductosASincResponse">
         <soap:body use="literal"/>
       </wsdl:output>
     </wsdl:operation>

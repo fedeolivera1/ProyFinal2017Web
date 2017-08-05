@@ -5,7 +5,9 @@ import java.util.List;
 
 import gpw.ws.datatypes.errors.ErrorServicio;
 import gpw.ws.datatypes.pedido.ParamObtPedidosNoSinc;
+import gpw.ws.datatypes.pedido.ParamRecPedidosASinc;
 import gpw.ws.datatypes.pedido.ResultObtPedidosNoSinc;
+import gpw.ws.datatypes.pedido.ResultRecPedidosASinc;
 import gpw.ws.datatypes.persona.ParamObtPersonasNoSinc;
 import gpw.ws.datatypes.persona.ParamRecPersonasASinc;
 import gpw.ws.datatypes.persona.ResultObtPersonasNoSinc;
@@ -144,6 +146,28 @@ public class ParamGenValidator {
 				ErrorServicio error = new ErrorServicio(1, "La fecha hasta no puede ser nula.");
 				listaErrores.add(error);
 			}
+		}
+		if(listaErrores.isEmpty()) {
+			return true;
+		} else {
+			result.setErroresServ(listaErrores);
+			return false;
+		}
+	}
+	
+	/**
+	 * Validador de parametro del tipo 'ParamObtPersonasNoSinc'
+	 * @param param
+	 * @param result
+	 * @return
+	 */
+	public static Boolean validarParam(ParamRecPedidosASinc param, ResultRecPedidosASinc result) {
+		List<ErrorServicio> listaErrores = new ArrayList<>();
+		if(param == null) {
+			ErrorServicio error = new ErrorServicio(1, "El parametro no puede ser nulo.");
+			listaErrores.add(error);
+		} else {
+			
 		}
 		if(listaErrores.isEmpty()) {
 			return true;

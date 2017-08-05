@@ -1,17 +1,14 @@
 package gpw.ws.datatypes.pedido;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import gpw.ws.datatypes.errors.ErrorServicio;
-
-@XmlType(name = "ResultPedidoNoSinc")
-public class ResultPedidoNoSinc implements Serializable {
+@XmlType(name = "ParamPedidoASinc")
+public class ParamPedidoASinc implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Long idPersona;
@@ -25,8 +22,7 @@ public class ResultPedidoNoSinc implements Serializable {
 	private Double total;
 	private String sinc;
 	private XMLGregorianCalendar ultAct;
-	private List<ResultPedidoLinea> listaPedidoLinea;
-	private List<ErrorServicio> erroresServ;
+	private List<ParamPedidoLinea> listaPedidoLinea;
 	
 	public Long getIdPersona() {
 		return idPersona;
@@ -98,22 +94,11 @@ public class ResultPedidoNoSinc implements Serializable {
 	public void setUltAct(XMLGregorianCalendar ultAct) {
 		this.ultAct = ultAct;
 	}
-	public List<ResultPedidoLinea> getListaPedidoLinea() {
-		if(listaPedidoLinea == null) {
-			listaPedidoLinea = new ArrayList<>();
-		}
+	public List<ParamPedidoLinea> getListaPedidoLinea() {
 		return listaPedidoLinea;
 	}
-	public void setListaPedidoLinea(List<ResultPedidoLinea> listaPedidoLinea) {
+	public void setListaPedidoLinea(List<ParamPedidoLinea> listaPedidoLinea) {
 		this.listaPedidoLinea = listaPedidoLinea;
 	}
-	public List<ErrorServicio> getErroresServ() {
-		if(erroresServ == null) {
-			erroresServ = new ArrayList<>();
-		}
-		return erroresServ;
-	}
-	public void setErroresServ(List<ErrorServicio> erroresServ) {
-		this.erroresServ = erroresServ;
-	}
+	
 }
