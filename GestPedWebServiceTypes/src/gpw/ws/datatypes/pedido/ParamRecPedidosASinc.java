@@ -3,9 +3,7 @@ package gpw.ws.datatypes.pedido;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 @XmlType(name = "ParamRecPedidoSinc")
 public class ParamRecPedidosASinc implements Serializable {

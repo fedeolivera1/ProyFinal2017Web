@@ -9,4 +9,17 @@ public interface CnstQryPedido {
 												+ "AND (p.fecha_hora::date BETWEEN ? AND ?) "
 												+ "ORDER BY p.fecha_hora DESC";
 	
+	public static final String QRY_INSERT_PEDIDO = "INSERT INTO pedido "
+												+ "(id_persona, fecha_hora, estado, fecha_prog, hora_prog, origen, "
+													+ "sub_total, iva, total, sinc, ult_act) "
+												+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+	public static final String QRY_UPDATE_PEDIDO = "UPDATE pedido SET estado = ?, fecha_prog = ?, hora_prog = ?, sub_total = ?, iva = ?, total = ?, sinc = ?, ult_act = ? "
+												+ "WHERE id_persona = ? "
+												+ "AND fecha_hora = ? ";
+	
+	public static final String QRY_DELETE_PEDIDO = "DELETE FROM pedido WHERE id_persona = ? AND fecha_hora = ? ";
+	
+	public static final String QRY_CHK_EXIST_PEDIDO = "SELECT COUNT(1) FROM pedido where id_persona = ? AND fecha_hora = ?";
+	
 }

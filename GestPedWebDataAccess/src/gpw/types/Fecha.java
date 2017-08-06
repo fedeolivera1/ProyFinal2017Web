@@ -178,7 +178,7 @@ public class Fecha extends GregorianCalendar {
 	 * retorna la instancia en el formato de java.sql.Date
 	 */
 	public java.sql.Date getDateSql() {
-	    Fecha fec = new Fecha(get(1), get(2) + 1, get(5));
+	    Fecha fec = new Fecha(getAnio(), getMes(), getDia());
 	    long tim = fec.getTimeInMillis();
 	    java.sql.Date dateSql = new java.sql.Date(tim);
 	    return dateSql;
@@ -190,7 +190,8 @@ public class Fecha extends GregorianCalendar {
 	 * retorna la instancia en el formato de java.sql.Time
 	 */
 	public java.sql.Time getTimeSql() {
-		Fecha fec = new Fecha(get(11), get(12), get(13));
+		Fecha fec = new Fecha(getHora(), getMinuto());
+		fec.set(SECOND, getSegundo());
 		long tim = fec.getTimeInMillis();
 		java.sql.Time timeSql = new java.sql.Time(tim);
 		return timeSql;
@@ -213,8 +214,13 @@ public class Fecha extends GregorianCalendar {
 	 * @return XMLGregorianCalendar
 	 * retorna la instancia en el formato XMLGregorianCalendar
 	 */
-	public XMLGregorianCalendar getAsXMLGregorianCalendar() {
-		Fecha fec = new Fecha(getAnio(), getMes(), getDia());
+	public XMLGregorianCalendar getAsXMLGregorianCalendar(int formato) {
+		Fecha fec;
+		if(formato == Fecha.AMDHMS) {
+			fec = new Fecha(getAnio(), getMes(), getDia(), getHora(), getMinuto(), getSegundo());
+		} else {
+			 fec = new Fecha(getAnio(), getMes(), getDia());
+		}
 		XMLGregorianCalendar xmlgc = null;
 		GregorianCalendar gc = new GregorianCalendar();
 		gc.setTime(fec.getTime());

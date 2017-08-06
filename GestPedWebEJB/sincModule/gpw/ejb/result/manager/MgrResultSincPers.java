@@ -16,7 +16,7 @@ import gpw.ws.datatypes.persona.ResultPersonaFisica;
 import gpw.ws.datatypes.persona.ResultPersonaJuridica;
 import gpw.ws.datatypes.persona.ResultPersonaSinc;
 import gpw.ws.datatypes.persona.ResultRecPersonasASinc;
-import gpw.ws.parsers.ParsePersona;
+import gpw.ws.parsers.ParserPersona;
 
 public class MgrResultSincPers {
 
@@ -34,11 +34,11 @@ public class MgrResultSincPers {
 					if(pers instanceof PersonaFisica) {
 						logger.info("Se parsea a result la persona fisica - idPersona: " + pers.getIdPersona());
 						PersonaFisica pf = (PersonaFisica) pers;
-						listaResultPf.add(ParsePersona.parsePersonaFisica(pf));
+						listaResultPf.add(ParserPersona.parsePersonaFisica(pf));
 					} else if(pers instanceof PersonaJuridica) {
 						logger.info("Se parsea a result la persona juridica - idPersona: " + pers.getIdPersona());
 						PersonaJuridica pj = (PersonaJuridica) pers;
-						listaResultPj.add(ParsePersona.parsePersonaJuridica(pj));
+						listaResultPj.add(ParserPersona.parsePersonaJuridica(pj));
 					}
 				}
 				result.setListaPersFisica(listaResultPf);

@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import gpw.dominio.pedido.Pedido;
 import gpw.dominio.pedido.PedidoLinea;
 import gpw.exceptions.EjbException;
+import gpw.types.Fecha;
 import gpw.ws.datatypes.pedido.ResultObtPedidosNoSinc;
 import gpw.ws.datatypes.pedido.ResultPedidoLinea;
 import gpw.ws.datatypes.pedido.ResultPedidoNoSinc;
@@ -26,17 +27,16 @@ public class MgrResultSincPedido {
 				for(Pedido pedido : listaPedidoNoSinc) {
 					ResultPedidoNoSinc resultPns = new ResultPedidoNoSinc();
 					resultPns.setIdPersona(pedido.getPersona().getIdPersona());
-					resultPns.setFechaHora(pedido.getFechaHora().getAsXMLGregorianCalendar());
+					resultPns.setFechaHora(pedido.getFechaHora().getAsXMLGregorianCalendar(Fecha.AMDHMS));
 					resultPns.setEstado(pedido.getEstado().getEstadoPedido());
-					resultPns.setFechaProg(pedido.getFechaProg() != null ? pedido.getFechaProg().getAsXMLGregorianCalendar() : null);
+					resultPns.setFechaProg(pedido.getFechaProg() != null ? pedido.getFechaProg().getAsXMLGregorianCalendar(Fecha.AMD) : null);
 					resultPns.setHoraProg(pedido.getHoraProg() != null ? pedido.getHoraProg().getHoraAsXMLGregorianCalendar() : null);
 					resultPns.setOrigen(String.valueOf(pedido.getOrigen().getAsChar()));
 					resultPns.setSubTotal(pedido.getSubTotal());
 					resultPns.setIva(pedido.getIva());
 					resultPns.setTotal(pedido.getTotal());
 					resultPns.setSinc(String.valueOf(pedido.getSinc().getAsChar()));
-					resultPns.setUltAct(pedido.getUltAct().getAsXMLGregorianCalendar());
-					resultPns.setUltAct(pedido.getUltAct().getAsXMLGregorianCalendar());
+					resultPns.setUltAct(pedido.getUltAct().getAsXMLGregorianCalendar(Fecha.AMDHMS));
 					for(PedidoLinea pl : pedido.getListaPedidoLinea()) {
 						ResultPedidoLinea rpl = new ResultPedidoLinea();
 						rpl.setIdProducto(pl.getProducto().getIdProducto());

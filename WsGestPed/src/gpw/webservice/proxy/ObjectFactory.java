@@ -24,10 +24,14 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
+    private final static QName _ObtenerPedidosNoSinc_QNAME = new QName("http://localhost:8080", "obtenerPedidosNoSinc");
+    private final static QName _ObtenerPedidosNoSincResponse_QNAME = new QName("http://localhost:8080", "obtenerPedidosNoSincResponse");
     private final static QName _ObtenerPersonasNoSinc_QNAME = new QName("http://localhost:8080", "obtenerPersonasNoSinc");
     private final static QName _ObtenerPersonasNoSincResponse_QNAME = new QName("http://localhost:8080", "obtenerPersonasNoSincResponse");
-    private final static QName _RecibirPersonasSinc_QNAME = new QName("http://localhost:8080", "recibirPersonasSinc");
-    private final static QName _RecibirPersonasSincResponse_QNAME = new QName("http://localhost:8080", "recibirPersonasSincResponse");
+    private final static QName _RecibirPedidosASinc_QNAME = new QName("http://localhost:8080", "recibirPedidosASinc");
+    private final static QName _RecibirPedidosASincResponse_QNAME = new QName("http://localhost:8080", "recibirPedidosASincResponse");
+    private final static QName _RecibirPersonasASinc_QNAME = new QName("http://localhost:8080", "recibirPersonasASinc");
+    private final static QName _RecibirPersonasASincResponse_QNAME = new QName("http://localhost:8080", "recibirPersonasASincResponse");
     private final static QName _RecibirProductosASinc_QNAME = new QName("http://localhost:8080", "recibirProductosASinc");
     private final static QName _RecibirProductosASincResponse_QNAME = new QName("http://localhost:8080", "recibirProductosASincResponse");
     private final static QName _ServicioFuncional_QNAME = new QName("http://localhost:8080", "servicioFuncional");
@@ -38,6 +42,22 @@ public class ObjectFactory {
      * 
      */
     public ObjectFactory() {
+    }
+
+    /**
+     * Create an instance of {@link ObtenerPedidosNoSinc }
+     * 
+     */
+    public ObtenerPedidosNoSinc createObtenerPedidosNoSinc() {
+        return new ObtenerPedidosNoSinc();
+    }
+
+    /**
+     * Create an instance of {@link ObtenerPedidosNoSincResponse }
+     * 
+     */
+    public ObtenerPedidosNoSincResponse createObtenerPedidosNoSincResponse() {
+        return new ObtenerPedidosNoSincResponse();
     }
 
     /**
@@ -57,19 +77,35 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link RecibirPersonasSinc }
+     * Create an instance of {@link RecibirPedidosASinc }
      * 
      */
-    public RecibirPersonasSinc createRecibirPersonasSinc() {
-        return new RecibirPersonasSinc();
+    public RecibirPedidosASinc createRecibirPedidosASinc() {
+        return new RecibirPedidosASinc();
     }
 
     /**
-     * Create an instance of {@link RecibirPersonasSincResponse }
+     * Create an instance of {@link RecibirPedidosASincResponse }
      * 
      */
-    public RecibirPersonasSincResponse createRecibirPersonasSincResponse() {
-        return new RecibirPersonasSincResponse();
+    public RecibirPedidosASincResponse createRecibirPedidosASincResponse() {
+        return new RecibirPedidosASincResponse();
+    }
+
+    /**
+     * Create an instance of {@link RecibirPersonasASinc }
+     * 
+     */
+    public RecibirPersonasASinc createRecibirPersonasASinc() {
+        return new RecibirPersonasASinc();
+    }
+
+    /**
+     * Create an instance of {@link RecibirPersonasASincResponse }
+     * 
+     */
+    public RecibirPersonasASincResponse createRecibirPersonasASincResponse() {
+        return new RecibirPersonasASincResponse();
     }
 
     /**
@@ -142,6 +178,78 @@ public class ObjectFactory {
      */
     public ResultPersonaJuridica createResultPersonaJuridica() {
         return new ResultPersonaJuridica();
+    }
+
+    /**
+     * Create an instance of {@link ParamRecPedidoSinc }
+     * 
+     */
+    public ParamRecPedidoSinc createParamRecPedidoSinc() {
+        return new ParamRecPedidoSinc();
+    }
+
+    /**
+     * Create an instance of {@link ParamPedidoASinc }
+     * 
+     */
+    public ParamPedidoASinc createParamPedidoASinc() {
+        return new ParamPedidoASinc();
+    }
+
+    /**
+     * Create an instance of {@link ParamPedidoLinea }
+     * 
+     */
+    public ParamPedidoLinea createParamPedidoLinea() {
+        return new ParamPedidoLinea();
+    }
+
+    /**
+     * Create an instance of {@link ResultRecPedidoSinc }
+     * 
+     */
+    public ResultRecPedidoSinc createResultRecPedidoSinc() {
+        return new ResultRecPedidoSinc();
+    }
+
+    /**
+     * Create an instance of {@link ResultPedidoSinc }
+     * 
+     */
+    public ResultPedidoSinc createResultPedidoSinc() {
+        return new ResultPedidoSinc();
+    }
+
+    /**
+     * Create an instance of {@link ParamObtPedidoSinc }
+     * 
+     */
+    public ParamObtPedidoSinc createParamObtPedidoSinc() {
+        return new ParamObtPedidoSinc();
+    }
+
+    /**
+     * Create an instance of {@link ResultObtPedidosNoSinc }
+     * 
+     */
+    public ResultObtPedidosNoSinc createResultObtPedidosNoSinc() {
+        return new ResultObtPedidosNoSinc();
+    }
+
+    /**
+     * Create an instance of {@link ResultPedidoNoSinc }
+     * 
+     */
+    public ResultPedidoNoSinc createResultPedidoNoSinc() {
+        return new ResultPedidoNoSinc();
+    }
+
+    /**
+     * Create an instance of {@link ResultPedidoLinea }
+     * 
+     */
+    public ResultPedidoLinea createResultPedidoLinea() {
+        return new ResultPedidoLinea();
     }
 
     /**
@@ -241,6 +349,24 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ObtenerPedidosNoSinc }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://localhost:8080", name = "obtenerPedidosNoSinc")
+    public JAXBElement<ObtenerPedidosNoSinc> createObtenerPedidosNoSinc(ObtenerPedidosNoSinc value) {
+        return new JAXBElement<ObtenerPedidosNoSinc>(_ObtenerPedidosNoSinc_QNAME, ObtenerPedidosNoSinc.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ObtenerPedidosNoSincResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://localhost:8080", name = "obtenerPedidosNoSincResponse")
+    public JAXBElement<ObtenerPedidosNoSincResponse> createObtenerPedidosNoSincResponse(ObtenerPedidosNoSincResponse value) {
+        return new JAXBElement<ObtenerPedidosNoSincResponse>(_ObtenerPedidosNoSincResponse_QNAME, ObtenerPedidosNoSincResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link ObtenerPersonasNoSinc }{@code >}}
      * 
      */
@@ -259,21 +385,39 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link RecibirPersonasSinc }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link RecibirPedidosASinc }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://localhost:8080", name = "recibirPersonasSinc")
-    public JAXBElement<RecibirPersonasSinc> createRecibirPersonasSinc(RecibirPersonasSinc value) {
-        return new JAXBElement<RecibirPersonasSinc>(_RecibirPersonasSinc_QNAME, RecibirPersonasSinc.class, null, value);
+    @XmlElementDecl(namespace = "http://localhost:8080", name = "recibirPedidosASinc")
+    public JAXBElement<RecibirPedidosASinc> createRecibirPedidosASinc(RecibirPedidosASinc value) {
+        return new JAXBElement<RecibirPedidosASinc>(_RecibirPedidosASinc_QNAME, RecibirPedidosASinc.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link RecibirPersonasSincResponse }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link RecibirPedidosASincResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://localhost:8080", name = "recibirPersonasSincResponse")
-    public JAXBElement<RecibirPersonasSincResponse> createRecibirPersonasSincResponse(RecibirPersonasSincResponse value) {
-        return new JAXBElement<RecibirPersonasSincResponse>(_RecibirPersonasSincResponse_QNAME, RecibirPersonasSincResponse.class, null, value);
+    @XmlElementDecl(namespace = "http://localhost:8080", name = "recibirPedidosASincResponse")
+    public JAXBElement<RecibirPedidosASincResponse> createRecibirPedidosASincResponse(RecibirPedidosASincResponse value) {
+        return new JAXBElement<RecibirPedidosASincResponse>(_RecibirPedidosASincResponse_QNAME, RecibirPedidosASincResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link RecibirPersonasASinc }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://localhost:8080", name = "recibirPersonasASinc")
+    public JAXBElement<RecibirPersonasASinc> createRecibirPersonasASinc(RecibirPersonasASinc value) {
+        return new JAXBElement<RecibirPersonasASinc>(_RecibirPersonasASinc_QNAME, RecibirPersonasASinc.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link RecibirPersonasASincResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://localhost:8080", name = "recibirPersonasASincResponse")
+    public JAXBElement<RecibirPersonasASincResponse> createRecibirPersonasASincResponse(RecibirPersonasASincResponse value) {
+        return new JAXBElement<RecibirPersonasASincResponse>(_RecibirPersonasASincResponse_QNAME, RecibirPersonasASincResponse.class, null, value);
     }
 
     /**

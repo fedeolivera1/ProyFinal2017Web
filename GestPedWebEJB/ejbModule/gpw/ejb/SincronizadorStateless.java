@@ -38,6 +38,7 @@ import gpw.ejb.result.manager.MgrResultSincPedido;
 import gpw.ejb.result.manager.MgrResultSincPers;
 import gpw.ejb.result.manager.MgrResultSincProd;
 import gpw.exceptions.EjbException;
+import gpw.exceptions.ParsersException;
 import gpw.exceptions.PersistenciaException;
 import gpw.interfaces.pedido.IPersPedido;
 import gpw.interfaces.pedido.IPersPedidoLinea;
@@ -54,9 +55,11 @@ import gpw.persistencia.producto.PersistenciaTipoProd;
 import gpw.persistencia.producto.PersistenciaUnidad;
 import gpw.types.Fecha;
 import gpw.ws.datatypes.errors.ErrorServicio;
+import gpw.ws.datatypes.errors.ErroresServicioCod;
 import gpw.ws.datatypes.pedido.ParamObtPedidosNoSinc;
 import gpw.ws.datatypes.pedido.ParamRecPedidosASinc;
 import gpw.ws.datatypes.pedido.ResultObtPedidosNoSinc;
+import gpw.ws.datatypes.pedido.ResultPedidoASinc;
 import gpw.ws.datatypes.pedido.ResultRecPedidosASinc;
 import gpw.ws.datatypes.persona.ParamObtPersonasNoSinc;
 import gpw.ws.datatypes.persona.ParamPersonaSinc;
@@ -69,7 +72,8 @@ import gpw.ws.datatypes.producto.ParamRecProductosASinc;
 import gpw.ws.datatypes.producto.ParamTipoProdASinc;
 import gpw.ws.datatypes.producto.ParamUnidadASinc;
 import gpw.ws.datatypes.producto.ResultRecProductosASinc;
-import gpw.ws.parsers.ParseProducto;
+import gpw.ws.parsers.ParserPedido;
+import gpw.ws.parsers.ParserProducto;
 import gpw.ws.validators.ParamGenValidator;
 
 /**
@@ -81,7 +85,6 @@ import gpw.ws.validators.ParamGenValidator;
 public class SincronizadorStateless implements SincronizadorStatelessRemote, SincronizadorStatelessLocal {
 
 	private static Logger logger = Logger.getLogger(SincronizadorStateless.class);
-	private static final int ERROR_SRV_GENERICO = -99;
 	
 	@Resource(mappedName="java:jboss/datasources/dsGestPedWeb")
 	private DataSource ds;
@@ -144,7 +147,7 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 		String mensaje = null;
 		ResultSet resultado = null;
 		PreparedStatement sentencia = null;
-		String consulta = "select count(1) from unidad";
+		String consulta = "SELECT COUNT(1) FROM unidad";
 		try {
 			sentencia = ds.getConnection().prepareStatement(consulta, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			resultado = sentencia.executeQuery();
@@ -191,7 +194,7 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 			Conector.closeConn(ds, null, null);
 		} catch (PersistenciaException | SQLException | EjbException e) {
 			logger.fatal("Excepcion en EJB > obtPersonasNoSinc: " + e.getMessage(), e);
-			result.getErroresServ().add(new ErrorServicio(ERROR_SRV_GENERICO, e.getMessage()));
+			result.getErroresServ().add(new ErrorServicio(ErroresServicioCod.CODERR_EXCEP, e.getMessage()));
 		}
 		return result;
 	}
@@ -237,7 +240,7 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 		} catch (PersistenciaException | SQLException e) {
 			context.setRollbackOnly();
 			logger.fatal("Excepcion en EJB > obtPersonasNoSinc: " + e.getMessage(), e);
-			result.getErroresServ().add(new ErrorServicio(ERROR_SRV_GENERICO, e.getMessage()));
+			result.getErroresServ().add(new ErrorServicio(ErroresServicioCod.CODERR_EXCEP, e.getMessage()));
 		}
 		return result;
 	}
@@ -260,16 +263,16 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 				List<Producto> listaProducto = new ArrayList<>();
 				if(param.getListaTipoProd() != null && !param.getListaTipoProd().isEmpty()) {
 					for(ParamTipoProdASinc paramTpas : param.getListaTipoProd()) {
-						listaTipoProd.add(ParseProducto.parseParamTipoProd(paramTpas));
+						listaTipoProd.add(ParserProducto.parseParamTipoProd(paramTpas));
 					}
 				}
 				if(param.getListaUnidad() != null && !param.getListaUnidad().isEmpty()) {
 					for(ParamUnidadASinc paramUas : param.getListaUnidad()) {
-						listaUnidad.add(ParseProducto.parseParamUnidad(paramUas));
+						listaUnidad.add(ParserProducto.parseParamUnidad(paramUas));
 					}
 				}
 				for(ParamProductoASinc paramProd : param.getListaProducto()) {
-					listaProducto.add(ParseProducto.parseParamProducto(paramProd));
+					listaProducto.add(ParserProducto.parseParamProducto(paramProd));
 				}
 				//
 				HlpSincProd hsp = new HlpSincProd();
@@ -361,10 +364,10 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 				}
 				result =  MgrResultSincProd.manageResult(hsp);
 			}
-		} catch (PersistenciaException | SQLException | EjbException e) {
+		} catch (PersistenciaException | SQLException | EjbException | ParsersException e) {
 			context.setRollbackOnly();
 			logger.fatal("Excepcion en EJB > recProductosSinc: " + e.getMessage(), e);
-			result.getErroresServ().add(new ErrorServicio(ERROR_SRV_GENERICO, e.getMessage()));
+			result.getErroresServ().add(new ErrorServicio(ErroresServicioCod.CODERR_EXCEP, e.getMessage()));
 		}
 		return result;
 	}
@@ -396,8 +399,9 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 				}
 			}
 		} catch (PersistenciaException | SQLException | EjbException e) {
-			logger.fatal("Excepcion en EJB > obtPedidosASinc: " + e.getMessage(), e);
-			result.getErroresServ().add(new ErrorServicio(ERROR_SRV_GENERICO, e.getMessage()));
+			context.setRollbackOnly();
+			logger.fatal("Excepcion en EJB > obtPedidosNoSinc: " + e.getMessage(), e);
+			result.getErroresServ().add(new ErrorServicio(ErroresServicioCod.CODERR_EXCEP, e.getMessage()));
 		}
 		return result;
 	}
@@ -409,9 +413,45 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public ResultRecPedidosASinc recPedidosASinc(ParamRecPedidosASinc param) {
 		ResultRecPedidosASinc result = new ResultRecPedidosASinc();
-		if(ParamGenValidator.validarParam(param, result)) {
-			
+		try {
+			if(ParamGenValidator.validarParam(param, result)) {
+				conn = ds.getConnection();
+				List<Pedido> listaPedidoASinc = ParserPedido.parsePedido(param);
+				for(Pedido pedido : listaPedidoASinc) {
+					ResultPedidoASinc resultPas = new ResultPedidoASinc();
+					//obtengo persona generica ya que desde el servicio solamente contamos con el id de la misma
+					Persona pers = getInterfacePersona().obtenerPersGenerico(conn, pedido.getIdPersTemp());
+					pedido.setPersona(pers);
+					if(Sinc.N.equals(pedido.getSinc()) && getInterfacePedido().checkExistPedido(conn, pedido)) {
+						//bajo y subo la lista de lineas ya que debería haber cambios en ellas...
+						getInterfacePedidoLinea().eliminarListaPedidoLinea(conn, pedido);
+						getInterfacePedidoLinea().guardarListaPedidoLinea(conn, pedido.getListaPedidoLinea());
+						//modifico datos del pedido
+						pedido.setSinc(Sinc.S);
+						Integer resQry = getInterfacePedido().modificarPedido(conn, pedido);
+						if(resQry > 0) {
+							resultPas.setIdPersona(pedido.getPersona().getIdPersona());
+							resultPas.setFechaHora(pedido.getFechaHora().getAsXMLGregorianCalendar(Fecha.AMDHMS));
+						} else {
+							logger.error("ERROR: Se agrega error servicio por no registrarse actualizacion en un pedido NO SINC...");
+							ErrorServicio error = new ErrorServicio(ErroresServicioCod.CODERR_SINC_UPDATE, "ERROR al sincronizar pedido: pers [" + pedido.getIdPersTemp() 
+							+ "] - fecha-hora [" + pedido.getFechaHora().toString(Fecha.DMAHMS) + "]");
+							resultPas.setErrorServ(error);
+						}
+					} else {
+						ErrorServicio error = new ErrorServicio(0, "El pedido para la persona: " + pedido.getPersona().getIdPersona() + 
+								" y la fecha-hora: " + pedido.getFechaHora().toString(Fecha.DMAHMS) + " no existe o ya ha sido sincronizado.");
+						resultPas.setErrorServ(error);
+					}
+					result.getListaPedidoSinc().add(resultPas);
+				}
+			}
+		} catch (PersistenciaException | SQLException | ParsersException e) {
+			context.setRollbackOnly();
+			logger.fatal("Excepcion en EJB > recPedidosASinc: " + e.getMessage(), e);
+			result.getErroresServ().add(new ErrorServicio(ErroresServicioCod.CODERR_EXCEP, e.getMessage()));
 		}
+		
 		return result;
 	}
 	

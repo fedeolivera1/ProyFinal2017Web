@@ -1,4 +1,4 @@
-<xs:schema xmlns:tns="http://localhost:8080" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" targetNamespace="http://localhost:8080" version="1.0">
+<xs:schema xmlns:tns="http://localhost:8080" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://localhost:8080" version="1.0">
 
   <xs:element name="obtenerPedidosNoSinc" type="tns:obtenerPedidosNoSinc"></xs:element>
 
@@ -123,8 +123,14 @@
 
   <xs:complexType name="ParamRecPedidoSinc">
     <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="listaPedidosASinc" nillable="true" type="tns:ParamPedidoASinc"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ParamPedidoASinc">
+    <xs:sequence>
       <xs:element minOccurs="0" name="estado" type="xs:string"></xs:element>
-      <xs:element minOccurs="0" name="fechaHora" type="xs:date"></xs:element>
+      <xs:element minOccurs="0" name="fechaHora" type="xs:dateTime"></xs:element>
       <xs:element minOccurs="0" name="fechaProg" type="xs:date"></xs:element>
       <xs:element minOccurs="0" name="horaProg" type="xs:time"></xs:element>
       <xs:element minOccurs="0" name="idPersona" type="xs:long"></xs:element>
@@ -134,7 +140,7 @@
       <xs:element minOccurs="0" name="sinc" type="xs:string"></xs:element>
       <xs:element minOccurs="0" name="subTotal" type="xs:double"></xs:element>
       <xs:element minOccurs="0" name="total" type="xs:double"></xs:element>
-      <xs:element minOccurs="0" name="ultAct" type="xs:date"></xs:element>
+      <xs:element minOccurs="0" name="ultAct" type="xs:dateTime"></xs:element>
     </xs:sequence>
   </xs:complexType>
 
@@ -162,8 +168,8 @@
 
   <xs:complexType name="ResultPedidoSinc">
     <xs:sequence>
-      <xs:element minOccurs="0" name="estadoSinc" type="xs:int"></xs:element>
-      <xs:element minOccurs="0" name="fechaHora" type="xs:anySimpleType"></xs:element>
+      <xs:element minOccurs="0" name="errorServ" type="tns:ErrorServicio"></xs:element>
+      <xs:element minOccurs="0" name="fechaHora" type="xs:dateTime"></xs:element>
       <xs:element minOccurs="0" name="idPersona" type="xs:long"></xs:element>
     </xs:sequence>
   </xs:complexType>

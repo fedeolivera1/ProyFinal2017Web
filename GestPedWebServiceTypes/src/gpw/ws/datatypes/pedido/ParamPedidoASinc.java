@@ -30,7 +30,7 @@ public class ParamPedidoASinc implements Serializable {
 	public void setIdPersona(Long idPersona) {
 		this.idPersona = idPersona;
 	}
-	@XmlSchemaType(name = "date")
+	@XmlSchemaType(name = "dateTime")
 	public XMLGregorianCalendar getFechaHora() {
 		return fechaHora;
 	}
@@ -87,7 +87,7 @@ public class ParamPedidoASinc implements Serializable {
 	public void setSinc(String sinc) {
 		this.sinc = sinc;
 	}
-	@XmlSchemaType(name = "date")
+	@XmlSchemaType(name = "dateTime")
 	public XMLGregorianCalendar getUltAct() {
 		return ultAct;
 	}

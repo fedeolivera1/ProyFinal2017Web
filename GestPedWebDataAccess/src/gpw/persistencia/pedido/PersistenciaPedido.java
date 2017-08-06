@@ -12,9 +12,12 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import gpw.db.constantes.CnstQryPedido;
+import gpw.db.generic.GenSqlExecType;
 import gpw.db.generic.GenSqlSelectType;
 import gpw.dominio.pedido.EstadoPedido;
 import gpw.dominio.pedido.Pedido;
+import gpw.dominio.persona.PersonaFisica;
+import gpw.dominio.persona.PersonaJuridica;
 import gpw.dominio.util.Origen;
 import gpw.dominio.util.Sinc;
 import gpw.exceptions.ConectorException;
@@ -76,6 +79,109 @@ public class PersistenciaPedido extends Conector implements IPersPedido, CnstQry
 			closeRs(rs);
 		}
 		return listaPedido;
+	}
+	
+	@Override
+	public Integer guardarPedido(Connection conn, Pedido pedido) throws PersistenciaException {
+		Integer resultado = null;
+		GenSqlExecType genExec = new GenSqlExecType(QRY_INSERT_PEDIDO);
+		Long idPersona = null;
+		if(pedido.getPersona() instanceof PersonaFisica) {
+			PersonaFisica pf = (PersonaFisica) pedido.getPersona();
+			idPersona = pf.getDocumento();
+		} else if(pedido.getPersona() instanceof PersonaJuridica) {
+			PersonaJuridica pj = (PersonaJuridica) pedido.getPersona();
+			idPersona = pj.getRut();
+		}
+		genExec.setParam(idPersona);
+		genExec.setParam(pedido.getFechaHora());
+		genExec.setParam(pedido.getEstado().getAsChar());
+		genExec.setParam(pedido.getFechaProg());
+		genExec.setParam(pedido.getHoraProg());
+		genExec.setParam(pedido.getOrigen().getAsChar());
+		genExec.setParam(pedido.getSubTotal());
+		genExec.setParam(pedido.getIva());
+		genExec.setParam(pedido.getTotal());
+		genExec.setParam(pedido.getSinc().getAsChar());
+		genExec.setParam(pedido.getUltAct());
+		try {
+			resultado = (Integer) runGeneric(conn, genExec);
+		} catch (ConectorException e) {
+			logger.error("Excepcion al guardarPedido: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return resultado;
+	}
+
+	@Override
+	public Integer modificarPedido(Connection conn, Pedido pedido) throws PersistenciaException  {
+		Integer resultado = null;
+		GenSqlExecType genExec = new GenSqlExecType(QRY_UPDATE_PEDIDO);
+		Long idPersona = null;
+		if(pedido.getPersona() instanceof PersonaFisica) {
+			PersonaFisica pf = (PersonaFisica) pedido.getPersona();
+			idPersona = pf.getDocumento();
+		} else if(pedido.getPersona() instanceof PersonaJuridica) {
+			PersonaJuridica pj = (PersonaJuridica) pedido.getPersona();
+			idPersona = pj.getRut();
+		}
+		genExec.setParam(pedido.getEstado().getAsChar());
+		genExec.setParam(pedido.getFechaProg());
+		genExec.setParam(pedido.getHoraProg());
+		genExec.setParam(pedido.getSubTotal());
+		genExec.setParam(pedido.getIva());
+		genExec.setParam(pedido.getTotal());
+		genExec.setParam(pedido.getSinc().getAsChar());
+		genExec.setParam(pedido.getUltAct());
+		genExec.setParam(idPersona);
+		genExec.setParam(pedido.getFechaHora());
+		try {
+			resultado = (Integer) runGeneric(conn, genExec);
+		} catch (ConectorException e) {
+			logger.error("Excepcion al modificarPedido: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return resultado;
+	}
+
+	@Override
+	public Integer eliminarPedido(Connection conn, Pedido pedido) throws PersistenciaException  {
+		Integer resultado = null;
+		GenSqlExecType genExec = new GenSqlExecType(QRY_DELETE_PEDIDO);
+		Long idPersona = null;
+		if(pedido.getPersona() instanceof PersonaFisica) {
+			PersonaFisica pf = (PersonaFisica) pedido.getPersona();
+			idPersona = pf.getDocumento();
+		} else if(pedido.getPersona() instanceof PersonaJuridica) {
+			PersonaJuridica pj = (PersonaJuridica) pedido.getPersona();
+			idPersona = pj.getRut();
+		}
+		genExec.setParam(idPersona);
+		genExec.setParam(pedido.getFechaHora());
+		try {
+			resultado = (Integer) runGeneric(conn, genExec);
+		} catch (ConectorException e) {
+			logger.error("Excepcion al eliminarPedido: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return resultado;
+	}
+	
+	@Override
+	public Boolean checkExistPedido(Connection conn, Pedido pedido) throws PersistenciaException  {
+		try {
+			GenSqlSelectType genType = new GenSqlSelectType(QRY_CHK_EXIST_PEDIDO);
+			genType.setParam(pedido.getPersona().getIdPersona());
+			genType.setParam(pedido.getFechaHora());
+			rs = (ResultSet) runGeneric(conn, genType);
+			if(rs.next()) {
+				return true;
+			}
+		} catch (ConectorException | SQLException e) {
+			logger.error("Excepcion al checkExistePedido: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return false;
 	}
 
 }
