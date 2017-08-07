@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-@XmlType(name = "ParamObtPedidoSinc")
+@XmlType(name = "ParamObtPedidosNoSinc")
 public class ParamObtPedidosNoSinc implements Serializable {
 
 	private static final long serialVersionUID = 1L;

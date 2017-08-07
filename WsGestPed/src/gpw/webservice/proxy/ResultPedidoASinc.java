@@ -9,17 +9,17 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>Clase Java para ResultPedidoSinc complex type.
+ * <p>Clase Java para ResultPedidoASinc complex type.
  * 
  * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.
  * 
  * <pre>
- * &lt;complexType name="ResultPedidoSinc"&gt;
+ * &lt;complexType name="ResultPedidoASinc"&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="errorServ" type="{http://localhost:8080}ErrorServicio" minOccurs="0"/&gt;
- *         &lt;element name="fechaHora" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/&gt;
+ *         &lt;element name="fechaHora" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/&gt;
  *         &lt;element name="idPersona" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
@@ -30,15 +30,15 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ResultPedidoSinc", propOrder = {
+@XmlType(name = "ResultPedidoASinc", propOrder = {
     "errorServ",
     "fechaHora",
     "idPersona"
 })
-public class ResultPedidoSinc {
+public class ResultPedidoASinc {
 
     protected ErrorServicio errorServ;
-    @XmlSchemaType(name = "date")
+    @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar fechaHora;
     protected Long idPersona;
 

@@ -34,9 +34,9 @@ import gpw.dominio.util.Estado;
 import gpw.dominio.util.EstadoSinc;
 import gpw.dominio.util.Sinc;
 import gpw.ejb.hlp.HlpSincProd;
-import gpw.ejb.result.manager.MgrResultSincPedido;
-import gpw.ejb.result.manager.MgrResultSincPers;
-import gpw.ejb.result.manager.MgrResultSincProd;
+import gpw.ejb.result.parsers.ParserResultSincPedido;
+import gpw.ejb.result.parsers.ParserResultSincPers;
+import gpw.ejb.result.parsers.ParserResultSincProd;
 import gpw.exceptions.EjbException;
 import gpw.exceptions.ParsersException;
 import gpw.exceptions.PersistenciaException;
@@ -147,7 +147,7 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 		String mensaje = null;
 		ResultSet resultado = null;
 		PreparedStatement sentencia = null;
-		String consulta = "SELECT COUNT(1) FROM unidad";
+		String consulta = "SELECT (1) FROM unidad";
 		try {
 			sentencia = ds.getConnection().prepareStatement(consulta, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			resultado = sentencia.executeQuery();
@@ -183,13 +183,13 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 			if(ParamGenValidator.validarParam(param, result)) {
 				Fecha fechaDesde = new Fecha(param.getFechaDesde(), Fecha.AMD);
 				Fecha fechaHasta = new Fecha(param.getFechaHasta(), Fecha.AMD);
-				//
+				//se obtiene conexion y se van a buscar listas de personas
 				conn = ds.getConnection();
 				List<PersonaFisica> listaPf = getInterfacePersona().obtPersonaFisicaNoSinc(conn, fechaDesde, fechaHasta);
 				listaPersona.addAll((List<Persona>) (List<? extends Persona>) listaPf);
 				List<PersonaJuridica> listaPj = getInterfacePersona().obtPersonaJuridicaNoSinc(conn, fechaDesde, fechaHasta);
 				listaPersona.addAll((List<Persona>) (List<? extends Persona>) listaPj);
-				result = MgrResultSincPers.manageResultObtPersonasNoSinc(listaPersona);
+				result = ParserResultSincPers.parseResultObtPersonasNoSinc(listaPersona);
 			}
 			Conector.closeConn(ds, null, null);
 		} catch (PersistenciaException | SQLException | EjbException e) {
@@ -362,7 +362,7 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 						}
 					}
 				}
-				result =  MgrResultSincProd.manageResult(hsp);
+				result =  ParserResultSincProd.parseResultRecProductosASinc(hsp);
 			}
 		} catch (PersistenciaException | SQLException | EjbException | ParsersException e) {
 			context.setRollbackOnly();
@@ -395,7 +395,7 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 						List<PedidoLinea> listaPedidoLin = getInterfacePedidoLinea().obtenerListaPedidoLinea(conn, pedido);
 						pedido.setListaPedidoLinea(listaPedidoLin);
 					}
-					result = MgrResultSincPedido.manageResultObtPedidosNoSinc(listaPedido);
+					result = ParserResultSincPedido.parseResultObtPedidosNoSinc(listaPedido);
 				}
 			}
 		} catch (PersistenciaException | SQLException | EjbException e) {

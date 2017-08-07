@@ -10,17 +10,17 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Clase Java para ResultRecPedidoSinc complex type.
+ * <p>Clase Java para ResultRecPedidosASinc complex type.
  * 
  * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.
  * 
  * <pre>
- * &lt;complexType name="ResultRecPedidoSinc"&gt;
+ * &lt;complexType name="ResultRecPedidosASinc"&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="erroresServ" type="{http://localhost:8080}ErrorServicio" maxOccurs="unbounded" minOccurs="0"/&gt;
- *         &lt;element name="listaPedidoSinc" type="{http://localhost:8080}ResultPedidoSinc" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *         &lt;element name="listaPedidoSinc" type="{http://localhost:8080}ResultPedidoASinc" maxOccurs="unbounded" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -30,16 +30,16 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ResultRecPedidoSinc", propOrder = {
+@XmlType(name = "ResultRecPedidosASinc", propOrder = {
     "erroresServ",
     "listaPedidoSinc"
 })
-public class ResultRecPedidoSinc {
+public class ResultRecPedidosASinc {
 
     @XmlElement(nillable = true)
     protected List<ErrorServicio> erroresServ;
     @XmlElement(nillable = true)
-    protected List<ResultPedidoSinc> listaPedidoSinc;
+    protected List<ResultPedidoASinc> listaPedidoSinc;
 
     /**
      * Gets the value of the erroresServ property.
@@ -88,13 +88,13 @@ public class ResultRecPedidoSinc {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link ResultPedidoSinc }
+     * {@link ResultPedidoASinc }
      * 
      * 
      */
-    public List<ResultPedidoSinc> getListaPedidoSinc() {
+    public List<ResultPedidoASinc> getListaPedidoSinc() {
         if (listaPedidoSinc == null) {
-            listaPedidoSinc = new ArrayList<ResultPedidoSinc>();
+            listaPedidoSinc = new ArrayList<ResultPedidoASinc>();
         }
         return this.listaPedidoSinc;
     }

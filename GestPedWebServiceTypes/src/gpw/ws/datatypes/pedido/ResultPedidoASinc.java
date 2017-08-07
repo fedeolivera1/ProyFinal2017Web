@@ -8,7 +8,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import gpw.ws.datatypes.errors.ErrorServicio;
 
-@XmlType(name = "ResultPedidoSinc")
+@XmlType(name = "ResultPedidoASinc")
 public class ResultPedidoASinc implements Serializable {
 
 	private static final long serialVersionUID = 1L;

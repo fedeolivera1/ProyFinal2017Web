@@ -9,12 +9,12 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>Clase Java para ParamObtPedidoSinc complex type.
+ * <p>Clase Java para ParamObtPedidosNoSinc complex type.
  * 
  * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.
  * 
  * <pre>
- * &lt;complexType name="ParamObtPedidoSinc"&gt;
+ * &lt;complexType name="ParamObtPedidosNoSinc"&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
@@ -29,11 +29,11 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ParamObtPedidoSinc", propOrder = {
+@XmlType(name = "ParamObtPedidosNoSinc", propOrder = {
     "fechaDesde",
     "fechaHasta"
 })
-public class ParamObtPedidoSinc {
+public class ParamObtPedidosNoSinc {
 
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar fechaDesde;

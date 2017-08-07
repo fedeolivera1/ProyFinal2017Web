@@ -20,6 +20,6 @@ public interface CnstQryPedido {
 	
 	public static final String QRY_DELETE_PEDIDO = "DELETE FROM pedido WHERE id_persona = ? AND fecha_hora = ? ";
 	
-	public static final String QRY_CHK_EXIST_PEDIDO = "SELECT COUNT(1) FROM pedido where id_persona = ? AND fecha_hora = ?";
+	public static final String QRY_CHK_EXIST_PEDIDO = "SELECT (1) FROM pedido where id_persona = ? AND fecha_hora = ?";
 	
 }

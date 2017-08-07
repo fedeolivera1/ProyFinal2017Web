@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="paramObtPedidosNoSinc" type="{http://localhost:8080}ParamObtPedidoSinc" minOccurs="0"/&gt;
+ *         &lt;element name="paramObtPedidosNoSinc" type="{http://localhost:8080}ParamObtPedidosNoSinc" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -31,17 +31,17 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class ObtenerPedidosNoSinc {
 
-    protected ParamObtPedidoSinc paramObtPedidosNoSinc;
+    protected ParamObtPedidosNoSinc paramObtPedidosNoSinc;
 
     /**
      * Obtiene el valor de la propiedad paramObtPedidosNoSinc.
      * 
      * @return
      *     possible object is
-     *     {@link ParamObtPedidoSinc }
+     *     {@link ParamObtPedidosNoSinc }
      *     
      */
-    public ParamObtPedidoSinc getParamObtPedidosNoSinc() {
+    public ParamObtPedidosNoSinc getParamObtPedidosNoSinc() {
         return paramObtPedidosNoSinc;
     }
 
@@ -50,10 +50,10 @@ public class ObtenerPedidosNoSinc {
      * 
      * @param value
      *     allowed object is
-     *     {@link ParamObtPedidoSinc }
+     *     {@link ParamObtPedidosNoSinc }
      *     
      */
-    public void setParamObtPedidosNoSinc(ParamObtPedidoSinc value) {
+    public void setParamObtPedidosNoSinc(ParamObtPedidosNoSinc value) {
         this.paramObtPedidosNoSinc = value;
     }
 

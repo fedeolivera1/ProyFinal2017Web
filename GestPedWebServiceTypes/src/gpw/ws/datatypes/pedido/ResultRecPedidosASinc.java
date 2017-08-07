@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import gpw.ws.datatypes.errors.ErrorServicio;
 
-@XmlType(name = "ResultRecPedidoSinc")
+@XmlType(name = "ResultRecPedidosASinc")
 public class ResultRecPedidosASinc implements Serializable {
 
 	private static final long serialVersionUID = 1L;

@@ -2,6 +2,9 @@ package gpw.ws.datatypes.persona;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlType;
+
+@XmlType(name = "ResultPersonaSinc")
 public class ResultPersonaSinc implements Serializable {
 
 	private static final long serialVersionUID = 1L;

@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="erroresServ" type="{http://localhost:8080}ErrorServicio" maxOccurs="unbounded" minOccurs="0"/&gt;
- *         &lt;element name="listaPersonaSinc" type="{http://localhost:8080}resultPersonaSinc" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *         &lt;element name="listaPersonaSinc" type="{http://localhost:8080}ResultPersonaSinc" maxOccurs="unbounded" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;

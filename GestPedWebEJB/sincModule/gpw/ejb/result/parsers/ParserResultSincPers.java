@@ -1,4 +1,4 @@
-package gpw.ejb.result.manager;
+package gpw.ejb.result.parsers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +18,11 @@ import gpw.ws.datatypes.persona.ResultPersonaSinc;
 import gpw.ws.datatypes.persona.ResultRecPersonasASinc;
 import gpw.ws.parsers.ParserPersona;
 
-public class MgrResultSincPers {
+public class ParserResultSincPers {
 
-	private static Logger logger = Logger.getLogger(MgrResultSincPers.class);
+	private static Logger logger = Logger.getLogger(ParserResultSincPers.class);
 	
-	public static ResultObtPersonasNoSinc manageResultObtPersonasNoSinc(List<Persona> listaPersonasNoSinc) throws EjbException {
+	public static ResultObtPersonasNoSinc parseResultObtPersonasNoSinc(List<Persona> listaPersonasNoSinc) throws EjbException {
 		logger.debug("Se ingresa a manejar el resultado para ResultObtPersonasNoSinc...");
 		ResultObtPersonasNoSinc result = null;
 		try {
@@ -52,7 +52,7 @@ public class MgrResultSincPers {
 		
 	}
 	
-	public static ResultRecPersonasASinc manageResultRecPersonasSinc(Map<Long, EstadoSinc> mapPersSinc) throws EjbException {
+	public static ResultRecPersonasASinc parseResultRecPersonasSinc(Map<Long, EstadoSinc> mapPersSinc) throws EjbException {
 		logger.debug("Se ingresa a manejar el resultado para ResultRecPersonasASinc...");
 		ResultRecPersonasASinc result = null;
 		try {

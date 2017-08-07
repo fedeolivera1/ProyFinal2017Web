@@ -181,11 +181,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ParamRecPedidoSinc }
+     * Create an instance of {@link ParamRecPedidosASinc }
      * 
      */
-    public ParamRecPedidoSinc createParamRecPedidoSinc() {
-        return new ParamRecPedidoSinc();
+    public ParamRecPedidosASinc createParamRecPedidosASinc() {
+        return new ParamRecPedidosASinc();
     }
 
     /**
@@ -205,27 +205,27 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ResultRecPedidoSinc }
+     * Create an instance of {@link ResultRecPedidosASinc }
      * 
      */
-    public ResultRecPedidoSinc createResultRecPedidoSinc() {
-        return new ResultRecPedidoSinc();
+    public ResultRecPedidosASinc createResultRecPedidosASinc() {
+        return new ResultRecPedidosASinc();
     }
 
     /**
-     * Create an instance of {@link ResultPedidoSinc }
+     * Create an instance of {@link ResultPedidoASinc }
      * 
      */
-    public ResultPedidoSinc createResultPedidoSinc() {
-        return new ResultPedidoSinc();
+    public ResultPedidoASinc createResultPedidoASinc() {
+        return new ResultPedidoASinc();
     }
 
     /**
-     * Create an instance of {@link ParamObtPedidoSinc }
+     * Create an instance of {@link ParamObtPedidosNoSinc }
      * 
      */
-    public ParamObtPedidoSinc createParamObtPedidoSinc() {
-        return new ParamObtPedidoSinc();
+    public ParamObtPedidosNoSinc createParamObtPedidosNoSinc() {
+        return new ParamObtPedidosNoSinc();
     }
 
     /**

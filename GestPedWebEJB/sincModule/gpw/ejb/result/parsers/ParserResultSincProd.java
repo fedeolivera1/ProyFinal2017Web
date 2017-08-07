@@ -1,4 +1,4 @@
-package gpw.ejb.result.manager;
+package gpw.ejb.result.parsers;
 
 import java.util.List;
 import java.util.Map;
@@ -17,11 +17,11 @@ import gpw.ws.datatypes.producto.ResultTipoProdASinc;
 import gpw.ws.datatypes.producto.ResultUnidadASinc;
 
 
-public class MgrResultSincProd {
+public class ParserResultSincProd {
 
-	private static Logger logger = Logger.getLogger(MgrResultSincProd.class);
+	private static Logger logger = Logger.getLogger(ParserResultSincProd.class);
 	
-	public static ResultRecProductosASinc manageResult(HlpSincProd hsp) throws EjbException {
+	public static ResultRecProductosASinc parseResultRecProductosASinc(HlpSincProd hsp) throws EjbException {
 		logger.debug("Se ingresa a manejar el resultado para ResultRecProductosASinc...");
 		ResultRecProductosASinc result = new ResultRecProductosASinc();
 		try {

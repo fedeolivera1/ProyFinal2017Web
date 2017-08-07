@@ -116,7 +116,7 @@ public class Fecha extends GregorianCalendar {
 		if(time != null) {
 			super.setTimeInMillis(time.getTime());
 			complete();
-			setFormato(AMD);
+			setFormato(HMS);
 		}
 	}
 	
@@ -240,6 +240,7 @@ public class Fecha extends GregorianCalendar {
 	 */
 	public XMLGregorianCalendar getHoraAsXMLGregorianCalendar() {
 		Fecha fec = new Fecha(getHora(), getMinuto());
+		fec.set(SECOND, getSegundo());
 		XMLGregorianCalendar xmlgc = null;
 		GregorianCalendar gc = new GregorianCalendar();
 		gc.setTime(fec.getTime());

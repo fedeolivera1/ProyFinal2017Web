@@ -1,4 +1,4 @@
-package gpw.ejb.result.manager;
+package gpw.ejb.result.parsers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +13,11 @@ import gpw.ws.datatypes.pedido.ResultObtPedidosNoSinc;
 import gpw.ws.datatypes.pedido.ResultPedidoLinea;
 import gpw.ws.datatypes.pedido.ResultPedidoNoSinc;
 
-public class MgrResultSincPedido {
+public class ParserResultSincPedido {
 
-	private static Logger logger = Logger.getLogger(MgrResultSincPedido.class);
+	private static Logger logger = Logger.getLogger(ParserResultSincPedido.class);
 	
-	public static ResultObtPedidosNoSinc manageResultObtPedidosNoSinc(List<Pedido> listaPedidoNoSinc) throws EjbException {
+	public static ResultObtPedidosNoSinc parseResultObtPedidosNoSinc(List<Pedido> listaPedidoNoSinc) throws EjbException {
 		logger.debug("Se ingresa a manejar el resultado para ResultObtPedidosNoSinc...");
 		ResultObtPedidosNoSinc result = null;
 		try {

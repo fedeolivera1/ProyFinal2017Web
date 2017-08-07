@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="resultRecPedidosASinc" type="{http://localhost:8080}ResultRecPedidoSinc" minOccurs="0"/&gt;
+ *         &lt;element name="resultRecPedidosASinc" type="{http://localhost:8080}ResultRecPedidosASinc" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -31,17 +31,17 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class RecibirPedidosASincResponse {
 
-    protected ResultRecPedidoSinc resultRecPedidosASinc;
+    protected ResultRecPedidosASinc resultRecPedidosASinc;
 
     /**
      * Obtiene el valor de la propiedad resultRecPedidosASinc.
      * 
      * @return
      *     possible object is
-     *     {@link ResultRecPedidoSinc }
+     *     {@link ResultRecPedidosASinc }
      *     
      */
-    public ResultRecPedidoSinc getResultRecPedidosASinc() {
+    public ResultRecPedidosASinc getResultRecPedidosASinc() {
         return resultRecPedidosASinc;
     }
 
@@ -50,10 +50,10 @@ public class RecibirPedidosASincResponse {
      * 
      * @param value
      *     allowed object is
-     *     {@link ResultRecPedidoSinc }
+     *     {@link ResultRecPedidosASinc }
      *     
      */
-    public void setResultRecPedidosASinc(ResultRecPedidoSinc value) {
+    public void setResultRecPedidosASinc(ResultRecPedidosASinc value) {
         this.resultRecPedidosASinc = value;
     }
 
