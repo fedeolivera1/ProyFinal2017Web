@@ -84,14 +84,6 @@ public class PersistenciaPedido extends Conector implements IPersPedido, CnstQry
 	public Integer guardarPedido(Connection conn, Pedido pedido) throws PersistenciaException {
 		Integer resultado = null;
 		GenSqlExecType genExec = new GenSqlExecType(QRY_INSERT_PEDIDO);
-//		Long idPersona = null;
-//		if(pedido.getPersona() instanceof PersonaFisica) {
-//			PersonaFisica pf = (PersonaFisica) pedido.getPersona();
-//			idPersona = pf.getDocumento();
-//		} else if(pedido.getPersona() instanceof PersonaJuridica) {
-//			PersonaJuridica pj = (PersonaJuridica) pedido.getPersona();
-//			idPersona = pj.getRut();
-//		}
 		genExec.setParam(pedido.getPersona().getIdPersona());
 		genExec.setParam(pedido.getFechaHora());
 		genExec.setParam(pedido.getEstado().getAsChar());
@@ -116,14 +108,6 @@ public class PersistenciaPedido extends Conector implements IPersPedido, CnstQry
 	public Integer modificarPedido(Connection conn, Pedido pedido) throws PersistenciaException  {
 		Integer resultado = null;
 		GenSqlExecType genExec = new GenSqlExecType(QRY_UPDATE_PEDIDO);
-//		Long idPersona = null;
-//		if(pedido.getPersona() instanceof PersonaFisica) {
-//			PersonaFisica pf = (PersonaFisica) pedido.getPersona();
-//			idPersona = pf.getDocumento();
-//		} else if(pedido.getPersona() instanceof PersonaJuridica) {
-//			PersonaJuridica pj = (PersonaJuridica) pedido.getPersona();
-//			idPersona = pj.getRut();
-//		}
 		genExec.setParam(pedido.getEstado().getAsChar());
 		genExec.setParam(pedido.getFechaProg());
 		genExec.setParam(pedido.getHoraProg());
@@ -147,14 +131,6 @@ public class PersistenciaPedido extends Conector implements IPersPedido, CnstQry
 	public Integer eliminarPedido(Connection conn, Pedido pedido) throws PersistenciaException  {
 		Integer resultado = null;
 		GenSqlExecType genExec = new GenSqlExecType(QRY_DELETE_PEDIDO);
-//		Long idPersona = null;
-//		if(pedido.getPersona() instanceof PersonaFisica) {
-//			PersonaFisica pf = (PersonaFisica) pedido.getPersona();
-//			idPersona = pf.getDocumento();
-//		} else if(pedido.getPersona() instanceof PersonaJuridica) {
-//			PersonaJuridica pj = (PersonaJuridica) pedido.getPersona();
-//			idPersona = pj.getRut();
-//		}
 		genExec.setParam(pedido.getPersona().getIdPersona());
 		genExec.setParam(pedido.getFechaHora());
 		try {
@@ -181,6 +157,22 @@ public class PersistenciaPedido extends Conector implements IPersPedido, CnstQry
 			throw new PersistenciaException(e);
 		}
 		return false;
+	}
+
+	@Override
+	public Integer actualizarPedidoSinc(Connection conn, Long idPersona, Fecha fechaHora, Sinc sinc) throws PersistenciaException {
+		Integer resultado = null;
+		GenSqlExecType genExec = new GenSqlExecType(QRY_UPDATE_SINC_PEDIDO);
+		genExec.setParam(sinc.getAsChar());
+		genExec.setParam(idPersona);
+		genExec.setParam(fechaHora);
+		try {
+			resultado = (Integer) runGeneric(conn, genExec);
+		} catch (ConectorException e) {
+			logger.error("Excepcion al actualizarPedidoSinc: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return resultado;
 	}
 
 }

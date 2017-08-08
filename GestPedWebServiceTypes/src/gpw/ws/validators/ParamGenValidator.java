@@ -6,6 +6,7 @@ import java.util.List;
 import gpw.ws.datatypes.errors.ErrorServicio;
 import gpw.ws.datatypes.errors.ErroresServicioCod;
 import gpw.ws.datatypes.pedido.ParamObtPedidosNoSinc;
+import gpw.ws.datatypes.pedido.ParamPedidoASinc;
 import gpw.ws.datatypes.pedido.ParamRecPedidosASinc;
 import gpw.ws.datatypes.pedido.ResultObtPedidosNoSinc;
 import gpw.ws.datatypes.pedido.ResultRecPedidosASinc;
@@ -171,6 +172,22 @@ public class ParamGenValidator {
 			if(param.getListaPedidosASinc().isEmpty()) {
 				ErrorServicio error = new ErrorServicio(ErroresServicioCod.CODERR_VAL_PARAM, "La lista de parametros de pedido no puede ser vacía.");
 				listaErrores.add(error);
+			} else {
+				for(ParamPedidoASinc paramPas : param.getListaPedidosASinc()) {
+					if(paramPas.getIdPersona() == null) {
+						ErrorServicio error = new ErrorServicio(ErroresServicioCod.CODERR_VAL_PARAM, "El idPersona no puede ser nulo.");
+						listaErrores.add(error);
+					} 
+					if(paramPas.getFechaHora() == null) {
+						ErrorServicio error = new ErrorServicio(ErroresServicioCod.CODERR_VAL_PARAM, "La fecha-hora no puede ser nulo.");
+						listaErrores.add(error);
+					}
+					if(paramPas.getListaPedidoLinea() == null || paramPas.getListaPedidoLinea().isEmpty()) {
+						ErrorServicio error = new ErrorServicio(ErroresServicioCod.CODERR_VAL_PARAM, "La lista de lineas del pedido [" + paramPas.getIdPersona() + 
+								" | " + paramPas.getFechaHora() + "] no puede ser vacía.");
+						listaErrores.add(error);
+					}
+				}
 			}
 		}
 		if(listaErrores.isEmpty()) {

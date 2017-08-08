@@ -380,7 +380,7 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 	 * 
 	 */
 	@Override
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ResultObtPedidosNoSinc obtPedidosNoSinc(ParamObtPedidosNoSinc param) {
 		ResultObtPedidosNoSinc result = new ResultObtPedidosNoSinc();
 		List<Pedido> listaPedido = new ArrayList<>();
@@ -389,11 +389,18 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 				Fecha fechaDesde = new Fecha(param.getFechaDesde(), Fecha.AMD);
 				Fecha fechaHasta = new Fecha(param.getFechaHasta(), Fecha.AMD);
 				conn = ds.getConnection();
+				//obtengo lista de pedidos NO SINC de base web
 				listaPedido = getInterfacePedido().obtenerListaPedidoNoSinc(conn, fechaDesde, fechaHasta);
 				if(listaPedido != null && !listaPedido.isEmpty()) {
 					for(Pedido pedido : listaPedido) {
 						List<PedidoLinea> listaPedidoLin = getInterfacePedidoLinea().obtenerListaPedidoLinea(conn, pedido);
 						pedido.setListaPedidoLinea(listaPedidoLin);
+						/*
+						 * actualizo el pedido a sincronizado, el mismo ya está listo para viajar por WS a dsk
+						 * en caso de problemas en cualquiera de los updates, se hace rollback de todo
+						 */
+						pedido.setSinc(Sinc.S);
+						getInterfacePedido().actualizarPedidoSinc(conn, pedido.getPersona().getIdPersona(), pedido.getFechaHora(), pedido.getSinc());
 					}
 					result = ParserResultSincPedido.parseResultObtPedidosNoSinc(listaPedido);
 				}
@@ -410,7 +417,7 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 	 * 
 	 */
 	@Override
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ResultRecPedidosASinc recPedidosASinc(ParamRecPedidosASinc param) {
 		ResultRecPedidosASinc result = new ResultRecPedidosASinc();
 		try {

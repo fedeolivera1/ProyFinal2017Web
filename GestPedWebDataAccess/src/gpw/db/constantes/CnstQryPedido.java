@@ -7,6 +7,7 @@ public interface CnstQryPedido {
 												+ "FROM pedido p "
 												+ "WHERE p.estado IN ('P', 'M') "
 												+ "AND (p.fecha_hora::date BETWEEN ? AND ?) "
+												+ "AND sinc = 'N' "
 												+ "ORDER BY p.fecha_hora DESC";
 	
 	public static final String QRY_INSERT_PEDIDO = "INSERT INTO pedido "
@@ -22,4 +23,7 @@ public interface CnstQryPedido {
 	
 	public static final String QRY_CHK_EXIST_PEDIDO = "SELECT (1) FROM pedido where id_persona = ? AND fecha_hora = ?";
 	
+	public static final String QRY_UPDATE_SINC_PEDIDO = "UPDATE pedido SET sinc = ? "
+												+ "WHERE id_persona = ? "
+												+ "AND fecha_hora = ?";
 }

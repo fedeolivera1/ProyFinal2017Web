@@ -29,8 +29,8 @@ public class ParserPedido {
 				pedido.setIdPersTemp(paramPas.getIdPersona());
 				pedido.setFechaHora(new Fecha(paramPas.getFechaHora(), Fecha.AMDHMS));
 				pedido.setEstado(EstadoPedido.getEstadoPedidoPorChar(paramPas.getEstado().charAt(0)));
-				pedido.setFechaProg(new Fecha(paramPas.getFechaProg(), Fecha.AMD));
-				pedido.setHoraProg(new Fecha(paramPas.getHoraProg(), Fecha.HMS));
+				pedido.setFechaProg(paramPas.getFechaProg() != null ? new Fecha(paramPas.getFechaProg(), Fecha.AMD) : null);
+				pedido.setHoraProg(paramPas.getHoraProg() != null ? new Fecha(paramPas.getHoraProg(), Fecha.HMS) : null);
 				pedido.setOrigen(Origen.getOrigenPorChar(paramPas.getOrigen().charAt(0)));
 				pedido.setSubTotal(paramPas.getSubTotal());
 				pedido.setIva(paramPas.getIva());
