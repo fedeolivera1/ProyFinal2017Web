@@ -3,6 +3,7 @@
 	<name>GestPedWebEAR</name>
 	<comment></comment>
 	<projects>
+		<project>GestPedWeb</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

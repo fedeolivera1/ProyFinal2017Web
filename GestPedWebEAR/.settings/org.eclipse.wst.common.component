@@ -15,5 +15,9 @@
         <dependent-module archiveName="GestPedWebServiceTypes.jar" deploy-path="/" handle="module:/resource/GestPedWebServiceTypes/GestPedWebServiceTypes">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="GestPedWeb.war" deploy-path="/" handle="module:/resource/GestPedWeb/GestPedWeb">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
     </wb-module>
 </project-modules>

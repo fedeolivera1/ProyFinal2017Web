@@ -10,4 +10,10 @@
   <module>
     <ejb>GestPedWebEJB.jar</ejb>
   </module>
+  <module>
+    <web>
+      <web-uri>GestPedWeb.war</web-uri>
+      <context-root>GestPedWeb</context-root>
+    </web>
+  </module>
 </application>
