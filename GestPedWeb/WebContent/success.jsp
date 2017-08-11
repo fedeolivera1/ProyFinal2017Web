@@ -7,9 +7,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+ACA VA: <br>
 <%
-	String nomUsu = (String) request.getAttribute("nomUsu");
+	String nomUsu = (String) request.getAttribute("usr");
 	if(nomUsu != null) {
 %>
     	<h1>Hi welcome <%=nomUsu%> </h1><br>
