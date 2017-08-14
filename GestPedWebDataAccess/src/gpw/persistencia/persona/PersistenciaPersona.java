@@ -158,6 +158,62 @@ public class PersistenciaPersona extends Conector implements IPersPersona, CnstQ
 		}
 		return listaPf;
 	}
+	
+	@Override
+	public Integer guardarPersFisica(Connection conn, PersonaFisica pf) throws PersistenciaException {
+		try {
+			Long documento = pf.getDocumento();
+			
+			guardarPersona(conn, documento, pf.getDireccion(), pf.getPuerta(), pf.getSolar(), pf.getManzana(),
+					pf.getKm(), pf.getComplemento(), pf.getTelefono(), pf.getCelular(), pf.getEmail(),
+					pf.getFechaReg(), pf.getTipoPers(), pf.getLocalidad().getIdLocalidad(), pf.getOrigen(),
+					pf.getSinc(), pf.getUltAct());
+			
+			GenSqlExecType genExec = new GenSqlExecType(QRY_INSERT_PF);
+			genExec.setParam(documento);
+			genExec.setParam(pf.getTipoDoc().getIdTipoDoc());
+			genExec.setParam(pf.getApellido1());
+			genExec.setParam(pf.getApellido2());
+			genExec.setParam(pf.getNombre1());
+			genExec.setParam(pf.getNombre2());
+			genExec.setParam(pf.getFechaNac());
+			genExec.setParam(pf.getSexo().getAsChar());
+			resultado = (Integer) runGeneric(conn, genExec);
+			
+		} catch (ConectorException e) {
+			logger.fatal("Excepcion al guardarPersFisica: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return resultado;
+	}
+	
+	@Override
+	public Integer modificarPersFisica(Connection conn, PersonaFisica pf) throws PersistenciaException {
+		try {
+			Long documento = pf.getDocumento();
+			Long docAnt = pf.getDocumentoAnt() != null ? pf.getDocumentoAnt() : null;
+			
+			modificarPersona(conn, documento, docAnt, pf.getDireccion(), pf.getPuerta(), pf.getSolar(), pf.getManzana(),
+					pf.getKm(), pf.getComplemento(), pf.getTelefono(), pf.getCelular(), pf.getEmail(),
+					pf.getFechaReg(), pf.getLocalidad().getIdLocalidad(), pf.getOrigen(),
+					pf.getSinc(), pf.getUltAct());
+			
+			GenSqlExecType genExec = new GenSqlExecType(QRY_UPDATE_PF);
+			genExec.setParam(pf.getTipoDoc().getIdTipoDoc());
+			genExec.setParam(pf.getApellido1());
+			genExec.setParam(pf.getApellido2());
+			genExec.setParam(pf.getNombre1());
+			genExec.setParam(pf.getNombre2());
+			genExec.setParam(pf.getFechaNac());
+			genExec.setParam(pf.getSexo().getAsChar());
+			genExec.setParam(documento);
+			resultado = (Integer) runGeneric(conn, genExec);
+		} catch (ConectorException e) {
+			logger.fatal("Excepcion al guardarPersFisica: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return resultado;
+	}
 
 	@Override
 	public List<PersonaJuridica> obtPersonaJuridicaNoSinc(Connection conn, Fecha fechaDesde, Fecha fechaHasta) throws PersistenciaException {
@@ -180,6 +236,57 @@ public class PersistenciaPersona extends Conector implements IPersPersona, CnstQ
 	}
 	
 	@Override
+	public Integer guardarPersJuridica(Connection conn, PersonaJuridica pj) throws PersistenciaException {
+		try {
+			guardarPersona(conn, pj.getRut(), pj.getDireccion(), pj.getPuerta(), pj.getSolar(), pj.getManzana(),
+					pj.getKm(), pj.getComplemento(), pj.getTelefono(), pj.getCelular(), pj.getEmail(),
+					pj.getFechaReg(), pj.getTipoPers(), pj.getLocalidad().getIdLocalidad(), pj.getOrigen(),
+					pj.getSinc(), pj.getUltAct());
+			
+			GenSqlExecType genExec = new GenSqlExecType(QRY_INSERT_PJ);
+			genExec.setParam(pj.getRut());
+			genExec.setParam(pj.getNombre());
+			genExec.setParam(pj.getRazonSocial());
+			genExec.setParam(pj.getBps());
+			genExec.setParam(pj.getBse());
+			genExec.setParam(pj.getEsProv() ? S_CHAR : N_CHAR);
+			resultado = (Integer) runGeneric(conn, genExec);
+			
+		} catch (ConectorException e) {
+			logger.fatal("Excepcion al guardarPersJuridica: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return resultado;
+	}
+	
+	@Override
+	public Integer modificarPersJuridica(Connection conn, PersonaJuridica pj) throws PersistenciaException {
+		try {
+			Long rut = pj.getRut();
+			Long rutAnt = pj.getRutAnt() != null ? pj.getRutAnt() : null;
+			
+			modificarPersona(conn, rut, rutAnt, pj.getDireccion(), pj.getPuerta(), pj.getSolar(), pj.getManzana(),
+					pj.getKm(), pj.getComplemento(), pj.getTelefono(), pj.getCelular(), pj.getEmail(),
+					pj.getFechaReg(), pj.getLocalidad().getIdLocalidad(), pj.getOrigen(),
+					pj.getSinc(), pj.getUltAct());
+			
+			GenSqlExecType genExec = new GenSqlExecType(QRY_UPDATE_PJ);
+			genExec.setParam(pj.getNombre());
+			genExec.setParam(pj.getRazonSocial());
+			genExec.setParam(pj.getBps());
+			genExec.setParam(pj.getBse());
+			genExec.setParam(pj.getEsProv() ? S_CHAR : N_CHAR);
+			genExec.setParam(rut);
+			resultado = (Integer) runGeneric(conn, genExec);
+			
+		} catch (ConectorException e) {
+			logger.fatal("Excepcion al modificarPersJuridica: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return resultado;
+	}
+	
+	@Override
 	public Integer actualizarPersonaSinc(Connection conn, Long idPersona) throws PersistenciaException {
 		try {
 			GenSqlExecType genExec = new GenSqlExecType(QRY_UPDATE_PERS_SINC);
@@ -188,12 +295,15 @@ public class PersistenciaPersona extends Conector implements IPersPersona, CnstQ
 			genExec.setParam(idPersona);
 			resultado = (Integer) runGeneric(conn, genExec);
 		} catch (ConectorException e) {
-//			Conector.rollbackConn(conn);//TODO sacar
 			logger.fatal("Excepcion al obtPersonaJuridicaNoSinc: " + e.getMessage());
 			throw new PersistenciaException(e);
 		}
 		return resultado;
 	}
+	
+	/***************************************************/
+	/* METODOS GENERICOS */
+	/***************************************************/
 	
 	@Override
 	public Persona obtenerPersGenerico(Connection conn, Long idPersona) throws PersistenciaException {
@@ -335,6 +445,65 @@ public class PersistenciaPersona extends Conector implements IPersPersona, CnstQ
 			throw new PersistenciaException(e);
 		}
 		return listaPj;
+	}
+	
+	private Integer guardarPersona(Connection conn, Long idPersona, String direccion, String puerta, String solar, String manzana,
+			Float km, String complemento, String telefono, String celular, String email, Fecha fechaReg, TipoPersona tipoPers, 
+			Integer idLoc, Origen origen, Sinc sinc, Fecha ultAct) throws ConectorException {
+		try {
+			GenSqlExecType genExec = new GenSqlExecType(QRY_INSERT_PERS);
+			genExec.setParam(idPersona);
+			genExec.setParam(direccion);
+			genExec.setParam(puerta);
+			genExec.setParam(solar);
+			genExec.setParam(manzana);
+			genExec.setParam(km);
+			genExec.setParam(complemento);
+			genExec.setParam(telefono);
+			genExec.setParam(celular);
+			genExec.setParam(email);
+			genExec.setParam(fechaReg);
+			genExec.setParam(tipoPers.getAsChar());
+			genExec.setParam(idLoc);
+			genExec.setParam(origen.getAsChar());
+			genExec.setParam(sinc.getAsChar());
+			genExec.setParam(ultAct);
+			resultado = (Integer) runGeneric(conn, genExec);
+		} catch (ConectorException e) {
+			logger.fatal("Excepcion al guardarPersona: " + e.getMessage(), e);
+			throw e;
+		}
+		return resultado;
+	}
+	
+	private Integer modificarPersona(Connection conn, Long idPersona, Long idPersonaAnt, String direccion, String puerta, String solar, String manzana,
+			Float km, String complemento, String telefono, String celular, String email, Fecha fechaReg, Integer idLoc,
+			Origen origen, Sinc sinc, Fecha ultAct) 
+					throws ConectorException {
+		try {
+			GenSqlExecType genExec = new GenSqlExecType(QRY_UPDATE_PERS);
+			genExec.setParam(idPersona);
+			genExec.setParam(direccion);
+			genExec.setParam(puerta);
+			genExec.setParam(solar);
+			genExec.setParam(manzana);
+			genExec.setParam(km);
+			genExec.setParam(complemento);
+			genExec.setParam(telefono);
+			genExec.setParam(celular);
+			genExec.setParam(email);
+			genExec.setParam(fechaReg);
+			genExec.setParam(idLoc);
+			genExec.setParam(origen.getAsChar());
+			genExec.setParam(sinc.getAsChar());
+			genExec.setParam(ultAct);
+			genExec.setParam(idPersonaAnt != null ? idPersonaAnt : idPersona);
+			resultado = (Integer) runGeneric(conn, genExec);
+		} catch (ConectorException e) {
+			logger.fatal("Excepcion al modificarPersona: " + e.getMessage(), e);
+			throw e;
+		}
+		return resultado;
 	}
 
 }

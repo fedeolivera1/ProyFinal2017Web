@@ -47,56 +47,51 @@ public class PersistenciaUsuario extends Conector implements IPersUsuario, CnstQ
 		return usuario;
 	}
 	
-//	@Override
-//	public Integer guardarUsuario(UsuarioWeb usuario) throws PersistenciaException {
-//		logger.info("Ejecucion de guardarUsuario para: " + usuario.getNomUsu());
-//		Integer resultado = null;
-//		try {
-//			PreparedStatement ps = conn.prepareStatement(QRY_INSERT_USR);
-//			ps.setString(1, usuario.getNomUsu());
-//			ps.setString(2, usuario.getPass());
-//			ps.setObject(3, usuario.getTipoUsr().getAsChar(), java.sql.Types.CHAR);
-//			resultado = ps.executeUpdate();
-//		} catch (SQLException e) {
-//			Conector.rollbackConn();
-//			logger.fatal("Excepcion al guardarUsuario: " + e.getMessage(), e);
-//			throw new PersistenciaException(e);
-//		}
-//		return resultado;
-//	}
+	@Override
+	public Integer guardarUsuario(Connection conn, UsuarioWeb usuario) throws PersistenciaException {
+		logger.info("Ejecucion de guardarUsuario para: " + usuario.getNomUsu());
+		Integer resultado = null;
+		try {
+			PreparedStatement ps = conn.prepareStatement(QRY_INSERT_USR);
+			ps.setString(1, usuario.getNomUsu());
+			ps.setString(2, usuario.getPass());
+			resultado = ps.executeUpdate();
+		} catch (SQLException e) {
+			logger.fatal("Excepcion al guardarUsuario: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return resultado;
+	}
 
-//	@Override
-//	public Integer modificarUsuario(UsuarioWeb usuario) throws PersistenciaException {
-//		logger.info("Ejecucion de modificarUsuario para: " + usuario.getNomUsu());
-//		Integer resultado = null;
-//		try {
-//			PreparedStatement ps = conn.prepareStatement(QRY_UPDATE_USR);
-//			ps.setString(1, usuario.getPass());
-//			ps.setObject(2, usuario.getTipoUsr().getAsChar(), java.sql.Types.CHAR);
-//			ps.setString(3, usuario.getNomUsu());
-//			resultado = ps.executeUpdate();
-//		} catch (SQLException e) {
-//			Conector.rollbackConn();
-//			logger.fatal("Excepcion al modificarUsuario: " + e.getMessage(), e);
-//			throw new PersistenciaException(e);
-//		}
-//		return resultado;
-//	}
+	@Override
+	public Integer modificarUsuario(Connection conn, UsuarioWeb usuario) throws PersistenciaException {
+		logger.info("Ejecucion de modificarUsuario para: " + usuario.getNomUsu());
+		Integer resultado = null;
+		try {
+			PreparedStatement ps = conn.prepareStatement(QRY_UPDATE_USR);
+			ps.setString(1, usuario.getPass());
+			ps.setString(2, usuario.getNomUsu());
+			resultado = ps.executeUpdate();
+		} catch (SQLException e) {
+			logger.fatal("Excepcion al modificarUsuario: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return resultado;
+	}
 
-//	@Override
-//	public Integer eliminarUsuario(UsuarioWeb usuario) throws PersistenciaException {
-//		logger.info("Ejecucion de eliminarUsuario para: " + usuario.getNomUsu());
-//		Integer resultado = null;
-//		try {
-//			PreparedStatement ps = conn.prepareStatement(QRY_DELETE_USR);
-//			ps.setString(1, usuario.getNomUsu());
-//			resultado = ps.executeUpdate();
-//		} catch (SQLException e) {
-//			Conector.rollbackConn();
-//			logger.fatal("Excepcion al eliminarUsuario: " + e.getMessage(), e);
-//			throw new PersistenciaException(e);
-//		}
-//		return resultado;
-//	}
+	@Override
+	public Integer eliminarUsuario(Connection conn, UsuarioWeb usuario) throws PersistenciaException {
+		logger.info("Ejecucion de eliminarUsuario para: " + usuario.getNomUsu());
+		Integer resultado = null;
+		try {
+			PreparedStatement ps = conn.prepareStatement(QRY_DELETE_USR);
+			ps.setString(1, usuario.getNomUsu());
+			resultado = ps.executeUpdate();
+		} catch (SQLException e) {
+			logger.fatal("Excepcion al eliminarUsuario: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return resultado;
+	}
 
 }

@@ -9,12 +9,16 @@
 <body>
 ACA VA: <br>
 <%
-	String nomUsu = (String) request.getAttribute("usr");
+	String nomUsu = (String) session.getAttribute("usr");
 	if(nomUsu != null) {
 %>
     	<h1>Hi welcome <%=nomUsu%> </h1><br>
     	<a href="login.jsp">Back to Login</a>    
 <%
+	} else {
+%>
+	<h1>No se encontro el usuario en sesion. </h1><br>
+<%		
 	}
 %>
 </body>

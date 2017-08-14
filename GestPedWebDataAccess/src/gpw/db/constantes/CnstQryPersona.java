@@ -36,8 +36,32 @@ public interface CnstQryPersona {
 													+ "WHERE p.sinc = 'N'"
 													+ "AND p.fecha_reg::date BETWEEN ? AND ?";
 	
+	public static final String QRY_SELECT_PERS_GENERIC = "SELECT tipo FROM persona WHERE id_persona = ?";
+	
+	public static final String QRY_INSERT_PERS = "INSERT INTO persona "
+													+ "(id_persona, direccion, puerta, solar, manzana, km, complemento, telefono, celular, email, fecha_reg, tipo, id_loc, origen, sinc, ult_act) "
+													+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	
 	public static final String QRY_UPDATE_PERS_SINC = "UPDATE persona SET sinc = ?, ult_act = ? "
 													+ "WHERE id_persona = ?";
 	
-	public static final String QRY_SELECT_PERS_GENERIC = "SELECT tipo FROM persona WHERE id_persona = ?";
+	public static final String QRY_INSERT_PF = "INSERT INTO pers_fisica "
+													+ "(documento, id_tipo_doc, apellido1, apellido2, nombre1, nombre2, fecha_nac, sexo) "
+													+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+	public static final String QRY_INSERT_PJ = "INSERT INTO pers_juridica "
+													+ "(rut, nombre, razon_social, bps, bse, es_prov) "
+													+ "VALUES (?, ?, ?, ?, ?, ?)";
+	
+	public static final String QRY_UPDATE_PERS = "UPDATE persona "
+													+ "SET id_persona = ?, direccion = ?, puerta = ?, solar = ?, manzana = ?, km = ?, complemento = ?, telefono = ?, celular = ?, email = ?, fecha_reg = ?, id_loc = ?, origen = ?, sinc = ?, ult_act = ? "
+													+ "WHERE id_persona = ?";//INFO: tipo no va a proposito, no se puede cambiar tipo de persona
+	
+	public static final String QRY_UPDATE_PF = "UPDATE pers_fisica "
+													+ "SET id_tipo_doc = ?, apellido1 = ?, apellido2 = ?, nombre1 = ?, nombre2 = ?, fecha_nac = ?, sexo = ? "
+													+ "WHERE documento = ?";
+	
+	public static final String QRY_UPDATE_PJ = "UPDATE pers_juridica "
+													+ "SET nombre = ?, razon_social = ?, bps = ?, bse = ?, es_prov = ? "
+													+ "WHERE rut = ?";
 }

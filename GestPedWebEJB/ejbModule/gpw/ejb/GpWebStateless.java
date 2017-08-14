@@ -2,6 +2,7 @@ package gpw.ejb;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.ejb.EJBContext;
@@ -13,9 +14,15 @@ import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 
+import gpw.dominio.persona.Departamento;
+import gpw.dominio.persona.Localidad;
 import gpw.dominio.usuario.UsuarioWeb;
 import gpw.exceptions.PersistenciaException;
+import gpw.interfaces.persona.IPersDepLoc;
+import gpw.interfaces.persona.IPersPersona;
 import gpw.interfaces.usuario.IPersUsuario;
+import gpw.persistencia.persona.PersistenciaDepLoc;
+import gpw.persistencia.persona.PersistenciaPersona;
 import gpw.persistencia.usuario.PersistenciaUsuario;
 
 /**
@@ -35,12 +42,26 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 	private EJBContext context;
 	
 	private static IPersUsuario interfaceUsuario;
+	private static IPersPersona interfacePersona;
+	private static IPersDepLoc interfaceDepLoc;
 	
 	private static IPersUsuario getInterfaceUsuario() {
 		if(interfaceUsuario == null) {
 			interfaceUsuario = new PersistenciaUsuario();
 		}
 		return interfaceUsuario;
+	}
+	private static IPersPersona getInterfacePersona() {
+		if(interfacePersona == null) {
+			interfacePersona = new PersistenciaPersona();
+		}
+		return interfacePersona;
+	}
+	private static IPersDepLoc getInterfaceDepLoc() {
+		if(interfaceDepLoc == null) {
+			interfaceDepLoc = new PersistenciaDepLoc();
+		}
+		return interfaceDepLoc;
 	}
 	
     /**
@@ -49,6 +70,11 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
     public GpWebStateless() {
     }
 
+    
+    /*****************************************************************************************************************************************************/
+	/* USUARIO */
+	/*****************************************************************************************************************************************************/
+    
 	@Override
 	public UsuarioWeb obtenerUsuario(String nombreUsuario, String password) throws PersistenciaException {
 		logger.info("Se ingresa a obtenerUsuario para " + nombreUsuario);
@@ -57,12 +83,97 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 			conn = ds.getConnection();
 			usuario = getInterfaceUsuario().obtenerUsuario(conn, nombreUsuario, password);
 		} catch (PersistenciaException | SQLException e) {
-			logger.fatal("Excepcion en ManagerUsuario > obtenerUsuario: " + e.getMessage(), e);
+			logger.fatal("Excepcion en GpWebStateless > obtenerUsuario: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
 		}
 		return usuario;
 	}
-    
+
+	@Override
+	public Integer guardarUsuario(UsuarioWeb usr) throws PersistenciaException {
+		logger.info("Se ingresa a guardarUsuario para " + usr.getNomUsu());
+		Integer resultado = null;
+		try {
+			conn = ds.getConnection();
+			resultado = getInterfaceUsuario().guardarUsuario(conn, usr);
+		} catch (PersistenciaException | SQLException e) {
+			logger.fatal("Excepcion en GpWebStateless > guardarUsuario: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return resultado;
+	}
+
+	@Override
+	public Integer modificarUsuario(UsuarioWeb usr) throws PersistenciaException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer eliminarUsuario(UsuarioWeb usr) throws PersistenciaException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*****************************************************************************************************************************************************/
+	/* PERSONA */
+	/*****************************************************************************************************************************************************/
+	
+	@Override
+	public List<Departamento> obtenerListaDepartamentos() throws PersistenciaException {
+		logger.info("Se ingresa a obtenerListaDepartamentos...");
+		List<Departamento> listaDep = null;
+		try {
+			conn = ds.getConnection();
+			listaDep = getInterfaceDepLoc().obtenerListaDepartamentos(conn);
+		} catch (PersistenciaException | SQLException e) {
+			logger.fatal("Excepcion en GpWebStateless > obtenerListaDepartamentos: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return listaDep;
+	}
+
+	@Override
+	public Departamento obtenerDepartamentoPorId(Integer id) throws PersistenciaException {
+		logger.info("Se ingresa a obtenerDepartamentoPorId...");
+		Departamento dep = null;
+		try {
+			conn = ds.getConnection();
+			dep = getInterfaceDepLoc().obtenerDepartamentoPorId(conn, id);
+		} catch (PersistenciaException | SQLException e) {
+			logger.fatal("Excepcion en GpWebStateless > obtenerDepartamentoPorId: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return dep;
+	}
+
+	@Override
+	public List<Localidad> obtenerListaLocPorDep(Integer idDep) throws PersistenciaException {
+		logger.info("Se ingresa a obtenerListaLocPorDep...");
+		List<Localidad> listaLoc = null;
+		try {
+			conn = ds.getConnection();
+			listaLoc = getInterfaceDepLoc().obtenerListaLocPorDep(conn, idDep);
+		} catch (PersistenciaException | SQLException e) {
+			logger.fatal("Excepcion en GpWebStateless > obtenerListaLocPorDep: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return listaLoc;
+	}
+
+	@Override
+	public Localidad obtenerLocalidadPorId(Integer idLoc) throws PersistenciaException {
+		logger.info("Se ingresa a obtenerLocalidadPorId...");
+		Localidad loc = null;
+		try {
+			conn = ds.getConnection();
+			loc = getInterfaceDepLoc().obtenerLocalidadPorId(conn, idLoc);
+		} catch (PersistenciaException | SQLException e) {
+			logger.fatal("Excepcion en GpWebStateless > obtenerLocalidadPorId: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return loc;
+	}
     
 
 }

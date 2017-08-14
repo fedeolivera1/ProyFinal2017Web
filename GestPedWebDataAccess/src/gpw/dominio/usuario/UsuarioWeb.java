@@ -2,13 +2,16 @@ package gpw.dominio.usuario;
 
 import java.io.Serializable;
 
+import gpw.dominio.persona.Persona;
+
 public class UsuarioWeb implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	private String nomUsu;
 	private String pass;
+	private Persona persona;
 	
-	//Constructores
+
 	public UsuarioWeb(String nomUsur, String pass){
 		this.nomUsu = nomUsur;
 		this.pass = pass;
@@ -16,8 +19,7 @@ public class UsuarioWeb implements Serializable {
 	
 	public UsuarioWeb() {
 	}
-	
-	//Set y get
+
 	
 	public String getNomUsu() {
 		return nomUsu;
@@ -33,9 +35,16 @@ public class UsuarioWeb implements Serializable {
 		this.pass = pass;
 	}
 	
+	public Persona getPersona() {
+		return persona;
+	}
+	public void setPersona(Persona persona) {
+		this.persona = persona;
+	}
+
 	@Override
 	public String toString() {
-	    return nomUsu;
+		return nomUsu;
 	}
 
 }

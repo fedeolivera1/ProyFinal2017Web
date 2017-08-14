@@ -23,6 +23,9 @@
 
 	<script type="text/javascript" src="assets/js/jquery-3.2.1.min.js"></script>
 	<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+	<!--     Incluyo el JS propio del proyecto -->
+    <script type="text/javascript" src="assets/js/gestped-web.js"></script>
+	<!--     Incluyo js de criptografia -->
 	<script type="text/javascript" src="assets/js/core.js"></script>  
 	<script type="text/javascript" src="assets/js/md5.js"></script>  
 	
@@ -38,11 +41,13 @@
   </head>
 
   <body>
-
+	<div class="page-alerts">
+	    <div id="alert_placeholder"></div>
+	</div>
     <div class="container">
 
 		<div class="panel-heading" align="center">
-			<h4><b><font color="black">Gestor de Pedidos WEB</font> </b></h4>
+			<h2><b><font color="black">Gestor de Pedidos WEB</font> </b></h2>
 		</div>
       <form class="form-signin" action="ServletLogin" id="loginForm">
 		<h2 class="form-signin-heading">Login:</h2>
@@ -58,7 +63,7 @@
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
         <button class="btn btn-lg btn-default btn-block" type="reset"><b>Clean</b></button>
         <div class="form-control-static">
-			<a href="pages/RegistroPersona.jsp">Registrarme</a>
+			<a href="RegistroPersona.jsp">Registrarme</a>
 		</div>
       </form>
 
@@ -73,7 +78,7 @@ $("#loginForm").submit(function( event ) {
     var $form = $( this );
 
     // We want to customize what we post, therefore we format our data
-    var data = "txtNomUsu="+ $('#txtNomUsu').val() +"&txtPassWd=" + CryptoJS.MD5($('#txtPassWd').val());
+    var data = "txtNomUsu=" + $('#txtNomUsu').val() + "&txtPassWd=" + CryptoJS.MD5($('#txtPassWd').val());
 
     // For debugging purposes... see your console:
     // Prints out for example: login=myLoginName&passwordHash=a011a78a0c8d9e4f0038a5032d7668ab
@@ -89,9 +94,10 @@ $("#loginForm").submit(function( event ) {
             console.log(data);
             // redirecting example..
             if(data === "SUCCESS") {
-              	window.location.replace('/GestPedWeb/success.jsp');
+              	window.location.replace('/GestPedWeb/Pedido.jsp');
+            } else {
+            	bootstrap_alert.danger('El usuario no se ha podido autenticar.');
             }
-
         }
     });
 

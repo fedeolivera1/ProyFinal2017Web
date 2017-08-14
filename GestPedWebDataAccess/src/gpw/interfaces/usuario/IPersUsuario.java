@@ -9,8 +9,8 @@ public interface IPersUsuario {
 
 	public UsuarioWeb obtenerUsuario(Connection conn, String nombreUsuario, String password) throws PersistenciaException;
 //	public UsuarioWeb obtenerUsuarioPorId(Connector conn, String nombreUsuario) throws PersistenciaException;
-//	public Integer guardarUsuario(Connector conn, UsuarioWeb usuario) throws PersistenciaException;
-//	public Integer modificarUsuario(Connector conn, UsuarioWeb usuario) throws PersistenciaException;
-//	public Integer eliminarUsuario(Connector conn, UsuarioWeb usuario) throws PersistenciaException;
+	public Integer guardarUsuario(Connection conn, UsuarioWeb usuario) throws PersistenciaException;
+	public Integer modificarUsuario(Connection conn, UsuarioWeb usuario) throws PersistenciaException;
+	public Integer eliminarUsuario(Connection conn, UsuarioWeb usuario) throws PersistenciaException;
 	
 }

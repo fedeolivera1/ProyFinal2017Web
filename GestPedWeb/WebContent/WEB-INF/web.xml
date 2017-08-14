@@ -5,6 +5,7 @@
   <welcome-file-list>
     <welcome-file>login.jsp</welcome-file>
   </welcome-file-list>
+  
   <servlet>
     <description></description>
     <display-name>ServletLogin</display-name>
@@ -14,6 +15,39 @@
   <servlet-mapping>
     <servlet-name>ServletLogin</servlet-name>
     <url-pattern>/ServletLogin</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <description></description>
+    <display-name>ServletIngresoPersona</display-name>
+    <servlet-name>ServletIngresoPersona</servlet-name>
+    <servlet-class>gpw.servlets.ServletIngresoPersona</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ServletIngresoPersona</servlet-name>
+    <url-pattern>/ServletIngresoPersona</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <description></description>
+    <display-name>ServletObtDep</display-name>
+    <servlet-name>ServletObtDep</servlet-name>
+    <servlet-class>gpw.servlets.ServletObtDep</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ServletObtDep</servlet-name>
+    <url-pattern>/ServletObtDep</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <description></description>
+    <display-name>ServletObtLoc</display-name>
+    <servlet-name>ServletObtLoc</servlet-name>
+    <servlet-class>gpw.servlets.ServletObtLoc</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ServletObtLoc</servlet-name>
+    <url-pattern>/ServletObtLoc</url-pattern>
   </servlet-mapping>
   
 </web-app>
