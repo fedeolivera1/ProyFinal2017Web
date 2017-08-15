@@ -47,6 +47,16 @@ bootstrap_alert.close = function() {
 	}, 0);
 }
 
+/**
+ * 
+ */
+function cargarCbxTd(response) {
+	$("#selTipoDoc").empty();
+    $.each(response, function () {
+        $("#selTipoDoc").append($("<option></option>").val(this['idTipoDoc']).html(this['nombre']));
+    });
+}
+
 
 /**
  * departamentos y localidades
@@ -58,17 +68,17 @@ function cargarCbxDep(response) {
     });
 }
 
-//function cargarCbxLoc() {
-	alert('llega cargarCbxLoc');
+function cargarCbxLoc() {
 	$(function(){
 		var fillCbxLoc = function() {
 			var selected = $('#selDep').val();
-			
+			var data = "idDep=" + selected;
 			 $.ajax({
-	            type: "POST",
+	            type: "post",
 	            url: "ServletObtLoc",
-	            contentType: "application/json",              
-	            dataType: "json",
+//	            contentType: "application/json",              
+//	            dataType: "json",
+	            data: data,
 	            success: function(response) {
 	            	$('#selLoc').empty();
 	            	$.each(response, function () {
@@ -82,11 +92,22 @@ function cargarCbxDep(response) {
 		$('#selDep').change(fillCbxLoc);
 		fillCbxLoc();
 	});
-//}
+}
 
 /**
  * metodo que cambia div para mostrar datos de pf o pj
  */
-function deplegarTipoPers(tipo) {
-	
-}
+//function deplegarTipoPers(tipo) {
+$(document).ready(function() {
+	$('#tipoPers').on('change', function() {
+	    var valorCambiado = $(this).val();
+	    if((valorCambiado == 'J')) {
+	    	$('#divPf').css('display','none');
+	    	$('#divPj').css('display','block');
+	     } else {
+	    	 $('#divPf').css('display','block');
+	    	 $('#divPj').css('display','none');
+	     }
+	});
+});
+//}

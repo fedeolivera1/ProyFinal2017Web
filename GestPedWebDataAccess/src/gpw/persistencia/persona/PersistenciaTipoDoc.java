@@ -43,53 +43,6 @@ public class PersistenciaTipoDoc extends Conector implements IPersTipoDoc, CnstQ
 		}
 		return tipoDoc;
 	}
-	
-	@Override
-	public Integer guardarTipoDoc(Connection conn, TipoDoc tipoDoc) throws PersistenciaException {
-		Integer resultado = null;
-		GenSqlExecType genExec = new GenSqlExecType(QRY_INSERT_TIPODOC);
-		genExec.setParam(tipoDoc.getIdTipoDoc());
-		genExec.setParam(tipoDoc.getNombre());
-		try {
-			resultado = (Integer) runGeneric(conn, genExec);
-		} catch (ConectorException e) {
-//			Conector.rollbackConn(conn);//TODO sacar
-			logger.fatal("Excepcion al guardarTipoProd: " + e.getMessage(), e);
-			throw new PersistenciaException(e);
-		}
-		return resultado;
-	}
-
-	@Override
-	public Integer modificarTipoDoc(Connection conn, TipoDoc tipoDoc) throws PersistenciaException {
-		Integer resultado = null;
-		GenSqlExecType genExec = new GenSqlExecType(QRY_UPDATE_TIPODOC);
-		genExec.setParam(tipoDoc.getNombre());
-		genExec.setParam(tipoDoc.getIdTipoDoc());
-		try {
-			resultado = (Integer) runGeneric(conn, genExec);
-		} catch (ConectorException e) {
-//			Conector.rollbackConn(conn);//TODO sacar
-			logger.fatal("Excepcion al modificarTipoProd: " + e.getMessage(), e);
-			throw new PersistenciaException(e);
-		}
-		return resultado;
-	}
-
-	@Override
-	public Integer eliminarTipoDoc(Connection conn, TipoDoc tipoDoc) throws PersistenciaException {
-		Integer resultado = null;
-		GenSqlExecType genExec = new GenSqlExecType(QRY_DELETE_TIPODOC);
-		genExec.setParam(tipoDoc.getIdTipoDoc());
-		try {
-			resultado = (Integer) runGeneric(conn, genExec);
-		} catch (ConectorException e) {
-//			Conector.rollbackConn(conn);//TODO sacar
-			logger.fatal("Excepcion al eliminarTipoProd: " + e.getMessage(), e);
-			throw new PersistenciaException(e);
-		}
-		return resultado;
-	}
 
 	@Override
 	public List<TipoDoc> obtenerListaTipoDoc(Connection conn) throws PersistenciaException {

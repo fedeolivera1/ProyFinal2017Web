@@ -12,6 +12,7 @@ import gpw.dominio.usuario.UsuarioWeb;
 import gpw.exceptions.PersistenciaException;
 import gpw.interfaces.usuario.IPersUsuario;
 import gpw.persistencia.conector.Conector;
+import gpw.persistencia.persona.PersistenciaPersona;
 
 /**
  * COMENTARIO GENERAL PARA LA CLASE PersistenciaUsuario:
@@ -28,6 +29,7 @@ public class PersistenciaUsuario extends Conector implements IPersUsuario, CnstQ
 	public UsuarioWeb obtenerUsuario(Connection conn, String nombreUsuario, String passwd) throws PersistenciaException {
 		logger.info("Ejecucion de obtenerUsuario para: " + nombreUsuario);
 		UsuarioWeb usuario = null;
+		PersistenciaPersona pp = new PersistenciaPersona();
 		try {
 			PreparedStatement ps = conn.prepareStatement(QRY_LOGIN);
 			ps.setString(1, nombreUsuario);
@@ -35,8 +37,9 @@ public class PersistenciaUsuario extends Conector implements IPersUsuario, CnstQ
 			rs = ps.executeQuery();
 			if(rs.next()) {
 				usuario = new UsuarioWeb();
-				usuario.setNomUsu(nombreUsuario);
-				usuario.setPass(passwd);
+				usuario.setNomUsu(rs.getString("nom_usu"));
+//				usuario.setPass(passwd);//no obtengo la password
+				usuario.setPersona(pp.obtenerPersGenerico(conn, rs.getLong("id_persona")));
 			}
 		} catch (SQLException e) {
 			logger.fatal("Excepcion al obtenerUsuario: " + e.getMessage(), e);
@@ -55,6 +58,7 @@ public class PersistenciaUsuario extends Conector implements IPersUsuario, CnstQ
 			PreparedStatement ps = conn.prepareStatement(QRY_INSERT_USR);
 			ps.setString(1, usuario.getNomUsu());
 			ps.setString(2, usuario.getPass());
+			ps.setLong(3, usuario.getPersona().getIdPersona());
 			resultado = ps.executeUpdate();
 		} catch (SQLException e) {
 			logger.fatal("Excepcion al guardarUsuario: " + e.getMessage(), e);

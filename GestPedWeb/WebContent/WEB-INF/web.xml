@@ -30,6 +30,17 @@
   
   <servlet>
     <description></description>
+    <display-name>ServletObtTipoDoc</display-name>
+    <servlet-name>ServletObtTipoDoc</servlet-name>
+    <servlet-class>gpw.servlets.ServletObtTipoDoc</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ServletObtTipoDoc</servlet-name>
+    <url-pattern>/ServletObtTipoDoc</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <description></description>
     <display-name>ServletObtDep</display-name>
     <servlet-name>ServletObtDep</servlet-name>
     <servlet-class>gpw.servlets.ServletObtDep</servlet-class>

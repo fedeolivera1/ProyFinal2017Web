@@ -26,10 +26,11 @@
     <script type="text/javascript" src="assets/js/gestped-web.js"></script>
 </head>
 <body>
+	<!-- NAV BAR -->
 	<nav class="navbar navbar-default">
 	  <div class="container-fluid">
 	    <div class="navbar-header">
-	      <a class="navbar-brand" href="#">Gestor de Pedidos WEB</a>
+	      <a class="navbar-brand">Gestor de Pedidos WEB</a>
 	    </div>
 	    <ul class="nav navbar-nav">
 	      <li><a href="RegistroPersona.jsp">Mis Datos</a></li>
@@ -37,6 +38,7 @@
 	    </ul>
 	  </div>
 	</nav>
+	<!-- ALERTS -->
 	<div class="page-alerts">
 	    <div id="alert_placeholder"></div>
 	</div>
