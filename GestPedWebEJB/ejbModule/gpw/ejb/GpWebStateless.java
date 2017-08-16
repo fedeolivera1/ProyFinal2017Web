@@ -20,6 +20,8 @@ import gpw.dominio.persona.PersonaFisica;
 import gpw.dominio.persona.PersonaJuridica;
 import gpw.dominio.persona.TipoDoc;
 import gpw.dominio.usuario.UsuarioWeb;
+import gpw.dominio.util.Origen;
+import gpw.dominio.util.Sinc;
 import gpw.exceptions.PersistenciaException;
 import gpw.interfaces.persona.IPersDepLoc;
 import gpw.interfaces.persona.IPersPersona;
@@ -107,6 +109,8 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 		Integer resultado = null;
 		try {
 			conn = ds.getConnection();
+			usr.getPersona().setOrigen(Origen.W);
+			usr.getPersona().setSinc(Sinc.N);
 			if(usr.getPersona() instanceof PersonaFisica) {
 				PersonaFisica pf = (PersonaFisica) usr.getPersona();
 				getInterfacePersona().guardarPersFisica(conn, pf);
@@ -116,6 +120,7 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 			}
 			resultado = getInterfaceUsuario().guardarUsuario(conn, usr);
 		} catch (PersistenciaException | SQLException e) {
+			context.setRollbackOnly();
 			logger.fatal("Excepcion en GpWebStateless > guardarUsuario: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
 		}
@@ -141,8 +146,16 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 	//tipo doc
 	@Override
 	public TipoDoc obtenerTipoDocPorId(Integer id) throws PersistenciaException {
-		// TODO Auto-generated method stub
-		return null;
+		logger.info("Se ingresa a obtenerListaDepartamentos...");
+		TipoDoc tipoDoc = null;
+		try {
+			conn = ds.getConnection();
+			tipoDoc = getInterfaceTipoDoc().obtenerTipoDocPorId(conn, id);
+		} catch (PersistenciaException | SQLException e) {
+			logger.fatal("Excepcion en GpWebStateless > obtenerTipoDocPorId: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return tipoDoc;
 	}
 	@Override
 	public List<TipoDoc> obtenerListaTipoDoc() throws PersistenciaException {
@@ -152,7 +165,7 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 			conn = ds.getConnection();
 			listaTd = getInterfaceTipoDoc().obtenerListaTipoDoc(conn);
 		} catch (PersistenciaException | SQLException e) {
-			logger.fatal("Excepcion en GpWebStateless > obtenerListaDepartamentos: " + e.getMessage(), e);
+			logger.fatal("Excepcion en GpWebStateless > obtenerListaTipoDoc: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
 		}
 		return listaTd;

@@ -19,6 +19,17 @@
   
   <servlet>
     <description></description>
+    <display-name>ServletLogout</display-name>
+    <servlet-name>ServletLogout</servlet-name>
+    <servlet-class>gpw.servlets.ServletLogout</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ServletLogout</servlet-name>
+    <url-pattern>/ServletLogout</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <description></description>
     <display-name>ServletIngresoPersona</display-name>
     <servlet-name>ServletIngresoPersona</servlet-name>
     <servlet-class>gpw.servlets.ServletIngresoPersona</servlet-class>

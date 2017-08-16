@@ -3,6 +3,8 @@ package gpw.types;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -169,6 +171,24 @@ public class Fecha extends GregorianCalendar {
 			GregorianCalendar gc = xmlGc.toGregorianCalendar();
 			super.setTime(gc.getTime());
 			setFormato(formato);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param String con la fecha
+	 * setea una fecha a partir de un String
+	 */
+	public Fecha(String fechaStr, int formato) {
+		SimpleDateFormat sdf;
+		if(formato == DMA) {
+			sdf = new SimpleDateFormat("dd/MM/yyyy");
+			try {
+				super.setTime(sdf.parse(fechaStr));
+				setFormato(formato);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	

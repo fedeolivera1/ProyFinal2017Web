@@ -97,17 +97,36 @@ function cargarCbxLoc() {
 /**
  * metodo que cambia div para mostrar datos de pf o pj
  */
-//function deplegarTipoPers(tipo) {
 $(document).ready(function() {
+	
 	$('#tipoPers').on('change', function() {
 	    var valorCambiado = $(this).val();
 	    if((valorCambiado == 'J')) {
-	    	$('#divPf').css('display','none');
-	    	$('#divPj').css('display','block');
+	    	$('#divPf').find('*').hide();
+	    	$('#divPf').hide();
+	    	$('#divPj').find('*').show();
+	    	$('#divPj').show();
+	    	
+	    	document.getElementById("rut").required = true;
+	    	document.getElementById("nombrePj").required = true;
+	    	document.getElementById("documento").required = false;
+	    	document.getElementById("nombrePf1").required = false;
+	    	document.getElementById("apellidoPf1").required = false;
+	    	document.getElementById("fNac").required = false;
+	    	$('#ingrPersForm').validator('update');
 	     } else {
-	    	 $('#divPf').css('display','block');
-	    	 $('#divPj').css('display','none');
+	    	$('#divPj').find('*').hide();
+	    	$('#divPj').hide();
+	    	$('#divPf').find('*').show();
+			$('#divPf').show();
+			
+			document.getElementById("rut").required = false;
+	    	document.getElementById("nombrePj").required = false;
+	    	document.getElementById("documento").required = true;
+	    	document.getElementById("nombrePf1").required = true;
+	    	document.getElementById("apellidoPf1").required = true;
+	    	document.getElementById("fNac").required = true;
+	    	$('#ingrPersForm').validator('update');
 	     }
 	});
 });
-//}

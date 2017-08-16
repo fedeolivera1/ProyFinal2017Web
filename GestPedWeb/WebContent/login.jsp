@@ -49,21 +49,21 @@
 		<div class="panel-heading" align="center">
 			<h2><b><font color="black">Gestor de Pedidos WEB</font> </b></h2>
 		</div>
-      <form class="form-signin" action="ServletLogin" id="loginForm">
-		<h2 class="form-signin-heading">Login:</h2>
-        <label for="inputEmail" class="sr-only">Direccion de Email</label>
-        <input type="email" name="txtNomUsu" id="txtNomUsu" class="form-control" placeholder="Email" required="" autofocus="">
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" name="txtPassWd" id="txtPassWd" class="form-control" placeholder="Password" required="">
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="remember-me"> Remember me
-          </label>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        <button class="btn btn-lg btn-default btn-block" type="reset"><b>Clean</b></button>
-        <div class="form-control-static">
-			<a href="RegistroPersona.jsp">Registrarme</a>
+		<form class="form-signin" action="ServletLogin" method="post" id="loginForm">
+			<h2 class="form-signin-heading">Login:</h2>
+		      	<label for="inputEmail" class="sr-only">Direccion de Email</label>
+		      	<input type="email" name="txtNomUsu" id="txtNomUsu" class="form-control" placeholder="Email" required="" autofocus="">
+				<label for="inputPassword" class="sr-only">Password</label>
+			    <input type="password" name="txtPassWd" id="txtPassWd" class="form-control" placeholder="Password" required="">
+			    <div class="checkbox">
+			    	<label>
+			        	<input type="checkbox" value="remember-me"> Remember me
+		        	</label>
+			    </div>
+			    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+			    <button class="btn btn-lg btn-default btn-block" type="reset"><b>Clean</b></button>
+			    <div class="form-control-static">
+				<a href="registroPersona.jsp">Registrarme</a>
 		</div>
       </form>
 
@@ -93,8 +93,8 @@ $("#loginForm").submit(function( event ) {
             console.log("Hey, we got reply form java side, with following data: ");
             console.log(data);
             // redirecting example..
-            if(data === "SUCCESS") {
-              	window.location.replace('/GestPedWeb/Pedido.jsp');
+            if(data === "success") {
+              	window.location.replace('/GestPedWeb/pedido.jsp');
             } else {
             	bootstrap_alert.danger('El usuario no se ha podido autenticar.');
             }
