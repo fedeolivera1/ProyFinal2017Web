@@ -12,6 +12,7 @@
     <!-- Bootstrap -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="assets/css/gestped-web.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -30,6 +31,9 @@
 	<script type="text/javascript" src="assets/js/md5.js"></script>  
 	<!-- DATETIMEPICKER -->
     <script type="text/javascript" src="bootstrap/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="bootstrap/js/bootstrap-datetimepicker.es.js"></script>
+	<!--     Validator -->
+    <script type="text/javascript" src="bootstrap/js/validator.js"></script>
 	
  </head>
  <body>
@@ -41,7 +45,7 @@
 	    </div>
 	    <ul class="nav navbar-nav">
 	      <li class="active"><a href="#">Mis Datos</a></li>
-	      <li><a href="Pedido.jsp">Pedidos</a></li>
+	      <li><a href="pedido.jsp">Pedidos</a></li>
 	    </ul>
 	  </div>
 	</nav>
@@ -50,7 +54,7 @@
 	    <div id="alert_placeholder"></div>
 	</div>
 	
-	<form class="form-horizontal" action="ServletIngresoPersona" id="ingrPersForm">
+	<form class="form-horizontal" action="ServletIngresoPersona" method="post" id="ingrPersForm"  data-toggle="validator">
 		<fieldset>
 		
 		<!-- Form Name -->
@@ -60,7 +64,8 @@
 		<div class="form-group col-md-12">
 		  <label class="col-md-4 control-label" for="emailReg">Usuario Email</label>  
 		  <div class="col-md-4">
-		  <input id="emailReg" name="emailReg" type="email" placeholder="Usuario Email" class="form-control input-md" required="">
+		  <input id="emailReg" name="emailReg" type="email" placeholder="Usuario Email" class="form-control input-md" required>
+		  <div class="help-block with-errors"></div>
 		  </div>
 		</div>
 		
@@ -68,7 +73,8 @@
 		<div class="form-group col-md-12">
 		  <label class="col-md-4 control-label" for="passwdReg1">Password</label>
 		  <div class="col-md-4">
-		    <input id="passwdReg1" name="passwdReg1" type="password" placeholder="Password" class="form-control input-md" required="">
+		    <input id="passwdReg1" name="passwdReg1" type="password" placeholder="Password" class="form-control input-md" required>
+		    <div class="help-block with-errors"></div>
 		  </div>
 		</div>
 		
@@ -76,7 +82,9 @@
 		<div class="form-group col-md-12">
 		  <label class="col-md-4 control-label" for="passwdReg2">Confirme Password</label>
 		  <div class="col-md-4">
-		    <input id="passwdReg2" name="passwdReg2" type="password" placeholder="Confirme Password" class="form-control input-md" required="">
+		    <input id="passwdReg2" name="passwdReg2" type="password" placeholder="Confirme Password" class="form-control input-md" 
+		    		data-match="#passwdReg1" data-match-error="Oops! Las passwords no coinciden">
+    		<div class="help-block with-errors"></div>
 		  </div>
 		</div>
 		
@@ -108,14 +116,16 @@
 			<div class="form-group col-md-12">
 			  <label class="col-md-4 control-label" for="nombre">Documento</label>  
 			  <div class="col-md-4">
-			  <input id="documento" name="documento" type="text" placeholder="Documento" class="form-control input-md" required="">
+			  <input id="documento" name="documento" type="text" pattern="[0-9]{1,}" placeholder="Documento" class="form-control input-md" required>
+			  <div class="help-block with-errors"></div>
 			  </div>
 			</div>
 			<!-- Text input [Primer Nombre]-->
 			<div class="form-group col-md-12">
 			  <label class="col-md-4 control-label" for="nombre">Primer Nombre</label>  
 			  <div class="col-md-4">
-			  <input id="nombrePf1" name="nombrePf1" type="text" placeholder="Primer Nombre" class="form-control input-md" required="">
+			  <input id="nombrePf1" name="nombrePf1" type="text" placeholder="Primer Nombre" class="form-control input-md" required>
+			  <div class="help-block with-errors"></div>
 			  </div>
 			</div>
 			<!-- Text input [Segundo Nombre]-->
@@ -130,14 +140,15 @@
 			<div class="form-group col-md-12">
 			  <label class="col-md-4 control-label" for="apellido">Primer Apellido</label>  
 			  <div class="col-md-4">
-			  <input id="apellidoPf1" name="apellidoPf1" type="text" placeholder="Primer Apellido" class="form-control input-md" required="">
+			  <input id="apellidoPf1" name="apellidoPf1" type="text" placeholder="Primer Apellido" class="form-control input-md" required>
+			  <div class="help-block with-errors"></div>
 			  </div>
 			</div>
 			<!-- Text input [Segundo Apellido]-->
 			<div class="form-group col-md-12">
 			  <label class="col-md-4 control-label" for="apellido">Segundo Apellido</label>  
 			  <div class="col-md-4">
-			  <input id="apellidoPf2" name="apellidoPf2" type="text" placeholder="Segundo Apellido" class="form-control input-md" required="">
+			  <input id="apellidoPf2" name="apellidoPf2" type="text" placeholder="Segundo Apellido" class="form-control input-md">
 			  </div>
 			</div>
 			<!-- Text input [Fecha Nac]-->
@@ -145,11 +156,12 @@
 			  <label class="col-md-4 control-label" for="FNac">Fecha Nacimiento</label>
 			  <div class="col-md-4">
 				<div class="col-md-5 input-group date" id="dtpFnac">
-		            <input type="text" class="form-control" />
+		            <input type="text" id="fNac" class="form-control" required/>
 		            <span class="input-group-addon">
 		                <span class="glyphicon glyphicon-calendar"></span>
 		            </span>
 	        	</div>
+				<div class="help-block with-errors"></div>
 			  </div>  
 			</div>
 			<!-- Text input [Sexo]-->
@@ -167,20 +179,21 @@
 		<!-- 	END DIV PF -->
 	
 		<!-- 	DIV PERSONA JURIDICA -->
-		<div id="divPj" class="oculto" style="display:none">
+		<div id="divPj" class="oculto">
 		
 			<!-- Text input [Rut]-->
 			<div class="form-group col-md-12">
 			  <label class="col-md-4 control-label" for="rut">Rut</label>  
 			  <div class="col-md-4">
-			  <input id="rut" name="rut" type="text" placeholder="Rut" class="form-control input-md" required="">
+			  <input id="rut" name="rut" type="text" pattern="[0-9]{1,}" placeholder="Rut" class="form-control input-md" >
+			  <div class="help-block with-errors"></div>
 			  </div>
 			</div>
 			<!-- Text input [Nombre]-->
 			<div class="form-group col-md-12">
 			  <label class="col-md-4 control-label" for="nombre">Nombre</label>  
 			  <div class="col-md-4">
-			  <input id="nombrePj" name="nombrePj" type="text" placeholder="Nombre" class="form-control input-md" required="">
+			  <input id="nombrePj" name="nombrePj" type="text" placeholder="Nombre" class="form-control input-md" >
 			  </div>
 			</div>
 			<!-- Text input [Razon Social]-->
@@ -204,6 +217,18 @@
 			  <input id="bse" name="bse" type="text" placeholder="Bse" class="form-control input-md">
 			  </div>
 			</div>
+			<!-- Check input [prov]-->
+			<div class="form-group col-md-12">
+			  <label class="col-md-4 control-label" for="nombre">Empresa proveedora</label>  
+			  <div class="col-md-4">
+				  <div class="btn-group" data-toggle="buttons">
+				  	<label class="btn btn-default">
+						<input type="checkbox" autocomplete="off">
+						<span class="glyphicon glyphicon-ok"></span>
+					</label>
+				  </div>
+		  		</div>
+			</div>
 			
 		</div>
 		<!-- 	END DIV PJ -->
@@ -211,21 +236,21 @@
 		<!-- Text input [Direccion]-->
 		<div class="form-group col-md-12">
 		  <label class="col-md-4 control-label" for="Direccion">Direccion</label>  
-		  <div class="col-md-4">
-		  <input id="direccion" name="direccion" type="text" placeholder="Direccion" class="form-control input-md">
-		    
-		  </div>
+		  	<div class="col-md-4">
+			  	<input id="direccion" name="direccion" type="text" placeholder="Direccion" class="form-control input-md" required>
+		    	<div class="help-block with-errors"></div>
+		  	</div>
 		</div>
 		
 		<!-- Text input [Puerta] y [Solar]-->
 		<div class="form-group col-md-12">
 		  <label class="col-md-4 control-label" for="Puerta">Puerta</label>  
 		  <div class="col-md-1">
-		  <input id="puerta" name="puerta" type="text" placeholder="Puerta" class="form-control input-md">
+		  	<input id="puerta" name="puerta" type="text" placeholder="Puerta" class="form-control input-md">
 		  </div>
 		  <label class="col-md-1 control-label" for="Solar">Solar</label>  
 		  <div class="col-md-1">
-		  <input id="solar" name="solar" type="text" placeholder="Solar" class="form-control input-md">
+		  	<input id="solar" name="solar" type="text" placeholder="Solar" class="form-control input-md">
 		  </div>
 		</div>
 		
@@ -233,11 +258,19 @@
 		<div class="form-group col-md-12">
 		  <label class="col-md-4 control-label" for="Manzana">Manzana</label>  
 		  <div class="col-md-1">
-		  <input id="manzana" name="manzana" type="text" placeholder="Manzana" class="form-control input-md">
+		  	<input id="manzana" name="manzana" type="text" placeholder="Manzana" class="form-control input-md">
 		  </div>
 		  <label class="col-md-1 control-label" for="Km">Km</label>  
 		  <div class="col-md-1">
-		  <input id="km" name="km" type="text" placeholder="Km" class="form-control input-md">
+		  	<input id="km" name="km" type="text" placeholder="Km" class="form-control input-md">
+		  </div>
+		</div>
+		
+		<!-- Text input [Complemento]-->
+		<div class="form-group col-md-12">
+		  <label class="col-md-4 control-label" for="Complemento">Complemento</label>  
+		  <div class="col-md-4">
+		  <input id="comp" name="comp" type="text" placeholder="Complemento" class="form-control input-md">
 		  </div>
 		</div>
 		
@@ -245,7 +278,7 @@
 		<div class="form-group col-md-12">
 		  <label class="col-md-4 control-label" for="Telefono">Telefono</label>  
 		  <div class="col-md-4">
-		  <input id="telefono" name="telefono" type="text" placeholder="Telefono" class="form-control input-md" required="">
+		  	<input id="telefono" name="telefono" type="text" placeholder="Telefono" class="form-control input-md">
 		  </div>
 		</div>
 		
@@ -253,7 +286,7 @@
 		<div class="form-group col-md-12">
 		  <label class="col-md-4 control-label" for="Celular">Celular</label>  
 		  <div class="col-md-4">
-		  <input id="Celular" name="Celular" type="text" placeholder="Celular" class="form-control input-md">
+		  <input id="celular" name="celular" type="text" placeholder="Celular" class="form-control input-md">
 		  </div>
 		</div>
 		
@@ -270,8 +303,9 @@
 		<div class="form-group col-md-12">
 		  <label class="col-md-4 control-label" for="Localidad">Localidad</label>
 		  <div class="col-md-4" id="div-sel-loc">
-		    <select id="selLoc" name="selLoc" class="form-control" title="Seleccione localidad...">
+		    <select id="selLoc" name="selLoc" class="form-control" title="Seleccione localidad..." required>
 		    </select>
+		    <div class="help-block with-errors"></div>
 		  </div>
 		</div>
 		
@@ -293,12 +327,12 @@
 		format: 'dd/mm/yyyy',
         minView: 2,
         maxView: 4,
-        autoclose: true
+        autoclose: true,
+        language: 'es'
 	});
 
 	// document ready
 	$(document).ready(function() {
-        
 	    $.ajax({
             type: "post",
             url: "ServletObtTipoDoc",
@@ -319,66 +353,72 @@
 	    });
 
 	});
-  
-	$("#ingrPersForm").submit(function( event ) {
-	    // Stop form from submitting normally
-	    event.preventDefault();
-	
-	    // Get some values from elements on the page:
-	    var $form = $(this);
-	
-	    // We want to customize what we post, therefore we format our data
-	    var tipoPers = $('#tipoPers').val();
-	    var data = "emailReg="+ $('#emailReg').val() + 
-				    "&passwdReg1=" + CryptoJS.MD5($('#passwdReg1').val()) +
-				    "&passwdReg2=" + CryptoJS.MD5($('#passwdReg2').val()) +
-				    "&tipoPers=" + tipoPers;
-				    if(tipoPers == 'J') {
-					    data += "&documento=" + $('#documento').val() +
-						"&nombrePf1=" + $('#nombrePf1').val() +
-					    "&nombrePf2=" + $('#nombrePf2').val() +
-					    "&apellidoPf1=" + $('#apellidoPf1').val() +
-					    "&apellidoPf2=" + $('#apellidoPf2').val() +
-					    "&fNac=" + $('#dtpFnac').val() +
-					    "&sexo=" + $('#sexo').val();
-				    } else {
-				    	data += "&rut=" + $('#rut').val() +
-				    	"&nombrePj=" + $('#nombrePj').val() +
-					    "&razonSoc=" + $('#razonSoc').val() +
-					    "&apellidoPf1=" + $('#apellidoPf1').val() +
-					    "&apellidoPf2=" + $('#apellidoPf2').val();
-				    }
-				    data += "&direccion=" + $('#direccion').val() +
-				    "&puerta=" + $('#puerta').val() +
-				    "&solar=" + $('#solar').val() +
-				    "&manzana=" + $('#manzana').val() +
-				    "&km=" + $('#km').val() +
-				    "&telefono=" + $('#telefono').val() +
-				    "&celular=" + $('#celular').val() +
-				    "&localidad=" + $('#selLoc').val();
-				    
-	    // For debugging purposes... see your console:
-	    console.log(data);
-	
-	    // The actual from POST method
-	    $.ajax({
-	        type: $form.attr('method'),
-	        url:  $form.attr('action'),
-	        data: data,
-	        success: function (data) {
-	            console.log("Respuesta desde JAVA con la siguiente DATA: ");
-	            console.log(data);
-	            // redirecting
-	            if(data === "SUCCESS") {
-// 	              	window.location.replace('/GestPedWeb/success.jsp');
-	            	bootstrap_alert.success('Ingreso del usuario ok.');
-	            }
-	        },
-		    error:function (xhr, ajaxOptions, thrownError) {
-		    	bootstrap_alert.error(thrownError);
-		    }
-	    });
-	});   
+
+	//submit prevent default
+	$('#ingrPersForm').validator().on('submit', function (e) {
+		if (e.isDefaultPrevented()) {
+			alert('isDefaultPrevented');
+  			// manejo form inválido (opc)
+		} else {
+			e.preventDefault();
+			var $form = $(this);
+			var tipoPers = $('#tipoPers').val();
+			var dataUsr = "emailReg="+ $('#emailReg').val() + 
+			   "&passwdReg1=" + CryptoJS.MD5($('#passwdReg1').val()) +
+			   "&passwdReg2=" + CryptoJS.MD5($('#passwdReg2').val()) +
+			   "&tipoPers=" + tipoPers;
+			var dataPf = "";
+			var dataPj = "";
+			//pers
+			var dataPers = "&direccion=" + $('#direccion').val() +
+			   "&puerta=" + $('#puerta').val() +
+			   "&solar=" + $('#solar').val() +
+			   "&manzana=" + $('#manzana').val() +
+			   "&km=" + $('#km').val() +
+			   "&comp=" + $('#comp').val() +
+			   "&telefono=" + $('#telefono').val() +
+			   "&celular=" + $('#celular').val() +
+			   "&localidad=" + $('#selLoc').val();
+			   if(tipoPers == 'F') { //pf
+			    dataPf = "&tipoDoc=" + $('#selTipoDoc').val() +
+				"&idPersona=" + $('#documento').val() +
+				"&nombrePf1=" + $('#nombrePf1').val() +
+			    "&nombrePf2=" + $('#nombrePf2').val() +
+			    "&apellidoPf1=" + $('#apellidoPf1').val() +
+			    "&apellidoPf2=" + $('#apellidoPf2').val() +
+			    "&fNac=" + $('#fNac').val() +
+			    "&sexo=" + $('#sexo').val();
+			   } else { //pj
+			   	dataPj = "&idPersona=" + $('#rut').val() +
+			   	"&nombrePj=" + $('#nombrePj').val() +
+			    "&razonSoc=" + $('#razonSoc').val() +
+			    "&bps=" + $('#bps').val() +
+			    "&bse=" + $('#bse').val();
+			   }
+			var data = dataUsr + dataPf + dataPj + dataPers;
+		    // For debugging purposes... see your console:
+		    console.log(data);
+		
+		    $.ajax({
+		        type: $form.attr('method'),
+		        url:  $form.attr('action'),
+		        data: data,
+		        success: function (data) {
+		            console.log("Respuesta desde JAVA con la siguiente DATA: ");
+		            console.log(data);
+		            // redirecting
+		            if(data === "success") {
+		            	bootstrap_alert.success('Ingreso del usuario ok.');
+		            } else if(data === "error") {
+		            	bootstrap_alert.danger('Han surgido errores al ingresar el usuario.');
+			        }
+		        },
+			    error: function (xhr, ajaxOptions, thrownError) {
+			    	bootstrap_alert.error(thrownError);
+			    }
+		    });
+		  }
+	})
 
 </script>
 </html>

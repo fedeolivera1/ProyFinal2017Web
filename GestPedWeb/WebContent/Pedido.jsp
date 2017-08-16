@@ -1,3 +1,4 @@
+<%@page import="gpw.dominio.usuario.UsuarioWeb"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -26,6 +27,12 @@
     <script type="text/javascript" src="assets/js/gestped-web.js"></script>
 </head>
 <body>
+<%
+	if(session.getAttribute("usr") != null) {
+		UsuarioWeb usr = (UsuarioWeb) session.getAttribute("usr");
+		String nomUsu = usr.getNomUsu();
+		String sessionId = session.getId();
+%>
 	<!-- NAV BAR -->
 	<nav class="navbar navbar-default">
 	  <div class="container-fluid">
@@ -33,8 +40,10 @@
 	      <a class="navbar-brand">Gestor de Pedidos WEB</a>
 	    </div>
 	    <ul class="nav navbar-nav">
-	      <li><a href="RegistroPersona.jsp">Mis Datos</a></li>
+	      <li><a href="registroPersona.jsp">Mis Datos</a></li>
 	      <li class="active"><a href="#" class="active">Pedidos</a></li>
+	      <li><a>Usuario:&nbsp;${sessionScope.usuario}</a></li>
+	      <li><a href="ServletLogout?logout=<%=sessionId%>"><font color="red">Logout</font></a></li>
 	    </ul>
 	  </div>
 	</nav>
@@ -45,5 +54,9 @@
 	<br>
 	
 	PEDIDOS !!!
+<% 
+	}
+	
+%>
 </body>
 </html>
