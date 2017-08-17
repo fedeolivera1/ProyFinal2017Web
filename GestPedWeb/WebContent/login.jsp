@@ -49,7 +49,7 @@
 		<div class="panel-heading" align="center">
 			<h2><b><font color="black">Gestor de Pedidos WEB</font> </b></h2>
 		</div>
-		<form class="form-signin" action="ServletLogin" method="post" id="loginForm">
+		<form class="form-signin" action="ServletLogin" method="POST" id="loginForm">
 			<h2 class="form-signin-heading">Login:</h2>
 		      	<label for="inputEmail" class="sr-only">Direccion de Email</label>
 		      	<input type="email" name="txtNomUsu" id="txtNomUsu" class="form-control" placeholder="Email" required="" autofocus="">

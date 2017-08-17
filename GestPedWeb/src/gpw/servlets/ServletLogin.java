@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import gpw.dominio.usuario.UsuarioWeb;
 import gpw.ejb.GpWebStatelessLocal;
 import gpw.ejblookup.LookUps;
 import gpw.exceptions.PersistenciaException;
@@ -31,11 +30,10 @@ public class ServletLogin extends HttpServlet {
 			String nomUsuario = request.getParameter("txtNomUsu");
 			String passWd = request.getParameter("txtPassWd");
 			GpWebStatelessLocal gpwStLoc = LookUps.lookUpGpWebStateless();
-			UsuarioWeb usr = gpwStLoc.obtenerUsuario(nomUsuario, passWd);
+			String usr = gpwStLoc.loginUsuario(nomUsuario, passWd);
 			if(usr != null) {
 				HttpSession session = request.getSession();
-				session.setAttribute("usuario", usr.getNomUsu());
-				session.setAttribute("usr", usr);
+				session.setAttribute("usuario", usr);
 				session.setAttribute("id", session.getId());
 				
 				response.setContentType("text/plain");

@@ -16,10 +16,11 @@ public interface GpWebStatelessLocal {
 	/*
 	 * usuario
 	 */
-	public UsuarioWeb obtenerUsuario(String nombreUsuario, String password) throws PersistenciaException;
+	public String loginUsuario(String nombreUsuario, String password) throws PersistenciaException;
+	public UsuarioWeb obtenerUsuario(String nombreUsuario) throws PersistenciaException;
 //	public UsuarioWeb obtenerUsuarioPorId(String nombreUsuario, String password) throws PersistenciaException;
 	public Integer guardarUsuario(UsuarioWeb usr) throws PersistenciaException;
-	public Integer modificarUsuario(UsuarioWeb usr) throws PersistenciaException;
+	public Integer modificarUsuario(UsuarioWeb usr, Boolean modificaPasswd) throws PersistenciaException;
 	public Integer eliminarUsuario(UsuarioWeb usr) throws PersistenciaException;
 	
 	/*

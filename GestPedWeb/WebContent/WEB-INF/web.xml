@@ -30,13 +30,13 @@
   
   <servlet>
     <description></description>
-    <display-name>ServletIngresoPersona</display-name>
-    <servlet-name>ServletIngresoPersona</servlet-name>
-    <servlet-class>gpw.servlets.ServletIngresoPersona</servlet-class>
+    <display-name>ServletPersona</display-name>
+    <servlet-name>ServletPersona</servlet-name>
+    <servlet-class>gpw.servlets.ServletPersona</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>ServletIngresoPersona</servlet-name>
-    <url-pattern>/ServletIngresoPersona</url-pattern>
+    <servlet-name>ServletPersona</servlet-name>
+    <url-pattern>/ServletPersona</url-pattern>
   </servlet-mapping>
   
   <servlet>

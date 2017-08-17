@@ -28,9 +28,7 @@
 </head>
 <body>
 <%
-	if(session.getAttribute("usr") != null) {
-		UsuarioWeb usr = (UsuarioWeb) session.getAttribute("usr");
-		String nomUsu = usr.getNomUsu();
+	if(session.getAttribute("usuario") != null) {
 		String sessionId = session.getId();
 %>
 	<!-- NAV BAR -->
@@ -53,10 +51,22 @@
 	</div>
 	<br>
 	
-	PEDIDOS !!!
+	<form class="form-horizontal" action="ServletPedido" method="POST" id="pedidoForm"  data-toggle="validator">
+		<fieldset>
+			<legend>Pedidos</legend>
+		</fieldset>
+	</form>
+<% 
+	} else {
+%>
+	<div class="container">
+		<div class="panel-heading" align="center">
+			<h2><b><font color="black">Usuario no autorizado a acceder al recurso.</font> </b></h2><br>
+			<a href="login.jsp">Volver al login</a>
+		</div>
+	</div>
 <% 
 	}
-	
 %>
 </body>
 </html>

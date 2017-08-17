@@ -24,21 +24,40 @@ public class PersistenciaUsuario extends Conector implements IPersUsuario, CnstQ
 	private static final Logger logger = Logger.getLogger(PersistenciaUsuario.class);
 	private ResultSet rs;
 	
-	
 	@Override
-	public UsuarioWeb obtenerUsuario(Connection conn, String nombreUsuario, String passwd) throws PersistenciaException {
-		logger.info("Ejecucion de obtenerUsuario para: " + nombreUsuario);
-		UsuarioWeb usuario = null;
-		PersistenciaPersona pp = new PersistenciaPersona();
+	public String loginUsuario(Connection conn, String nombreUsuario, String passwd) throws PersistenciaException {
+		logger.info("Ejecucion de loginUsuario para: " + nombreUsuario);
+		String usuario = null;
 		try {
 			PreparedStatement ps = conn.prepareStatement(QRY_LOGIN);
 			ps.setString(1, nombreUsuario);
 			ps.setString(2, passwd);
 			rs = ps.executeQuery();
 			if(rs.next()) {
+				usuario = rs.getString("nom_usu");
+			}
+		} catch (SQLException e) {
+			logger.fatal("Excepcion al obtenerUsuario: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		} finally {
+			closeRs(rs);
+		}
+		return usuario;
+	}
+	
+	@Override
+	public UsuarioWeb obtenerUsuario(Connection conn, String nombreUsuario) throws PersistenciaException {
+		logger.info("Ejecucion de obtenerUsuario para: " + nombreUsuario);
+		UsuarioWeb usuario = null;
+		PersistenciaPersona pp = new PersistenciaPersona();
+		try {
+			PreparedStatement ps = conn.prepareStatement(QRY_OBT_USR);
+			ps.setString(1, nombreUsuario);
+			rs = ps.executeQuery();
+			if(rs.next()) {
 				usuario = new UsuarioWeb();
 				usuario.setNomUsu(rs.getString("nom_usu"));
-//				usuario.setPass(passwd);//no obtengo la password
+				//usuario.setPass(passwd);//no obtengo la password
 				usuario.setPersona(pp.obtenerPersGenerico(conn, rs.getLong("id_persona")));
 			}
 		} catch (SQLException e) {
@@ -48,6 +67,26 @@ public class PersistenciaUsuario extends Conector implements IPersUsuario, CnstQ
 			closeRs(rs);
 		}
 		return usuario;
+	}
+	
+	@Override
+	public Long obtenerUsuarioPersActual(Connection conn, String nombreUsuario) throws PersistenciaException {
+		logger.info("Ejecucion de obtenerUsuario para: " + nombreUsuario);
+		Long idPers = null;
+		try {
+			PreparedStatement ps = conn.prepareStatement(QRY_OBT_USR_PERSACT);
+			ps.setString(1, nombreUsuario);
+			rs = ps.executeQuery();
+			if(rs.next()) {
+				idPers = rs.getLong("id_persona");
+			}
+		} catch (SQLException e) {
+			logger.fatal("Excepcion al obtenerUsuario: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		} finally {
+			closeRs(rs);
+		}
+		return idPers;
 	}
 	
 	@Override
@@ -68,16 +107,32 @@ public class PersistenciaUsuario extends Conector implements IPersUsuario, CnstQ
 	}
 
 	@Override
-	public Integer modificarUsuario(Connection conn, UsuarioWeb usuario) throws PersistenciaException {
+	public Integer modificarUsuarioSinPasswd(Connection conn, UsuarioWeb usuario) throws PersistenciaException {
 		logger.info("Ejecucion de modificarUsuario para: " + usuario.getNomUsu());
 		Integer resultado = null;
 		try {
-			PreparedStatement ps = conn.prepareStatement(QRY_UPDATE_USR);
-			ps.setString(1, usuario.getPass());
+			PreparedStatement ps = conn.prepareStatement(QRY_UPDATE_USR_SP);
+			ps.setLong(1, usuario.getPersona().getIdPersona());
 			ps.setString(2, usuario.getNomUsu());
 			resultado = ps.executeUpdate();
 		} catch (SQLException e) {
-			logger.fatal("Excepcion al modificarUsuario: " + e.getMessage(), e);
+			logger.fatal("Excepcion al modificarUsuarioSinPasswd: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return resultado;
+	}
+	@Override
+	public Integer modificarUsuarioConPasswd(Connection conn, UsuarioWeb usuario) throws PersistenciaException {
+		logger.info("Ejecucion de modificarUsuario para: " + usuario.getNomUsu());
+		Integer resultado = null;
+		try {
+			PreparedStatement ps = conn.prepareStatement(QRY_UPDATE_USR_CP);
+			ps.setString(1, usuario.getPass());
+			ps.setLong(2, usuario.getPersona().getIdPersona());
+			ps.setString(3, usuario.getNomUsu());
+			resultado = ps.executeUpdate();
+		} catch (SQLException e) {
+			logger.fatal("Excepcion al modificarUsuarioConPasswd: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
 		}
 		return resultado;

@@ -1,6 +1,7 @@
 package gpw.servlets;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -9,6 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import gpw.dominio.persona.Localidad;
 import gpw.dominio.persona.PersonaFisica;
@@ -22,12 +26,12 @@ import gpw.ejblookup.LookUps;
 import gpw.exceptions.PersistenciaException;
 import gpw.types.Fecha;
 
-public class ServletIngresoPersona extends HttpServlet {
+public class ServletPersona extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	private static Logger logger = Logger.getLogger(ServletIngresoPersona.class);
+	private static Logger logger = Logger.getLogger(ServletPersona.class);
 
-	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void processRequestPOST(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			String emailReg = request.getParameter("emailReg");
 	        String passwdReg1 = request.getParameter("passwdReg1");
@@ -43,10 +47,12 @@ public class ServletIngresoPersona extends HttpServlet {
 	        String sexo = request.getParameter("sexo");
 	        String fNac = request.getParameter("fNac");
 	        //PJ
-	        String nombre = request.getParameter("nombre");
+	        String nombrePj = request.getParameter("nombrePj");
 	        String razonSoc = request.getParameter("razonSoc");
 	        String bps = request.getParameter("bps");
 	        String bse = request.getParameter("bse");
+	        String esProvStr = request.getParameter("esProv");
+	        Boolean esProv = (esProvStr != null ? Boolean.valueOf(esProvStr) : false);
 	        //PERS
 	        String direccion = request.getParameter("direccion");
 	        String puerta = request.getParameter("puerta");
@@ -63,7 +69,7 @@ public class ServletIngresoPersona extends HttpServlet {
 	        GpWebStatelessLocal gpwStLoc = LookUps.lookUpGpWebStateless();
 	        UsuarioWeb usr = new UsuarioWeb();
 	        usr.setNomUsu(emailReg);
-	        usr.setPass(passwdReg1);
+	        
 	        if(TipoPersona.F.getAsChar() == tipoPers.charAt(0)) {
 	        	TipoDoc td = gpwStLoc.obtenerTipoDocPorId(tipoDoc);
 	        	PersonaFisica pf = new PersonaFisica();
@@ -81,10 +87,11 @@ public class ServletIngresoPersona extends HttpServlet {
 	        	PersonaJuridica pj = new PersonaJuridica();
 	        	pj.setTipoPers(TipoPersona.J);
 	        	pj.setRut(idPersona);
-	        	pj.setNombre(nombre);
+	        	pj.setNombre(nombrePj);
 	        	pj.setRazonSocial(razonSoc);
 	        	pj.setBps(bps);
 	        	pj.setBse(bse);
+	        	pj.setEsProv(esProv);
 	        	usr.setPersona(pj);
 	        }
 	        usr.getPersona().setDireccion(direccion);
@@ -101,7 +108,23 @@ public class ServletIngresoPersona extends HttpServlet {
 	        usr.getPersona().setFechaReg(fechaAct);
 	        usr.getPersona().setUltAct(fechaAct);
 	        
-			Integer resultado = gpwStLoc.guardarUsuario(usr);
+	        HttpSession httpSession = request.getSession();
+	        String usrSession = (String) httpSession.getAttribute("usuario");
+	        Integer resultado = 0;
+	        if(usrSession.equalsIgnoreCase(usr.getNomUsu())) {
+	        	//usuario existente, modifica
+	        	Boolean modifPasswd = false;
+	        	if(passwdReg1 != null && !passwdReg1.equals("")) {
+	        		usr.setPass(passwdReg1);
+	        		modifPasswd = true;
+	        	}
+	        	resultado = gpwStLoc.modificarUsuario(usr, modifPasswd);
+	        } else {
+	        	//usuario nuevo, agrega
+	        	usr.setPass(passwdReg1);
+	        	resultado = gpwStLoc.guardarUsuario(usr);
+	        }
+	        
 			if(resultado > 0) {
 				HttpSession session = request.getSession();
 				session.setAttribute("usr", usr.getNomUsu());
@@ -114,19 +137,44 @@ public class ServletIngresoPersona extends HttpServlet {
 	        	response.getWriter().write("error");
 	        }
 		} catch (PersistenciaException e) {
-			logger.fatal("Excepcion en ServletIngresoPersona > processRequest: " + e.getMessage(), e);
+			logger.fatal("Excepcion en ServletPersona > processRequestPOST: " + e.getMessage(), e);
 			response.getWriter().write("error");
 		} catch (Exception e) {
-			logger.fatal("Excepcion genérica en ServletIngresoPersona > processRequest: " + e.getMessage(), e);
+			logger.fatal("Excepcion genérica en ServletPersona > processRequestPOST: " + e.getMessage(), e);
 			response.getWriter().write("error");
 		}
 	}
 	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
-    }
+	protected void processRequestGET(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		try {
+			HttpSession session = request.getSession();
+			String usr = (String) session.getAttribute("usuario");
+			if(usr != null) {
+				GpWebStatelessLocal gpwStLoc = LookUps.lookUpGpWebStateless();
+				UsuarioWeb usuario = gpwStLoc.obtenerUsuario(usr);
+				final Gson gson = new Gson();
+				final Type tipoUsr = new TypeToken<UsuarioWeb>(){}.getType();
+				final String usrJson = gson.toJson(usuario, tipoUsr);
+				response.setContentType("application/json");
+				response.setCharacterEncoding("UTF-8");
+				response.getWriter().write(usrJson);
+			} else {
+				response.getWriter().write("nodata");
+			}
+		} catch (PersistenciaException e) {
+			logger.fatal("Excepcion en ServletPersona > processRequestGET: " + e.getMessage(), e);
+			response.getWriter().write("error");
+		} catch (Exception e) {
+			logger.fatal("Excepcion genérica en ServletPersona > processRequestGET: " + e.getMessage(), e);
+			response.getWriter().write("error");
+		}
+	}
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		processRequestPOST(request, response);
+	}
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
-    }
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		processRequestGET(request, response);
+	}
 }

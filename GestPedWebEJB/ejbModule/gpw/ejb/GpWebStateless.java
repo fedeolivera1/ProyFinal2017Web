@@ -89,13 +89,27 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 	/* USUARIO */
 	/*****************************************************************************************************************************************************/
     
+    @Override
+    public String loginUsuario(String nombreUsuario, String password) throws PersistenciaException {
+    	logger.info("Se ingresa a loginUsuario para " + nombreUsuario);
+    	String usuario = null;
+    	try {
+    		conn = ds.getConnection();
+    		usuario = getInterfaceUsuario().loginUsuario(conn, nombreUsuario, password);
+    	} catch (PersistenciaException | SQLException e) {
+    		logger.fatal("Excepcion en GpWebStateless > obtenerUsuario: " + e.getMessage(), e);
+    		throw new PersistenciaException(e);
+    	}
+    	return usuario;
+    }
+    
 	@Override
-	public UsuarioWeb obtenerUsuario(String nombreUsuario, String password) throws PersistenciaException {
+	public UsuarioWeb obtenerUsuario(String nombreUsuario) throws PersistenciaException {
 		logger.info("Se ingresa a obtenerUsuario para " + nombreUsuario);
 		UsuarioWeb usuario = null;
 		try {
 			conn = ds.getConnection();
-			usuario = getInterfaceUsuario().obtenerUsuario(conn, nombreUsuario, password);
+			usuario = getInterfaceUsuario().obtenerUsuario(conn, nombreUsuario);
 		} catch (PersistenciaException | SQLException e) {
 			logger.fatal("Excepcion en GpWebStateless > obtenerUsuario: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
@@ -128,9 +142,44 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 	}
 
 	@Override
-	public Integer modificarUsuario(UsuarioWeb usr) throws PersistenciaException {
-		// TODO Auto-generated method stub
-		return null;
+	public Integer modificarUsuario(UsuarioWeb usr, Boolean modificaPasswd) throws PersistenciaException {
+		logger.info("Se ingresa a guardarUsuario para " + usr.getNomUsu());
+		Integer resultado = null;
+		try {
+			conn = ds.getConnection();
+			usr.getPersona().setOrigen(Origen.W);
+			usr.getPersona().setSinc(Sinc.N);
+			Long idPersonaActual = getInterfaceUsuario().obtenerUsuarioPersActual(conn, usr.getNomUsu());
+			//control eventual cambio de documento desde presentacion
+			
+			if(usr.getPersona() instanceof PersonaFisica) {
+				PersonaFisica pf = (PersonaFisica) usr.getPersona();
+				if(idPersonaActual != null && idPersonaActual.longValue() != pf.getIdPersona()) {
+					pf.setDocumentoAnt(idPersonaActual);
+				}
+				resultado = getInterfacePersona().modificarPersFisica(conn, pf);
+				usr.setPersona(pf);
+			} else if(usr.getPersona() instanceof PersonaJuridica) {
+				PersonaJuridica pj = (PersonaJuridica) usr.getPersona();
+				if(idPersonaActual != null && idPersonaActual.longValue() != pj.getIdPersona()) {
+					pj.setRutAnt(idPersonaActual);
+				}
+				resultado = getInterfacePersona().modificarPersJuridica(conn, pj);
+				usr.setPersona(pj);
+			}
+			if(resultado > 0) {
+				if(modificaPasswd) {
+					resultado = getInterfaceUsuario().modificarUsuarioConPasswd(conn, usr);
+				} else {
+					resultado = getInterfaceUsuario().modificarUsuarioSinPasswd(conn, usr);
+				}
+			}
+		} catch (PersistenciaException | SQLException e) {
+			context.setRollbackOnly();
+			logger.fatal("Excepcion en GpWebStateless > modificarUsuario: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return resultado;
 	}
 
 	@Override

@@ -46,6 +46,15 @@
 	    <ul class="nav navbar-nav">
 	      <li class="active"><a href="#">Mis Datos</a></li>
 	      <li><a href="pedido.jsp">Pedidos</a></li>
+<%
+		if(session.getAttribute("usuario") != null) {
+			String sessionId = session.getId();
+%>
+			<li><a>Usuario:&nbsp;${sessionScope.usuario}</a></li>
+	      	<li><a href="ServletLogout?logout=<%=sessionId%>"><font color="red">Logout</font></a></li>
+<%
+      	} 
+%>
 	    </ul>
 	  </div>
 	</nav>
@@ -54,7 +63,7 @@
 	    <div id="alert_placeholder"></div>
 	</div>
 	
-	<form class="form-horizontal" action="ServletIngresoPersona" method="post" id="ingrPersForm"  data-toggle="validator">
+	<form class="form-horizontal" action="ServletPersona" method="POST" id="ingrPersForm"  data-toggle="validator">
 		<fieldset>
 		
 		<!-- Form Name -->
@@ -74,6 +83,7 @@
 		  <label class="col-md-4 control-label" for="passwdReg1">Password</label>
 		  <div class="col-md-4">
 		    <input id="passwdReg1" name="passwdReg1" type="password" placeholder="Password" class="form-control input-md" required>
+		    <div id="divPw1" class="oculto"><label><font color="gray" size="1">Ingrese contraseña solamente si quiere cambiar</font></label></div>
 		    <div class="help-block with-errors"></div>
 		  </div>
 		</div>
@@ -84,6 +94,7 @@
 		  <div class="col-md-4">
 		    <input id="passwdReg2" name="passwdReg2" type="password" placeholder="Confirme Password" class="form-control input-md" 
 		    		data-match="#passwdReg1" data-match-error="Oops! Las passwords no coinciden">
+		    <div id="divPw2" class="oculto"><label><font color="gray" size="1">Confirme contraseña solamente si quiere cambiar</font></label></div>
     		<div class="help-block with-errors"></div>
 		  </div>
 		</div>
@@ -95,8 +106,8 @@
 		  <label class="col-md-4 control-label" for="tipoCli">Tipo Cliente</label>
 		  <div class="col-md-2">
 		    <select id="tipoPers" name="tipoPers" class="form-control">
-		      <option value="F" selected>Persona</option>
-		      <option value="J">Empresa</option>
+		      <option value="F" selected>Cliente Persona</option>
+		      <option value="J">Cliente Empresa</option>
 		    </select>
 		  </div>
 		</div>
@@ -156,7 +167,7 @@
 			  <label class="col-md-4 control-label" for="FNac">Fecha Nacimiento</label>
 			  <div class="col-md-4">
 				<div class="col-md-5 input-group date" id="dtpFnac">
-		            <input type="text" id="fNac" class="form-control" required/>
+		            <input type="text" id="fNac" name="fNac" class="form-control" required/>
 		            <span class="input-group-addon">
 		                <span class="glyphicon glyphicon-calendar"></span>
 		            </span>
@@ -222,8 +233,8 @@
 			  <label class="col-md-4 control-label" for="nombre">Empresa proveedora</label>  
 			  <div class="col-md-4">
 				  <div class="btn-group" data-toggle="buttons">
-				  	<label class="btn btn-default">
-						<input type="checkbox" autocomplete="off">
+				  	<label id="lblChkProv" class="btn btn-default">
+						<input type="checkbox" id="esProv" name="esProv" autocomplete="off">
 						<span class="glyphicon glyphicon-ok"></span>
 					</label>
 				  </div>
@@ -351,7 +362,7 @@
                 cargarCbxDep(response);
             }
 	    });
-
+		cargarDatosPers();
 	});
 
 	//submit prevent default
@@ -363,10 +374,14 @@
 			e.preventDefault();
 			var $form = $(this);
 			var tipoPers = $('#tipoPers').val();
-			var dataUsr = "emailReg="+ $('#emailReg').val() + 
-			   "&passwdReg1=" + CryptoJS.MD5($('#passwdReg1').val()) +
-			   "&passwdReg2=" + CryptoJS.MD5($('#passwdReg2').val()) +
-			   "&tipoPers=" + tipoPers;
+			var pwd = $('#passwdReg1').val();
+			var dataUsr = "emailReg="+ $('#emailReg').val();
+			if(pwd === '') {
+				dataUsr += "&passwdReg1=";
+			} else {
+			   	dataUsr += "&passwdReg1=" + CryptoJS.MD5(pwd);
+			}
+		   	dataUsr += "&tipoPers=" + tipoPers;
 			var dataPf = "";
 			var dataPj = "";
 			//pers
@@ -380,20 +395,21 @@
 			   "&celular=" + $('#celular').val() +
 			   "&localidad=" + $('#selLoc').val();
 			   if(tipoPers == 'F') { //pf
-			    dataPf = "&tipoDoc=" + $('#selTipoDoc').val() +
-				"&idPersona=" + $('#documento').val() +
-				"&nombrePf1=" + $('#nombrePf1').val() +
-			    "&nombrePf2=" + $('#nombrePf2').val() +
-			    "&apellidoPf1=" + $('#apellidoPf1').val() +
-			    "&apellidoPf2=" + $('#apellidoPf2').val() +
-			    "&fNac=" + $('#fNac').val() +
-			    "&sexo=" + $('#sexo').val();
+				    dataPf = "&tipoDoc=" + $('#selTipoDoc').val() +
+					"&idPersona=" + $('#documento').val() +
+					"&nombrePf1=" + $('#nombrePf1').val() +
+				    "&nombrePf2=" + $('#nombrePf2').val() +
+				    "&apellidoPf1=" + $('#apellidoPf1').val() +
+				    "&apellidoPf2=" + $('#apellidoPf2').val() +
+				    "&fNac=" + $('#fNac').val() +
+				    "&sexo=" + $('#sexo').val();
 			   } else { //pj
-			   	dataPj = "&idPersona=" + $('#rut').val() +
-			   	"&nombrePj=" + $('#nombrePj').val() +
-			    "&razonSoc=" + $('#razonSoc').val() +
-			    "&bps=" + $('#bps').val() +
-			    "&bse=" + $('#bse').val();
+					dataPj = "&idPersona=" + $('#rut').val() +
+					"&nombrePj=" + $('#nombrePj').val() +
+					"&razonSoc=" + $('#razonSoc').val() +
+					"&bps=" + $('#bps').val() +
+					"&bse=" + $('#bse').val() +
+					"&esProv=" + $('#esProv').is(':checked');
 			   }
 			var data = dataUsr + dataPf + dataPj + dataPers;
 		    // For debugging purposes... see your console:
