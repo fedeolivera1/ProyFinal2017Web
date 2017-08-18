@@ -3,7 +3,6 @@ package gpw.ws.parsers;
 import org.apache.log4j.Logger;
 
 import gpw.dominio.producto.AplicaIva;
-import gpw.dominio.producto.EstadoProd;
 import gpw.dominio.producto.Producto;
 import gpw.dominio.producto.TipoProd;
 import gpw.dominio.producto.Unidad;
@@ -27,7 +26,7 @@ public class ParserProducto {
 				tp.setIdTipoProd(param.getIdTipoProd());
 				tp.setDescripcion(param.getDescripcion());
 				tp.setSinc(Sinc.getSincPorChar(param.getSinc().charAt(0)));
-				tp.setEstado(Estado.getEstadoProdPorInt(param.getEstado()));
+				tp.setEstado(Estado.getEstadoPorInt(param.getEstado()));
 			}
 		} catch (Exception e) {
 			logger.error("Excepcion al parsear en ParserProducto: ", e);
@@ -44,7 +43,7 @@ public class ParserProducto {
 				uni.setIdUnidad(param.getIdUnidad());
 				uni.setNombre(param.getNombre());
 				uni.setSinc(Sinc.getSincPorChar(param.getSinc().charAt(0)));
-				uni.setEstado(Estado.getEstadoProdPorInt(param.getEstado()));
+				uni.setEstado(Estado.getEstadoPorInt(param.getEstado()));
 			}
 		} catch (Exception e) {
 			logger.error("Excepcion al parsear en ParserProducto: ", e);
@@ -78,7 +77,7 @@ public class ParserProducto {
 				prod.setPrecio(param.getPrecio());
 				prod.setSinc(Sinc.getSincPorChar(param.getSinc().charAt(0)));
 				prod.setUltAct(new Fecha(param.getUltAct(), Fecha.AMDHMS));
-				prod.setEstadoProd(EstadoProd.getEstadoProdPorInt(param.getEstadoProd()));
+				prod.setEstadoProd(Estado.getEstadoPorInt(param.getEstadoProd()));
 			}
 		} catch (Exception e) {
 			logger.error("Excepcion al parsear en ParserProducto: ", e);

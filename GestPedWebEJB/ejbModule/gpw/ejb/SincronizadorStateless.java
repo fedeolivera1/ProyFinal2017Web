@@ -26,7 +26,6 @@ import gpw.dominio.pedido.PedidoLinea;
 import gpw.dominio.persona.Persona;
 import gpw.dominio.persona.PersonaFisica;
 import gpw.dominio.persona.PersonaJuridica;
-import gpw.dominio.producto.EstadoProd;
 import gpw.dominio.producto.Producto;
 import gpw.dominio.producto.TipoProd;
 import gpw.dominio.producto.Unidad;
@@ -330,7 +329,7 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 					}
 					for(Producto prod : listaProducto) {
 						Integer resQry = 0;
-						if(EstadoProd.A.equals(prod.getEstadoProd())) { // << chequeo si el producto tiene estado 'activo' (existente)
+						if(Estado.A.equals(prod.getEstadoProd())) { // << chequeo si el producto tiene estado 'activo' (existente)
 							if(controlarDatosProducto(prod)) {
 								logger.debug("El control de los productos funciona ok, se procede con la sincronizacion web...");
 								if(getInterfaceProducto().checkExistProducto(conn, prod.getIdProducto())) {

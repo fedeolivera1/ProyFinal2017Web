@@ -13,31 +13,30 @@ import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import gpw.dominio.persona.Localidad;
+import gpw.dominio.producto.Producto;
 import gpw.ejb.GpWebStatelessLocal;
 import gpw.ejblookup.LookUps;
 import gpw.exceptions.PersistenciaException;
 
-public class ServletObtLoc extends HttpServlet {
+public class ServletObtProducto extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	private static Logger logger = Logger.getLogger(ServletObtLoc.class);
-	
+	private static Logger logger = Logger.getLogger(ServletObtProducto.class);
 
+	
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			Integer idDep = (request.getParameter("idDep") != null ? Integer.valueOf(request.getParameter("idDep")) : -1);
+			Integer idTipoProd = (request.getParameter("idTipoProd") != null ? Integer.valueOf(request.getParameter("idTipoProd")) : -1);
 			GpWebStatelessLocal gpwStLoc = LookUps.lookUpGpWebStateless();
-			List<Localidad> listaLoc = gpwStLoc.obtenerListaLocPorDep(idDep);
+			List<Producto> listaProd = gpwStLoc.obtenerListaProductoPorTipo(idTipoProd);
 			final Gson gson = new Gson();
-			final Type tipoListaLoc = new TypeToken<List<Localidad>>(){}.getType();
-			final String listaLocJson = gson.toJson(listaLoc, tipoListaLoc);
-			System.out.print(listaLocJson);
+			final Type tipoListaLoc = new TypeToken<List<Producto>>(){}.getType();
+			final String listaProdJson = gson.toJson(listaProd, tipoListaLoc);
+			System.out.print(listaProdJson);
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
 			//ajax mode
-			response.getWriter().write(listaLocJson);
+			response.getWriter().write(listaProdJson);
 		} catch (PersistenciaException e) {
 			logger.fatal("Excepcion en ServletObtLoc > processRequest: " + e.getMessage(), e);
 			response.getWriter().write("error");

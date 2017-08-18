@@ -99,8 +99,6 @@
 		  </div>
 		</div>
 		
-		<hr>
-		
 		<!-- Select Basic [Pf - Pj]-->
 		<div class="form-group col-md-12">
 		  <label class="col-md-4 control-label" for="tipoCli">Tipo Cliente</label>
@@ -111,7 +109,7 @@
 		    </select>
 		  </div>
 		</div>
-		<hr>
+
 		<!-- 	DIV PERSONA FISICA -->
 		<div id="divPf" class="oculto">
 		
@@ -243,7 +241,7 @@
 			
 		</div>
 		<!-- 	END DIV PJ -->
-		<hr>
+
 		<!-- Text input [Direccion]-->
 		<div class="form-group col-md-12">
 		  <label class="col-md-4 control-label" for="Direccion">Direccion</label>  
@@ -324,8 +322,8 @@
 		<div class="form-group col-md-12">
 		  <label class="col-md-4 control-label" for="registrar"></label>
 		  <div class="col-md-4">
-		    <button id="registrar" name="registrar" class="btn btn-primary">Registrar</button>
-		    <button type="reset" class="btn btn-danger">Limpiar</button>
+		    <button type="submit" id="registrar" name="registrar" class="btn btn-primary">Registrar</button>
+		    <button type="reset" id="limpiar" class="btn btn-danger">Limpiar</button>
 		  </div>
 		</div>
 	
@@ -333,7 +331,7 @@
 	</form>
 </body>
   
-<script>
+<script type="text/javascript">
 	$('#dtpFnac').datetimepicker({
 		format: 'dd/mm/yyyy',
         minView: 2,
@@ -345,7 +343,7 @@
 	// document ready
 	$(document).ready(function() {
 	    $.ajax({
-            type: "post",
+            type: "POST",
             url: "ServletObtTipoDoc",
             contentType: "application/json",              
             dataType: "json",
@@ -354,21 +352,21 @@
             }
 	    });
 	    $.ajax({
-            type: "post",
+            type: "POST",
             url: "ServletObtDep",
             contentType: "application/json",              
             dataType: "json",
             success: function(response) {
-                cargarCbxDep(response);
+				cargarCbxDep(response);
             }
 	    });
+	    seleccionTipoPers();
 		cargarDatosPers();
 	});
 
 	//submit prevent default
 	$('#ingrPersForm').validator().on('submit', function (e) {
 		if (e.isDefaultPrevented()) {
-			alert('isDefaultPrevented');
   			// manejo form inválido (opc)
 		} else {
 			e.preventDefault();

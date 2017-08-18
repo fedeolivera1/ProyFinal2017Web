@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+  
   <display-name>GestPedWeb</display-name>
 
   <welcome-file-list>
     <welcome-file>login.jsp</welcome-file>
   </welcome-file-list>
-  
+<!--   login -->
   <servlet>
     <description></description>
     <display-name>ServletLogin</display-name>
@@ -16,7 +17,7 @@
     <servlet-name>ServletLogin</servlet-name>
     <url-pattern>/ServletLogin</url-pattern>
   </servlet-mapping>
-  
+<!--   logout -->
   <servlet>
     <description></description>
     <display-name>ServletLogout</display-name>
@@ -27,7 +28,7 @@
     <servlet-name>ServletLogout</servlet-name>
     <url-pattern>/ServletLogout</url-pattern>
   </servlet-mapping>
-  
+<!--   persona -->
   <servlet>
     <description></description>
     <display-name>ServletPersona</display-name>
@@ -38,7 +39,7 @@
     <servlet-name>ServletPersona</servlet-name>
     <url-pattern>/ServletPersona</url-pattern>
   </servlet-mapping>
-  
+<!--   tipo doc -->
   <servlet>
     <description></description>
     <display-name>ServletObtTipoDoc</display-name>
@@ -49,7 +50,7 @@
     <servlet-name>ServletObtTipoDoc</servlet-name>
     <url-pattern>/ServletObtTipoDoc</url-pattern>
   </servlet-mapping>
-  
+<!--   departamento -->
   <servlet>
     <description></description>
     <display-name>ServletObtDep</display-name>
@@ -60,7 +61,7 @@
     <servlet-name>ServletObtDep</servlet-name>
     <url-pattern>/ServletObtDep</url-pattern>
   </servlet-mapping>
-  
+<!--   localidad -->
   <servlet>
     <description></description>
     <display-name>ServletObtLoc</display-name>
@@ -70,6 +71,28 @@
   <servlet-mapping>
     <servlet-name>ServletObtLoc</servlet-name>
     <url-pattern>/ServletObtLoc</url-pattern>
+  </servlet-mapping>
+<!--   tipo prod -->
+  <servlet>
+    <description></description>
+    <display-name>ServletObtTipoProd</display-name>
+    <servlet-name>ServletObtTipoProd</servlet-name>
+    <servlet-class>gpw.servlets.ServletObtTipoProd</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ServletObtTipoProd</servlet-name>
+    <url-pattern>/ServletObtTipoProd</url-pattern>
+  </servlet-mapping>
+<!--   producto -->
+  <servlet>
+    <description></description>
+    <display-name>ServletObtProducto</display-name>
+    <servlet-name>ServletObtProducto</servlet-name>
+    <servlet-class>gpw.servlets.ServletObtProducto</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ServletObtProducto</servlet-name>
+    <url-pattern>/ServletObtProducto</url-pattern>
   </servlet-mapping>
   
 </web-app>

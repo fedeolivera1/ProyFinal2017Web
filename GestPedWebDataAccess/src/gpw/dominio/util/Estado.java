@@ -20,7 +20,7 @@ public enum Estado {
 		return asInt;
 	}
 	
-	public static Estado getEstadoProdPorInt(final int nro) {
+	public static Estado getEstadoPorInt(final int nro) {
         for (Estado estado : Estado.values()) {
             if (estado.getAsInt() == nro)
                 return estado;

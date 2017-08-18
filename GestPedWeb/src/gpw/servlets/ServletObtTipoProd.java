@@ -14,35 +14,34 @@ import org.apache.log4j.Logger;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import gpw.dominio.persona.Departamento;
+import gpw.dominio.producto.TipoProd;
 import gpw.ejb.GpWebStatelessLocal;
 import gpw.ejblookup.LookUps;
 import gpw.exceptions.PersistenciaException;
 
-public class ServletObtDep extends HttpServlet {
+public class ServletObtTipoProd extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	private static Logger logger = Logger.getLogger(ServletObtDep.class);
-	
-	
-	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private static Logger logger = Logger.getLogger(ServletObtTipoProd.class);
+
+	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			GpWebStatelessLocal gpwStLoc = LookUps.lookUpGpWebStateless();
-			List<Departamento> listaDep = gpwStLoc.obtenerListaDepartamentos();
+			List<TipoProd> listaTp = gpwStLoc.obtenerListaTipoProd();
 			final Gson gson = new Gson();
-			final Type tipoListaDep = new TypeToken<List<Departamento>>(){}.getType();
-			final String listaDepJson = gson.toJson(listaDep, tipoListaDep);
-			System.out.print(listaDepJson);
+			final Type tipoListaTp = new TypeToken<List<TipoProd>>(){}.getType();
+			final String listaTpJson = gson.toJson(listaTp, tipoListaTp);
+			System.out.print(listaTpJson);
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
-			//ajax mode
-			response.getWriter().write(listaDepJson);
+//			//ajax mode
+			response.getWriter().write(listaTpJson);
 		} catch (PersistenciaException e) {
-			logger.fatal("Excepcion en ServletObtDep > processRequest: " + e.getMessage(), e);
-			response.getWriter().write("error");
+			logger.fatal("Excepcion en ServletObtTipoProd > processRequest: " + e.getMessage(), e);
+			response.sendError(0, e.getMessage());
 		} catch (Exception e) {
-			logger.fatal("Excepcion genérica en ServletObtDep > processRequest: " + e.getMessage(), e);
-			response.getWriter().write("error");
+			logger.fatal("Excepcion genérica en ServletObtTipoProd > processRequest: " + e.getMessage(), e);
+			response.sendError(0, e.getMessage());
 		}
 	}
 	
@@ -50,7 +49,7 @@ public class ServletObtDep extends HttpServlet {
         processRequest(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         processRequest(request, response);
     }
 }

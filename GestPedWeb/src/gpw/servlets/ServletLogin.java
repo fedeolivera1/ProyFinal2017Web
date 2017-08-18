@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+
 import gpw.ejb.GpWebStatelessLocal;
 import gpw.ejblookup.LookUps;
 import gpw.exceptions.PersistenciaException;
@@ -16,17 +18,16 @@ import gpw.exceptions.PersistenciaException;
 public class ServletLogin extends HttpServlet { 
 	
 	private static final long serialVersionUID = 1L;
+	private static Logger logger = Logger.getLogger(ServletLogin.class);
 
 	public ServletLogin() {
 	}
 	
 	protected void processRequestGET(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 	}
 
 	protected void processRequestPOST(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			
 			String nomUsuario = request.getParameter("txtNomUsu");
 			String passWd = request.getParameter("txtPassWd");
 			GpWebStatelessLocal gpwStLoc = LookUps.lookUpGpWebStateless();
@@ -45,11 +46,11 @@ public class ServletLogin extends HttpServlet {
 			}
 			
 		} catch (PersistenciaException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.fatal("Excepcion en ServletLogin > processRequestPOST: " + e.getMessage(), e);
+			response.getWriter().write("error");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.fatal("Excepcion genérica en ServletLogin > processRequestPOST: " + e.getMessage(), e);
+			response.getWriter().write("error");
 		}
 	}
 	

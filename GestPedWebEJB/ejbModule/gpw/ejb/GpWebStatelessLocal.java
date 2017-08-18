@@ -7,13 +7,15 @@ import javax.ejb.Local;
 import gpw.dominio.persona.Departamento;
 import gpw.dominio.persona.Localidad;
 import gpw.dominio.persona.TipoDoc;
+import gpw.dominio.producto.Producto;
+import gpw.dominio.producto.TipoProd;
 import gpw.dominio.usuario.UsuarioWeb;
 import gpw.exceptions.PersistenciaException;
 
 @Local
 public interface GpWebStatelessLocal {
 	
-	/*
+	/**
 	 * usuario
 	 */
 	public String loginUsuario(String nombreUsuario, String password) throws PersistenciaException;
@@ -23,7 +25,7 @@ public interface GpWebStatelessLocal {
 	public Integer modificarUsuario(UsuarioWeb usr, Boolean modificaPasswd) throws PersistenciaException;
 	public Integer eliminarUsuario(UsuarioWeb usr) throws PersistenciaException;
 	
-	/*
+	/**
 	 * persona
 	 */
 	//tipo doc
@@ -35,5 +37,12 @@ public interface GpWebStatelessLocal {
 	public List<Localidad> obtenerListaLocPorDep(Integer idDep) throws PersistenciaException;
 	public Localidad obtenerLocalidadPorId(Integer idLoc) throws PersistenciaException;
 	
+	/**
+	 * producto
+	 */
+	//tipo prod
+	public List<TipoProd> obtenerListaTipoProd() throws PersistenciaException;
+	//producto
+	public List<Producto> obtenerListaProductoPorTipo(Integer tipoProd) throws PersistenciaException;
 	
 }

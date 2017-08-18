@@ -53,7 +53,39 @@
 	
 	<form class="form-horizontal" action="ServletPedido" method="POST" id="pedidoForm"  data-toggle="validator">
 		<fieldset>
+			<!-- Form Name -->
 			<legend>Pedidos</legend>
+			
+			<!-- Select Basic [tipoProd]-->
+			<div class="form-group col-md-12">
+			  <label class="col-md-4 control-label" for="tipoProd">Tipo Producto</label>
+			  <div class="col-md-2">
+			    <select id="selTipoProd" name="selTipoProd" class="form-control" onchange="cargarCbxProd();">
+			    </select>
+			  </div>
+			</div>
+			
+			<!-- Select Basic [Producto]-->
+			<div class="form-group col-md-12">
+			  <label class="col-md-4 control-label" for="Producto">Producto</label>
+			  <div class="col-md-4">
+			    <select id="selProd" name="selProd" class="form-control">
+			    </select>
+			  </div>
+			</div>
+			
+			<!-- Text input [Precio] y [Cantidad]-->
+			<div class="form-group col-md-12">
+				<label class="col-md-4 control-label" for="Precio">Precio</label>  
+				<div class="col-md-1">
+					<input id="prodPrecio" name="prodPrecio" type="text" placeholder="0" class="form-control input-md" readonly>
+				</div>
+				<label class="col-md-1 control-label" for="Cantidad">Cantidad</label>  
+				<div class="col-md-1">
+					<input id="pedCant" name="pedCant" type="text" placeholder="0" class="form-control input-md">
+				</div>
+			</div>
+			
 		</fieldset>
 	</form>
 <% 
@@ -61,12 +93,29 @@
 %>
 	<div class="container">
 		<div class="panel-heading" align="center">
-			<h2><b><font color="black">Usuario no autorizado a acceder al recurso.</font> </b></h2><br>
+			<h2><b><font color="black">Usuario no autorizado a acceder al recurso.</font></b></h2><br>
 			<a href="login.jsp">Volver al login</a>
+			<hr>
 		</div>
 	</div>
 <% 
 	}
 %>
 </body>
+
+<script type="text/javascript">
+
+//document ready
+$(document).ready(function() {
+    $.ajax({
+        type: "POST",
+        url: "ServletObtTipoProd",
+        contentType: "application/json",              
+        dataType: "json",
+        success: function(response) {
+        	cargarCbxTipoProd(response);
+        }
+    });
+});
+</script>
 </html>

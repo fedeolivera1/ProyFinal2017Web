@@ -19,6 +19,8 @@ import gpw.dominio.persona.Localidad;
 import gpw.dominio.persona.PersonaFisica;
 import gpw.dominio.persona.PersonaJuridica;
 import gpw.dominio.persona.TipoDoc;
+import gpw.dominio.producto.Producto;
+import gpw.dominio.producto.TipoProd;
 import gpw.dominio.usuario.UsuarioWeb;
 import gpw.dominio.util.Origen;
 import gpw.dominio.util.Sinc;
@@ -26,10 +28,14 @@ import gpw.exceptions.PersistenciaException;
 import gpw.interfaces.persona.IPersDepLoc;
 import gpw.interfaces.persona.IPersPersona;
 import gpw.interfaces.persona.IPersTipoDoc;
+import gpw.interfaces.producto.IPersProducto;
+import gpw.interfaces.producto.IPersTipoProd;
 import gpw.interfaces.usuario.IPersUsuario;
 import gpw.persistencia.persona.PersistenciaDepLoc;
 import gpw.persistencia.persona.PersistenciaPersona;
 import gpw.persistencia.persona.PersistenciaTipoDoc;
+import gpw.persistencia.producto.PersistenciaProducto;
+import gpw.persistencia.producto.PersistenciaTipoProd;
 import gpw.persistencia.usuario.PersistenciaUsuario;
 
 /**
@@ -52,6 +58,8 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 	private static IPersPersona interfacePersona;
 	private static IPersTipoDoc interfaceTipoDoc;
 	private static IPersDepLoc interfaceDepLoc;
+	private static IPersTipoProd interfaceTipoProd;
+	private static IPersProducto interfaceProducto;
 	
 	private static IPersUsuario getInterfaceUsuario() {
 		if(interfaceUsuario == null) {
@@ -76,6 +84,18 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 			interfaceDepLoc = new PersistenciaDepLoc();
 		}
 		return interfaceDepLoc;
+	}
+	private static IPersTipoProd getInterfaceTipoProd() {
+		if(interfaceTipoProd == null) {
+			interfaceTipoProd = new PersistenciaTipoProd();
+		}
+		return interfaceTipoProd;
+	}
+	private static IPersProducto getInterfaceProducto() {
+		if(interfaceProducto == null) {
+			interfaceProducto = new PersistenciaProducto();
+		}
+		return interfaceProducto;
 	}
 	
     /**
@@ -276,6 +296,39 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 		}
 		return loc;
 	}
-    
-
+	
+	/*****************************************************************************************************************************************************/
+	/* PRODUCTO */
+	/*****************************************************************************************************************************************************/
+	
+	//tipo prod
+	@Override
+	public List<TipoProd> obtenerListaTipoProd() throws PersistenciaException {
+		logger.info("Se ingresa a obtenerListaTipoProd...");
+		List<TipoProd> listaTp = null;
+		try {
+			conn = ds.getConnection();
+			listaTp = getInterfaceTipoProd().obtenerListaTipoProd(conn);
+		} catch (PersistenciaException | SQLException e) {
+			logger.fatal("Excepcion en GpWebStateless > obtenerListaTipoProd: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return listaTp;
+	}
+	
+	//producto
+	@Override
+	public List<Producto> obtenerListaProductoPorTipo(Integer tipoProd) throws PersistenciaException {
+		logger.info("Se ingresa a obtenerListaProductoPorTipo...");
+		List<Producto> listaProd = null;
+		try {
+			conn = ds.getConnection();
+			listaProd = getInterfaceProducto().obtenerListaProductoPorTipo(conn, tipoProd);
+		} catch (PersistenciaException | SQLException e) {
+			logger.fatal("Excepcion en GpWebStateless > obtenerListaProductoPorTipo: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return listaProd;
+	}
+	
 }

@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -20,6 +22,7 @@ import gpw.exceptions.PersistenciaException;
 public class ServletObtTipoDoc extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
+	private static Logger logger = Logger.getLogger(ServletObtTipoDoc.class);
 	
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
@@ -34,9 +37,11 @@ public class ServletObtTipoDoc extends HttpServlet {
 			//ajax mode
 			response.getWriter().write(listaTdJson);
 		} catch (PersistenciaException e) {
-			e.printStackTrace();
+			logger.fatal("Excepcion en ServletObtTipoDoc > processRequest: " + e.getMessage(), e);
+			response.getWriter().write("error");
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.fatal("Excepcion genérica en ServletObtTipoDoc > processRequest: " + e.getMessage(), e);
+			response.getWriter().write("error");
 		}
 	}
 	

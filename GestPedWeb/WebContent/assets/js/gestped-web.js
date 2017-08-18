@@ -2,6 +2,7 @@
  * alertas
  */
 bootstrap_alert = function() {
+	alert('entra scrolltop');
 	$('body, html').animate({
 		scrollTop: '0px'
 	}, 300);
@@ -13,6 +14,7 @@ bootstrap_alert.success = function(message) {
 			$(this).remove(); 
 		});
 	}, 4000);
+	$("html, body").animate({ scrollTop: 0 }, 600);
 }
 bootstrap_alert.info = function(message) {
 	$('#alert_placeholder').html('<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span>'+message+'</span></div>')
@@ -21,6 +23,7 @@ bootstrap_alert.info = function(message) {
 			$(this).remove(); 
 		});
 	}, 4000);
+	$("html, body").animate({ scrollTop: 0 }, 600);
 }
 bootstrap_alert.warning = function(message) {
 	$('#alert_placeholder').html('<div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span>'+message+'</span></div>')
@@ -29,6 +32,7 @@ bootstrap_alert.warning = function(message) {
 			$(this).remove(); 
 		});
 	}, 4000);
+	$("html, body").animate({ scrollTop: 0 }, 600);
 }
 bootstrap_alert.danger = function(message) {
     $('#alert_placeholder').html('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span>'+message+'</span></div>')
@@ -37,6 +41,7 @@ bootstrap_alert.danger = function(message) {
     		$(this).remove(); 
     	});
     }, 4000);
+    $("html, body").animate({ scrollTop: 0 }, 600);
 }
 
 bootstrap_alert.close = function() {
@@ -48,7 +53,8 @@ bootstrap_alert.close = function() {
 }
 
 /**
- * 
+ * personas
+ * carga select con tipo de doc
  */
 function cargarCbxTd(response) {
 	$("#selTipoDoc").empty();
@@ -59,27 +65,32 @@ function cargarCbxTd(response) {
 
 
 /**
- * departamentos y localidades
+ * personas
+ * carga select con departamentos
  */
 function cargarCbxDep(response) {
 	$("#selDep").empty();
     $.each(response, function () {
         $("#selDep").append($("<option></option>").val(this['idDepartamento']).html(this['nombreDepartamento']));
     });
-    //le disparo el change para que levante las loc
-    $("#selDep").trigger("change");
+    //inmediatamente a la carga de dep, cargo las loc.
+    cargarCbxLoc();
 }
 
+/**
+ * personas
+ * carga de select con localidades
+ */
 function cargarCbxLoc() {
+	alert('entra a cargarCbxLoc');
 	$(function() {
 		var fillCbxLoc = function() {
+			alert('entra a fill de localidad');
 			var selected = $('#selDep').val();
 			var data = "idDep=" + selected;
 			 $.ajax({
 	            type: "post",
 	            url: "ServletObtLoc",
-//	            contentType: "application/json",              
-//	            dataType: "json",
 	            data: data,
 	            success: function(response) {
 	            	$('#selLoc').empty();
@@ -89,18 +100,17 @@ function cargarCbxLoc() {
 	                
 	            }
 		    });
-			 
 		}
-		$('#selDep').change(fillCbxLoc);
 		fillCbxLoc();
 	});
 }
 
 /**
+ * personas
  * metodo que cambia div para mostrar datos de pf o pj
+ * maneja requeridos de controles dependiendo de seleccion
  */
-$(document).ready(function() {
-	
+function seleccionTipoPers() {
 	$('#tipoPers').on('change', function() {
 	    var valorCambiado = $(this).val();
 	    if((valorCambiado == 'J')) {
@@ -131,16 +141,21 @@ $(document).ready(function() {
 	    	$('#ingrPersForm').validator('update');
 	     }
 	});
-});
+}
 
+/**
+ * personas
+ * metodo para cargar personas por ajax. dependiendo de respuesta de servlet, maneja controles
+ * cuando response es 'nodata', maneja controles para usuarios nuevos,
+ * cuando respone devuelve persona, maneja controles para usuarios existentes
+ */
 function cargarDatosPers() {
 	$.ajax({
         url: 'ServletPersona',
         method: 'GET',
         success: function(response) {
 	    	if(response === 'nodata') {
-	    		//usuario NO EXISTENTE
-	    		//manejo controles por usuario no existente
+	    		//manejo controles por usuario NO EXISTENTE
 	    		document.getElementById("passwdReg1").required = true;
 		    	document.getElementById("passwdReg2").required = true;
 		    	$('#divPw1').hide();
@@ -149,14 +164,15 @@ function cargarDatosPers() {
 		    	//
 		    	bootstrap_alert.info('Ingrese sus datos para registrarse...');
 		    	$("#tipoPers").trigger("change");
+		    	document.getElementById('limpiar').disabled = false;
 	    	} else {
-	    		//usuario EXISTENTE
-	    		//manejo controles por usuario existente
+	    		//manejo controles por usuario EXISTENTE
 	    		document.getElementById("passwdReg1").required = false;
 		    	document.getElementById("passwdReg2").required = false;
 		    	$('#divPw1').show();
 		    	$('#divPw2').show();
 		    	document.getElementById("emailReg").readOnly = true;
+		    	document.getElementById('limpiar').disabled = true;
 		    	//
 	    		var tipoPers = response.persona.tipoPers;
 	    		var form = $('#ingrPersForm');
@@ -196,10 +212,53 @@ function cargarDatosPers() {
 		        form.find('[name="celular"]').val(response.persona.celular).end();
 		        form.find('[name="selDep"]').val(response.persona.localidad.departamento.idDepartamento).end();
 		        $("#selDep").trigger("change");
+		        alert('loc:' + response.persona.localidad.idLocalidad + '-' + response.persona.localidad.nombreLocalidad)
 		        form.find('[name="selLoc"]').val(response.persona.localidad.idLocalidad).end();
+		        alert('finaliza de cargar localidad del response');
 	    	}
         }, error: function(qXHR, textStatus, errorThrown) {
         	bootstrap_alert.danger(errorThrown);
         }
 	});
 }
+
+/**
+ * pedidos - prod
+ * carga select con tipos de producto
+ */
+function cargarCbxTipoProd(response) {
+	$("#selTipoProd").empty();
+    $.each(response, function () {
+        $("#selTipoProd").append($("<option></option>").val(this['idTipoProd']).html(this['descripcion']));
+    });
+    //inmediatamente a la carga de tipo prod, cargo los prod asociados.
+    cargarCbxProd();
+}
+
+/**
+ * pedidos - prod
+ * carga select con productos
+ */
+function cargarCbxProd() {
+	$(function() {
+		var fillCbxProd = function() {
+			alert('entra a fill de producto');
+			var selected = $('#selTipoProd').val();
+			var data = "idTipoProd=" + selected;
+			 $.ajax({
+	            type: "post",
+	            url: "ServletObtProducto",
+	            data: data,
+	            success: function(response) {
+	            	$('#selProd').empty();
+	            	$.each(response, function () {
+	            		$("#selProd").append($("<option></option>").val(this['idProducto']).html(this['nombre']));
+	            	});
+	                
+	            }
+		    });
+		}
+		fillCbxProd();
+	});
+}
+
