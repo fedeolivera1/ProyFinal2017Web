@@ -318,6 +318,19 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 	
 	//producto
 	@Override
+	public Producto obtenerProductoPorId(Integer id) throws PersistenciaException {
+		logger.info("Se ingresa a obtenerListaProductoPorTipo...");
+		Producto producto = null;
+		try {
+			conn = ds.getConnection();
+			producto = getInterfaceProducto().obtenerProductoPorId(conn, id);
+		} catch (PersistenciaException | SQLException e) {
+			logger.fatal("Excepcion en GpWebStateless > obtenerProductoPorId: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return producto;
+	}
+	@Override
 	public List<Producto> obtenerListaProductoPorTipo(Integer tipoProd) throws PersistenciaException {
 		logger.info("Se ingresa a obtenerListaProductoPorTipo...");
 		List<Producto> listaProd = null;

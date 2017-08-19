@@ -41,16 +41,19 @@ public class ServletLogin extends HttpServlet {
 				response.setCharacterEncoding("UTF-8");
 				//ajax mode
 				response.getWriter().write("success");
-			} else {//if name&pass not match then it display error page//
-				response.getWriter().write("error");
+			} else {
+				//devuelvo nodata porque no se pudo chequear logueo
+				response.getWriter().write("nodata");
 			}
 			
 		} catch (PersistenciaException e) {
 			logger.fatal("Excepcion en ServletLogin > processRequestPOST: " + e.getMessage(), e);
-			response.getWriter().write("error");
+			response.setStatus(500);
+			response.getWriter().write(e.getMessage());
 		} catch (Exception e) {
 			logger.fatal("Excepcion genérica en ServletLogin > processRequestPOST: " + e.getMessage(), e);
-			response.getWriter().write("error");
+			response.setStatus(500);
+			response.getWriter().write(e.getMessage());
 		}
 	}
 	

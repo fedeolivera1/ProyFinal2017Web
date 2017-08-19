@@ -14,7 +14,6 @@ import gpw.db.generic.GenSqlExecType;
 import gpw.db.generic.GenSqlSelectType;
 import gpw.dominio.producto.AplicaIva;
 import gpw.dominio.producto.Producto;
-import gpw.dominio.producto.TipoProd;
 import gpw.dominio.util.Estado;
 import gpw.dominio.util.Sinc;
 import gpw.exceptions.ConectorException;

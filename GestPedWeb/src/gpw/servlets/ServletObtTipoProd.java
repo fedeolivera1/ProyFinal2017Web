@@ -38,10 +38,12 @@ public class ServletObtTipoProd extends HttpServlet {
 			response.getWriter().write(listaTpJson);
 		} catch (PersistenciaException e) {
 			logger.fatal("Excepcion en ServletObtTipoProd > processRequest: " + e.getMessage(), e);
-			response.sendError(0, e.getMessage());
+			response.setStatus(500);
+			response.getWriter().write(e.getMessage());
 		} catch (Exception e) {
 			logger.fatal("Excepcion genérica en ServletObtTipoProd > processRequest: " + e.getMessage(), e);
-			response.sendError(0, e.getMessage());
+			response.setStatus(500);
+			response.getWriter().write(e.getMessage());
 		}
 	}
 	

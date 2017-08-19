@@ -134,14 +134,16 @@ public class ServletPersona extends HttpServlet {
 				//ajax mode
 				response.getWriter().write("success");
 	        } else {
-	        	response.getWriter().write("error");
+	        	response.getWriter().write("warning");
 	        }
 		} catch (PersistenciaException e) {
 			logger.fatal("Excepcion en ServletPersona > processRequestPOST: " + e.getMessage(), e);
-			response.getWriter().write("error");
+			response.setStatus(500);
+			response.getWriter().write(e.getMessage());
 		} catch (Exception e) {
 			logger.fatal("Excepcion genérica en ServletPersona > processRequestPOST: " + e.getMessage(), e);
-			response.getWriter().write("error");
+			response.setStatus(500);
+			response.getWriter().write(e.getMessage());
 		}
 	}
 	
@@ -163,10 +165,12 @@ public class ServletPersona extends HttpServlet {
 			}
 		} catch (PersistenciaException e) {
 			logger.fatal("Excepcion en ServletPersona > processRequestGET: " + e.getMessage(), e);
-			response.getWriter().write("error");
+			response.setStatus(500);
+			response.getWriter().write(e.getMessage());
 		} catch (Exception e) {
 			logger.fatal("Excepcion genérica en ServletPersona > processRequestGET: " + e.getMessage(), e);
-			response.getWriter().write("error");
+			response.setStatus(500);
+			response.getWriter().write(e.getMessage());
 		}
 	}
 	

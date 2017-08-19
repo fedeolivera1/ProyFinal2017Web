@@ -38,6 +38,7 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    
   </head>
 
   <body>
@@ -51,38 +52,32 @@
 		</div>
 		<form class="form-signin" action="ServletLogin" method="POST" id="loginForm">
 			<h2 class="form-signin-heading">Login:</h2>
+
 		      	<label for="inputEmail" class="sr-only">Direccion de Email</label>
 		      	<input type="email" name="txtNomUsu" id="txtNomUsu" class="form-control" placeholder="Email" required="" autofocus="">
+
 				<label for="inputPassword" class="sr-only">Password</label>
 			    <input type="password" name="txtPassWd" id="txtPassWd" class="form-control" placeholder="Password" required="">
+
 			    <div class="checkbox">
-			    	<label>
-			        	<input type="checkbox" value="remember-me"> Remember me
-		        	</label>
+			    	<label><input type="checkbox" value="remember-me"> Remember me</label>
 			    </div>
-			    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+			    <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
 			    <button class="btn btn-lg btn-default btn-block" type="reset"><b>Clean</b></button>
 			    <div class="form-control-static">
-				<a href="registroPersona.jsp">Registrarme</a>
-		</div>
+					<a href="registroPersona.jsp">Registrarme</a>
+				</div>
       </form>
 
     </div> <!-- /container -->
   
 <script>
 $("#loginForm").submit(function( event ) {
-    // Stop form from submitting normally
     event.preventDefault();
 
-    // Get some values from elements on the page:
-    var $form = $( this );
+    var $form = $(this);
 
-    // We want to customize what we post, therefore we format our data
     var data = "txtNomUsu=" + $('#txtNomUsu').val() + "&txtPassWd=" + CryptoJS.MD5($('#txtPassWd').val());
-
-    // For debugging purposes... see your console:
-    // Prints out for example: login=myLoginName&passwordHash=a011a78a0c8d9e4f0038a5032d7668ab
-    console.log(data);
 
     // The actual from POST method
     $.ajax({
@@ -92,7 +87,7 @@ $("#loginForm").submit(function( event ) {
         success: function (data) {
             console.log("Hey, we got reply form java side, with following data: ");
             console.log(data);
-            // redirecting example..
+            // data success > redirijo usuario logueado a pedido
             if(data === "success") {
               	window.location.replace('/GestPedWeb/pedido.jsp');
             } else {

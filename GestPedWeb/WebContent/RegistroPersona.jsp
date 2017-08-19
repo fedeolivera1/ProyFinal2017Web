@@ -63,7 +63,7 @@
 	    <div id="alert_placeholder"></div>
 	</div>
 	
-	<form class="form-horizontal" action="ServletPersona" method="POST" id="ingrPersForm"  data-toggle="validator">
+	<form class="form-horizontal" action="ServletPersona" method="POST" id="ingrPersForm" data-toggle="validator">
 		<fieldset>
 		
 		<!-- Form Name -->
@@ -349,6 +349,8 @@
             dataType: "json",
             success: function(response) {
                 cargarCbxTd(response);
+            }, error: function (response) {
+            	bootstrap_alert.danger(response.responseText);
             }
 	    });
 	    $.ajax({
@@ -358,6 +360,8 @@
             dataType: "json",
             success: function(response) {
 				cargarCbxDep(response);
+            }, error: function (response) {
+            	bootstrap_alert.danger(response.responseText);
             }
 	    });
 	    seleccionTipoPers();
@@ -423,13 +427,12 @@
 		            // redirecting
 		            if(data === "success") {
 		            	bootstrap_alert.success('Ingreso del usuario ok.');
-		            } else if(data === "error") {
-		            	bootstrap_alert.danger('Han surgido errores al ingresar el usuario.');
+		            } else if(data === "warning") {
+		            	bootstrap_alert.warning('Han surgido problemas y no se ingresó el usuario.');
 			        }
-		        },
-			    error: function (xhr, ajaxOptions, thrownError) {
-			    	bootstrap_alert.error(thrownError);
-			    }
+		        }, error: function (response) {
+		        	bootstrap_alert.danger(response.responseText);
+		        }
 		    });
 		  }
 	})

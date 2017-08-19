@@ -51,7 +51,7 @@
 	</div>
 	<br>
 	
-	<form class="form-horizontal" action="ServletPedido" method="POST" id="pedidoForm"  data-toggle="validator">
+	<form class="form-horizontal" action="ServletPedido" method="POST" id="pedidoForm" data-toggle="validator">
 		<fieldset>
 			<!-- Form Name -->
 			<legend>Pedidos</legend>
@@ -69,7 +69,7 @@
 			<div class="form-group col-md-12">
 			  <label class="col-md-4 control-label" for="Producto">Producto</label>
 			  <div class="col-md-4">
-			    <select id="selProd" name="selProd" class="form-control">
+			    <select id="selProd" name="selProd" class="form-control" onchange="cargarDatosProd(this);">
 			    </select>
 			  </div>
 			</div>
@@ -84,6 +84,44 @@
 				<div class="col-md-1">
 					<input id="pedCant" name="pedCant" type="text" placeholder="0" class="form-control input-md">
 				</div>
+			</div>
+			
+			<!-- Buttons [Agregar item] -->
+			<div class="form-group col-md-12">
+			  <label class="col-md-4 control-label" for="registrar"></label>
+			  <div class="col-md-4">
+			  	<button type="button" id="agregarItem" name="agregarItem" class="btn btn-primary" onclick="agregarItemPed();">Agregar</button>
+			  </div>
+			</div>
+			
+			<div class="container">
+  				<h2>Items:</h2>
+  				<div class="table-responsive"> 
+					<table class="table table-bordred table-striped" id="tablaPedido">
+					  <thead>
+					    <tr>
+					      <th>#</th>
+					      <th>Producto</th>
+					      <th>Precio Unit</th>
+					      <th>Cantidad</th>
+					      <th>SubTotal</th>
+					      <th>Borrar</th>
+					    </tr>
+					  </thead>
+					    <tbody id="cargaTabla">
+  						</tbody>
+					  </tbody>
+					</table>
+  				</div>
+			</div>
+			
+			<!-- Buttons [Generar pedido]-->
+			<div class="form-group col-md-12">
+			  <label class="col-md-4 control-label" for="registrar"></label>
+			  <div class="col-md-4">
+			  	<button type="button" id="generarPedido" name="generarPedido" class="btn btn-primary" onclick="envioPed();">Generar</button>
+			  	<button type="button" id="actualizarPedido" name="actualizarPedido" class="btn btn-primary" onclick="actualizarPedido();">Actualizar</button>
+			  </div>
 			</div>
 			
 		</fieldset>
@@ -114,8 +152,13 @@ $(document).ready(function() {
         dataType: "json",
         success: function(response) {
         	cargarCbxTipoProd(response);
+        }, error: function (response) {
+        	bootstrap_alert.danger(response.responseText);
         }
     });
+
+	
 });
+
 </script>
 </html>

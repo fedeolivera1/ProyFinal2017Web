@@ -40,10 +40,12 @@ public class ServletObtLoc extends HttpServlet {
 			response.getWriter().write(listaLocJson);
 		} catch (PersistenciaException e) {
 			logger.fatal("Excepcion en ServletObtLoc > processRequest: " + e.getMessage(), e);
-			response.getWriter().write("error");
+			response.setStatus(500);
+			response.getWriter().write(e.getMessage());
 		} catch (Exception e) {
 			logger.fatal("Excepcion genérica en ServletObtLoc > processRequest: " + e.getMessage(), e);
-			response.getWriter().write("error");
+			response.setStatus(500);
+			response.getWriter().write(e.getMessage());
 		}
 	}
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

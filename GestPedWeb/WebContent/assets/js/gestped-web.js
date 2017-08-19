@@ -82,14 +82,14 @@ function cargarCbxDep(response) {
  * carga de select con localidades
  */
 function cargarCbxLoc() {
-	alert('entra a cargarCbxLoc');
+	console.log('entra a cargarCbxLoc');
 	$(function() {
 		var fillCbxLoc = function() {
-			alert('entra a fill de localidad');
+			console.log('entra a fill de localidad');
 			var selected = $('#selDep').val();
 			var data = "idDep=" + selected;
 			 $.ajax({
-	            type: "post",
+	            type: "POST",
 	            url: "ServletObtLoc",
 	            data: data,
 	            success: function(response) {
@@ -98,6 +98,8 @@ function cargarCbxLoc() {
 	            		$("#selLoc").append($("<option></option>").val(this['idLocalidad']).html(this['nombreLocalidad']));
 	            	});
 	                
+	            }, error: function (response) {
+	            	bootstrap_alert.danger(response.responseText);
 	            }
 		    });
 		}
@@ -216,8 +218,8 @@ function cargarDatosPers() {
 		        form.find('[name="selLoc"]').val(response.persona.localidad.idLocalidad).end();
 		        alert('finaliza de cargar localidad del response');
 	    	}
-        }, error: function(qXHR, textStatus, errorThrown) {
-        	bootstrap_alert.danger(errorThrown);
+        }, error: function (response) {
+        	bootstrap_alert.danger(response.responseText);
         }
 	});
 }
@@ -242,11 +244,11 @@ function cargarCbxTipoProd(response) {
 function cargarCbxProd() {
 	$(function() {
 		var fillCbxProd = function() {
-			alert('entra a fill de producto');
+			console.log('entra a fill de producto');
 			var selected = $('#selTipoProd').val();
 			var data = "idTipoProd=" + selected;
 			 $.ajax({
-	            type: "post",
+	            type: "POST",
 	            url: "ServletObtProducto",
 	            data: data,
 	            success: function(response) {
@@ -254,11 +256,72 @@ function cargarCbxProd() {
 	            	$.each(response, function () {
 	            		$("#selProd").append($("<option></option>").val(this['idProducto']).html(this['nombre']));
 	            	});
-	                
+	            }, error: function (response) {
+	            	bootstrap_alert.danger(response.responseText);
 	            }
 		    });
 		}
 		fillCbxProd();
 	});
+}
+
+/**
+ * pedidos - prod
+ * carga datos de cada producto seleccionado
+ */
+function cargarDatosProd() {
+	var selected = $('#selProd').val();
+	var data = "idProd=" + selected;
+	$.ajax({
+        type: "GET",
+        url: "ServletObtProducto",
+        data: data,
+        success: function(response) {
+        	$("#prodPrecio").val('');
+        	var form = $('#pedidoForm');
+        	form.find('[name="prodPrecio"]').val(response.precio).end();
+        }, error: function (response) {
+        	bootstrap_alert.danger(response.responseText);
+        }
+    });	
+}
+
+function agregarItemPed() {
+	var idProd = $('#selProd').val();
+	var prodText = $('#selProd option:selected').text();
+    var precio = $('#prodPrecio').val();
+    var cant = $('#pedCant').val();
+	var data = "<tr>" +
+				"<th scope='row' class='row'>"+idProd+"</th>" +
+				"<td>"+prodText+"</td>" +
+				"<td>"+precio+"</td>" +
+				"<td>"+cant+"</td>" +
+				"<td>"+(precio*cant)+"</td>" +
+				"<td><button class='btn btn-default btn-sm delete' onclick='deleteRow()'><span class='glyphicon glyphicon-trash'></span></button></td>" +
+				"</tr>";
+	console.log(data);
+	$("#tablaPedido tbody").append(data);
+}
+
+function deleteRow() {
+	$('table').on('click','.delete',function() {
+		$(this).parents('tr').remove();
+	});
+}
+
+function envioPed() {	
+//$("#generarPedido").click(function() {
+	var valores = "";
+
+	$(".row").parent("tr").find("th").each(function() {
+		valores += $(this).html() + " ";
+	});
+	$(".row").parent("tr").find("td").each(function() {
+		valores += $(this).html() + " ";
+	});
+	
+	valores = valores + "\n";
+	    alert(valores);
+//});
 }
 

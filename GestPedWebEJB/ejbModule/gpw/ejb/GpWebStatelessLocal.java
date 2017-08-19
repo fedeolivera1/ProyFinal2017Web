@@ -43,6 +43,7 @@ public interface GpWebStatelessLocal {
 	//tipo prod
 	public List<TipoProd> obtenerListaTipoProd() throws PersistenciaException;
 	//producto
+	public Producto obtenerProductoPorId(Integer id) throws PersistenciaException;
 	public List<Producto> obtenerListaProductoPorTipo(Integer tipoProd) throws PersistenciaException;
 	
 }
