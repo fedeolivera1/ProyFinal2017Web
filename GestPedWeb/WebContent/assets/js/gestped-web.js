@@ -263,6 +263,7 @@ function cargarCbxProd() {
 		}
 		fillCbxProd();
 	});
+	cargarDatosProd();
 }
 
 /**
@@ -272,6 +273,9 @@ function cargarCbxProd() {
 function cargarDatosProd() {
 	var selected = $('#selProd').val();
 	var data = "idProd=" + selected;
+	//
+	console.log('entra a cargarDatosProd() > data=' + data);
+	//
 	$.ajax({
         type: "GET",
         url: "ServletObtProducto",
@@ -291,16 +295,36 @@ function agregarItemPed() {
 	var prodText = $('#selProd option:selected').text();
     var precio = $('#prodPrecio').val();
     var cant = $('#pedCant').val();
-	var data = "<tr>" +
-				"<th scope='row' class='row'>"+idProd+"</th>" +
-				"<td>"+prodText+"</td>" +
-				"<td>"+precio+"</td>" +
-				"<td>"+cant+"</td>" +
-				"<td>"+(precio*cant)+"</td>" +
-				"<td><button class='btn btn-default btn-sm delete' onclick='deleteRow()'><span class='glyphicon glyphicon-trash'></span></button></td>" +
-				"</tr>";
 	console.log(data);
-	$("#tablaPedido tbody").append(data);
+	if( (precio !== '' && precio > 0) &&
+			(cant !== '' && cant > 0) ) {
+		var buscarExistente = $("#selProd").val();
+		console.log('agregar pedido - dato a buscar: ' + buscarExistente);
+		var encontradoResultado = false;
+		$("#tablaPedido tr").find('td:eq(0)').each(function () {
+			var idProd = $(this).html();
+			if(idProd == buscarExistente) {
+				console.warn('idProd actual tabla : ' + idProd + ' se repite.');
+				encontradoResultado = true;
+			}
+		});
+
+		if(!encontradoResultado) {
+			var data = "<tr>" +
+			"<td scope='row' class='row'>"+idProd+"</th>" +
+			"<td>"+prodText+"</td>" +
+			"<td>"+precio+"</td>" +
+			"<td>"+cant+"</td>" +
+			"<td>"+(precio*cant)+"</td>" +
+			"<th><button class='btn btn-default btn-sm delete' onclick='deleteRow()'><span class='glyphicon glyphicon-trash'></span></button></th>" +
+			"</tr>";
+			$("#tablaPedido tbody").append(data);
+		} else {
+			bootstrap_alert.info('El item ya existe en el pedido.');
+		}
+	} else {
+		bootstrap_alert.warning('Revise los datos para cargar el item al pedido.');
+	}
 }
 
 function deleteRow() {
@@ -312,12 +336,12 @@ function deleteRow() {
 function envioPed() {	
 //$("#generarPedido").click(function() {
 	var valores = "";
-
-	$(".row").parent("tr").find("th").each(function() {
-		valores += $(this).html() + " ";
-	});
+	//no necesito mas valores de th
+//	$(".row").parent("tr").find("th").each(function() {
+//		valores += $(this).html() + " ";
+//	});
 	$(".row").parent("tr").find("td").each(function() {
-		valores += $(this).html() + " ";
+		valores += $(this).html() + "|";
 	});
 	
 	valores = valores + "\n";

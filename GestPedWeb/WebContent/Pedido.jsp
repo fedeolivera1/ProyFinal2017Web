@@ -12,6 +12,7 @@
 
     <!-- Bootstrap -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -19,12 +20,17 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!-- jQuery  -->
     <script type="text/javascript" src="assets/js/jquery-3.2.1.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <!-- BootStrap -->
     <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 	<!--     Incluyo el JS propio del proyecto -->
     <script type="text/javascript" src="assets/js/gestped-web.js"></script>
+	<!-- DateTimePicker -->
+    <script type="text/javascript" src="bootstrap/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="bootstrap/js/bootstrap-datetimepicker.es.js"></script>
+    <!--     Validator -->
+    <script type="text/javascript" src="bootstrap/js/validator.js"></script>
 </head>
 <body>
 <%
@@ -64,25 +70,27 @@
 			    </select>
 			  </div>
 			</div>
-			
-			<!-- Select Basic [Producto]-->
-			<div class="form-group col-md-12">
-			  <label class="col-md-4 control-label" for="Producto">Producto</label>
-			  <div class="col-md-4">
-			    <select id="selProd" name="selProd" class="form-control" onchange="cargarDatosProd(this);">
-			    </select>
-			  </div>
-			</div>
-			
-			<!-- Text input [Precio] y [Cantidad]-->
-			<div class="form-group col-md-12">
-				<label class="col-md-4 control-label" for="Precio">Precio</label>  
-				<div class="col-md-1">
-					<input id="prodPrecio" name="prodPrecio" type="text" placeholder="0" class="form-control input-md" readonly>
+			<div id="datosItems">
+				<!-- Select Basic [Producto]-->
+				<div class="form-group col-md-12">
+				  <label class="col-md-4 control-label" for="Producto">Producto</label>
+				  <div class="col-md-4">
+				    <select id="selProd" name="selProd" class="form-control" onchange="cargarDatosProd(this);">
+				    </select>
+				  </div>
 				</div>
-				<label class="col-md-1 control-label" for="Cantidad">Cantidad</label>  
-				<div class="col-md-1">
-					<input id="pedCant" name="pedCant" type="text" placeholder="0" class="form-control input-md">
+				
+				<!-- Text input [Precio] y [Cantidad]-->
+				<div class="form-group col-md-12">
+					<label class="col-md-4 control-label" for="Precio">Precio</label>  
+					<div class="col-md-1">
+						<input id="prodPrecio" name="prodPrecio" type="text" placeholder="0" class="form-control input-md" readonly>
+					</div>
+					<label class="col-md-1 control-label" for="Cantidad">Cantidad</label>  
+					<div class="col-md-1">
+						<input id="pedCant" name="pedCant" type="number" min="1" step="1" max="255" pattern="[0-9]{1,}" placeholder="0" class="form-control input-md">
+						<div class="help-block with-errors"></div>
+					</div>
 				</div>
 			</div>
 			
@@ -90,7 +98,8 @@
 			<div class="form-group col-md-12">
 			  <label class="col-md-4 control-label" for="registrar"></label>
 			  <div class="col-md-4">
-			  	<button type="button" id="agregarItem" name="agregarItem" class="btn btn-primary" onclick="agregarItemPed();">Agregar</button>
+			  	<button type="button" id="agregarItem" name="agregarItem" class="btn">Agregar</button>
+			  	<button type="reset" id="resetItem" name="resetItem" class="btn btn-danger">Limpiar</button>
 			  </div>
 			</div>
 			
@@ -100,7 +109,7 @@
 					<table class="table table-bordred table-striped" id="tablaPedido">
 					  <thead>
 					    <tr>
-					      <th>#</th>
+					      <th>Id</th>
 					      <th>Producto</th>
 					      <th>Precio Unit</th>
 					      <th>Cantidad</th>
@@ -157,7 +166,15 @@ $(document).ready(function() {
         }
     });
 
-	
+    $('#agregarItem').on('click', function (e) {
+    	if ($('#pedidoForm').validator('validate').has('.has-error').length) {
+  			// manejo form inválido (opc)
+       	} else {
+	    	e.preventDefault();
+     		agregarItemPed();
+        }
+    });
+    
 });
 
 </script>
