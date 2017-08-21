@@ -298,9 +298,8 @@
       <xs:element minOccurs="0" name="estadoProd" type="xs:int"></xs:element>
       <xs:element minOccurs="0" name="idProducto" type="xs:int"></xs:element>
       <xs:element minOccurs="0" name="nombre" type="xs:string"></xs:element>
-      <xs:element minOccurs="0" name="precio" type="xs:double"></xs:element>
+      <xs:element minOccurs="0" name="precioVta" type="xs:double"></xs:element>
       <xs:element minOccurs="0" name="sinc" type="xs:string"></xs:element>
-      <xs:element minOccurs="0" name="stockMin" type="xs:float"></xs:element>
       <xs:element minOccurs="0" name="tipoProd" type="xs:int"></xs:element>
       <xs:element minOccurs="0" name="ultAct" type="xs:date"></xs:element>
       <xs:element minOccurs="0" name="unidad" type="xs:int"></xs:element>

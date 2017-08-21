@@ -66,7 +66,6 @@ public class ParserProducto {
 				prod.setCodigo(param.getCodigo());
 				prod.setNombre(param.getNombre());
 				prod.setDescripcion(param.getDescripcion());
-				prod.setStockMin(param.getStockMin());
 				//unidad
 				Unidad unidad = new Unidad();
 				unidad.setIdUnidad(param.getUnidad());
@@ -74,7 +73,7 @@ public class ParserProducto {
 				//
 				prod.setCantUnidad(param.getCantUnidad());
 				prod.setAplIva(AplicaIva.getAplicaIvaPorChar(param.getAplIva().charAt(0)));
-				prod.setPrecio(param.getPrecio());
+				prod.setPrecioVta(param.getPrecioVta());
 				prod.setSinc(Sinc.getSincPorChar(param.getSinc().charAt(0)));
 				prod.setUltAct(new Fecha(param.getUltAct(), Fecha.AMDHMS));
 				prod.setEstadoProd(Estado.getEstadoPorInt(param.getEstadoProd()));

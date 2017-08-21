@@ -100,7 +100,7 @@ public class ParamGenValidator {
 				}
 			}
 			//control tipo prod
-			if(!param.getListaTipoProd().isEmpty()) {
+			if(param.getListaTipoProd() != null && param.getListaTipoProd().isEmpty()) {
 				for(ParamTipoProdASinc ptpas : param.getListaTipoProd()) {
 					if(ptpas.getIdTipoProd() == null || ptpas.getDescripcion() == null ||
 							ptpas.getSinc() == null || ptpas.getEstado() == null) {
@@ -110,7 +110,7 @@ public class ParamGenValidator {
 				}
 			}
 			//control unidad
-			if(!param.getListaUnidad().isEmpty()) {
+			if(param.getListaUnidad() != null && !param.getListaUnidad().isEmpty()) {
 				for(ParamUnidadASinc puas : param.getListaUnidad()) {
 					if(puas.getIdUnidad() == null || puas.getNombre() == null ||
 							puas.getSinc() == null || puas.getEstado() == null) {

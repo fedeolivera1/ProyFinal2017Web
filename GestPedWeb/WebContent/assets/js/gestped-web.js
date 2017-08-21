@@ -283,7 +283,7 @@ function cargarDatosProd() {
         success: function(response) {
         	$("#prodPrecio").val('');
         	var form = $('#pedidoForm');
-        	form.find('[name="prodPrecio"]').val(response.precio).end();
+        	form.find('[name="prodPrecio"]').val(response.precioVta).end();
         }, error: function (response) {
         	bootstrap_alert.danger(response.responseText);
         }
@@ -304,7 +304,7 @@ function agregarItemPed() {
 		$("#tablaPedido tr").find('td:eq(0)').each(function () {
 			var idProd = $(this).html();
 			if(idProd == buscarExistente) {
-				console.warn('idProd actual tabla : ' + idProd + ' se repite.');
+				console.log('idProd actual tabla : ' + idProd + ' se repite.');
 				encontradoResultado = true;
 			}
 		});
@@ -333,19 +333,51 @@ function deleteRow() {
 	});
 }
 
-function envioPed() {	
+function envioPed() {
 //$("#generarPedido").click(function() {
-	var valores = "";
+	var dataPedido = '';
 	//no necesito mas valores de th
 //	$(".row").parent("tr").find("th").each(function() {
 //		valores += $(this).html() + " ";
 //	});
-	$(".row").parent("tr").find("td").each(function() {
-		valores += $(this).html() + "|";
+	var idProd;
+//	var nomProd;
+//	var precioUnit;
+	var cant;
+	$(".row").parent("tr").each(function(index) {
+		$(this).children("td").each(function (index2) {
+			switch (index2) {
+				case 0:
+					//obtengo dato de idProd
+				   idProd = $(this).text();
+				   break;
+				case 3:
+					//obtengo dato de cant
+					cant = $(this).text();
+					break;
+			}
+		});
+		dataPedido += idProd + "~" + cant + "|";
 	});
 	
-	valores = valores + "\n";
-	    alert(valores);
+	if(dataPedido !== '') {
+		data = 'pedido=' + dataPedido + '&fechaHora=' + $('#pedProg').val();
+		console.log('valores a servlet: [' + data + ']');
+		$.ajax({
+			type: "POST",
+			url: "ServletPedido",
+			data: data,
+			success: function(response) {
+				//limpiar form
+				bootstrap_alert.success('El pedido ha enviado correctamente.');
+			}, error: function (response) {
+				bootstrap_alert.danger(response.responseText);
+			}
+		});
+	} else {
+		bootstrap_alert.warning('El pedido debe tener items para ser enviado.');
+	}
+	
 //});
 }
 

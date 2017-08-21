@@ -14,11 +14,10 @@ public class Producto implements Serializable {
 	private String codigo;
 	private String nombre;
 	private String descripcion;
-	private Float stockMin;
 	private Unidad unidad;
 	private Integer cantUnidad;
 	private AplicaIva aplIva;
-	private Double precio;
+	private Double precioVta;
 	private Sinc sinc;
 	private Fecha ultAct;
 	private Estado estadoProd;
@@ -59,13 +58,6 @@ public class Producto implements Serializable {
 		this.descripcion = descripcion;
 	}
 	
-	public Float getStockMin() {
-		return stockMin;
-	}
-	public void setStockMin(Float stockMin) {
-		this.stockMin = stockMin;
-	}
-	
 	public Unidad getUnidad() {
 		return unidad;
 	}
@@ -87,11 +79,11 @@ public class Producto implements Serializable {
 		this.aplIva = aplIva;
 	}
 	
-	public Double getPrecio() {
-		return precio;
+	public Double getPrecioVta() {
+		return precioVta;
 	}
-	public void setPrecio(Double precio) {
-		this.precio = precio;
+	public void setPrecioVta(Double precioVta) {
+		this.precioVta = precioVta;
 	}
 	
 	public Sinc getSinc() {

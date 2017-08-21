@@ -25,9 +25,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="estadoProd" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/&gt;
  *         &lt;element name="idProducto" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/&gt;
  *         &lt;element name="nombre" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="precio" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/&gt;
+ *         &lt;element name="precioVta" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/&gt;
  *         &lt;element name="sinc" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="stockMin" type="{http://www.w3.org/2001/XMLSchema}float" minOccurs="0"/&gt;
  *         &lt;element name="tipoProd" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/&gt;
  *         &lt;element name="ultAct" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/&gt;
  *         &lt;element name="unidad" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/&gt;
@@ -48,9 +47,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "estadoProd",
     "idProducto",
     "nombre",
-    "precio",
+    "precioVta",
     "sinc",
-    "stockMin",
     "tipoProd",
     "ultAct",
     "unidad"
@@ -64,9 +62,8 @@ public class ParamProductoASinc {
     protected Integer estadoProd;
     protected Integer idProducto;
     protected String nombre;
-    protected Double precio;
+    protected Double precioVta;
     protected String sinc;
-    protected Float stockMin;
     protected Integer tipoProd;
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar ultAct;
@@ -241,27 +238,27 @@ public class ParamProductoASinc {
     }
 
     /**
-     * Obtiene el valor de la propiedad precio.
+     * Obtiene el valor de la propiedad precioVta.
      * 
      * @return
      *     possible object is
      *     {@link Double }
      *     
      */
-    public Double getPrecio() {
-        return precio;
+    public Double getPrecioVta() {
+        return precioVta;
     }
 
     /**
-     * Define el valor de la propiedad precio.
+     * Define el valor de la propiedad precioVta.
      * 
      * @param value
      *     allowed object is
      *     {@link Double }
      *     
      */
-    public void setPrecio(Double value) {
-        this.precio = value;
+    public void setPrecioVta(Double value) {
+        this.precioVta = value;
     }
 
     /**
@@ -286,30 +283,6 @@ public class ParamProductoASinc {
      */
     public void setSinc(String value) {
         this.sinc = value;
-    }
-
-    /**
-     * Obtiene el valor de la propiedad stockMin.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Float }
-     *     
-     */
-    public Float getStockMin() {
-        return stockMin;
-    }
-
-    /**
-     * Define el valor de la propiedad stockMin.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Float }
-     *     
-     */
-    public void setStockMin(Float value) {
-        this.stockMin = value;
     }
 
     /**

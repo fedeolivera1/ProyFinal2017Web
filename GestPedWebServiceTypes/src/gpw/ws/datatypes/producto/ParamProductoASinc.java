@@ -17,7 +17,6 @@ public class ParamProductoASinc implements Serializable {
 	private String codigo;
 	private String nombre;
 	private String descripcion;
-	private Float stockMin;
 	//Unidad
 	private Integer unidad;
 	//
@@ -25,7 +24,7 @@ public class ParamProductoASinc implements Serializable {
 	//AplicaIva
 	private String aplIva;
 	//
-	private Double precio;
+	private Double precioVta;
 	//sinc (char)
 	private String sinc;
 	private XMLGregorianCalendar ultAct;
@@ -61,12 +60,6 @@ public class ParamProductoASinc implements Serializable {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-	public Float getStockMin() {
-		return stockMin;
-	}
-	public void setStockMin(Float stockMin) {
-		this.stockMin = stockMin;
-	}
 	public Integer getUnidad() {
 		return unidad;
 	}
@@ -85,11 +78,11 @@ public class ParamProductoASinc implements Serializable {
 	public void setAplIva(String aplIva) {
 		this.aplIva = aplIva;
 	}
-	public Double getPrecio() {
-		return precio;
+	public Double getPrecioVta() {
+		return precioVta;
 	}
-	public void setPrecio(Double precio) {
-		this.precio = precio;
+	public void setPrecioVta(Double precioVta) {
+		this.precioVta = precioVta;
 	}
 	public String getSinc() {
 		return sinc;

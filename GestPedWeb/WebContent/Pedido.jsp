@@ -27,6 +27,7 @@
 	<!--     Incluyo el JS propio del proyecto -->
     <script type="text/javascript" src="assets/js/gestped-web.js"></script>
 	<!-- DateTimePicker -->
+<!--     <script type="text/javascript" src="bootstrap/js/moment.js"></script> -->
     <script type="text/javascript" src="bootstrap/js/bootstrap-datetimepicker.min.js"></script>
     <script type="text/javascript" src="bootstrap/js/bootstrap-datetimepicker.es.js"></script>
     <!--     Validator -->
@@ -79,7 +80,6 @@
 				    </select>
 				  </div>
 				</div>
-				
 				<!-- Text input [Precio] y [Cantidad]-->
 				<div class="form-group col-md-12">
 					<label class="col-md-4 control-label" for="Precio">Precio</label>  
@@ -124,6 +124,21 @@
   				</div>
 			</div>
 			
+			<hr>
+			<!-- Input text y Datetimepicker [Fecha prog - Hora prog]-->
+			<div class="form-group col-md-12">
+			  <label class="col-md-4 control-label" for="FechaProg">Fecha Hora estimada:</label>
+			  <div class="col-md-5">
+				<div class="col-md-5 input-group date" id="dtpPedProg">
+		            <input type="text" id="pedProg" name="pedProg" class="form-control" readonly/>
+		            <span class="input-group-addon">
+		                <span class="glyphicon glyphicon-calendar"></span>
+		            </span>
+				</div>
+	            <div id="divPedProg" class="oculto"><label><font color="gray" size="1">opcional</font></label></div>
+			  </div>  
+			</div>
+			
 			<!-- Buttons [Generar pedido]-->
 			<div class="form-group col-md-12">
 			  <label class="col-md-4 control-label" for="registrar"></label>
@@ -154,6 +169,17 @@
 
 //document ready
 $(document).ready(function() {
+	//datetimepicker con fecha y hora, intervalos de 30 min, fecha minima hoy
+	$('#dtpPedProg').datetimepicker({
+		format: 'dd/mm/yyyy hh:ii',
+        autoclose: true,
+        startDate: new Date(),
+        minuteStep: 30,
+        clearBtn: true,
+        language: 'es'
+	});
+
+	
     $.ajax({
         type: "POST",
         url: "ServletObtTipoProd",

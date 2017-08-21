@@ -160,7 +160,7 @@
 			  <input id="apellidoPf2" name="apellidoPf2" type="text" placeholder="Segundo Apellido" class="form-control input-md">
 			  </div>
 			</div>
-			<!-- Text input [Fecha Nac]-->
+			<!-- Input text y Datetimepicker [Fecha Nac]-->
 			<div class="form-group col-md-12">
 			  <label class="col-md-4 control-label" for="FNac">Fecha Nacimiento</label>
 			  <div class="col-md-4">

@@ -12,7 +12,6 @@ import gpw.types.Fecha;
 public class Pedido implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private Long idPersTemp;
 	private Persona persona;
 	private Fecha fechaHora;
 	private EstadoPedido estado;
@@ -22,17 +21,11 @@ public class Pedido implements Serializable {
 	private Double subTotal;
 	private Double iva;
 	private Double total;
-//	private UsuarioWeb usuario;
 	private Sinc sinc;
 	private Fecha ultAct;
 	private List<PedidoLinea> listaPedidoLinea;
+	private Long idPersTemp;
 	
-	public Long getIdPersTemp() {
-		return idPersTemp;
-	}
-	public void setIdPersTemp(Long idPersTemp) {
-		this.idPersTemp = idPersTemp;
-	}
 	
 	public Persona getPersona() {
 		return persona;
@@ -97,13 +90,6 @@ public class Pedido implements Serializable {
 		this.total = total;
 	}
 	
-//	public UsuarioWeb getUsuario() {
-//		return usuario;
-//	}
-//	public void setUsuario(UsuarioWeb usuario) {
-//		this.usuario = usuario;
-//	}
-	
 	public Sinc getSinc() {
 		return sinc;
 	}
@@ -126,6 +112,13 @@ public class Pedido implements Serializable {
 	}
 	public void setListaPedidoLinea(List<PedidoLinea> listaPedidoLinea) {
 		this.listaPedidoLinea = listaPedidoLinea;
+	}
+	
+	public Long getIdPersTemp() {
+		return idPersTemp;
+	}
+	public void setIdPersTemp(Long idPersTemp) {
+		this.idPersTemp = idPersTemp;
 	}
 	
 	@Override

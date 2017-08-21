@@ -39,10 +39,10 @@ public class ServletObtProducto extends HttpServlet {
 			//ajax mode
 			response.getWriter().write(listaProdJson);
 		} catch (PersistenciaException e) {
-			logger.fatal("Excepcion en ServletObtLoc > processRequestPOST: " + e.getMessage(), e);
+			logger.fatal("Excepcion en ServletObtProducto > processRequestPOST: " + e.getMessage(), e);
 			response.sendError(0, e.getMessage());
 		} catch (Exception e) {
-			logger.fatal("Excepcion genérica en ServletObtLoc > processRequestPOST: " + e.getMessage(), e);
+			logger.fatal("Excepcion genérica en ServletObtProducto > processRequestPOST: " + e.getMessage(), e);
 			response.sendError(0, e.getMessage());
 		}
 	}
@@ -61,11 +61,11 @@ public class ServletObtProducto extends HttpServlet {
 			//ajax mode
 			response.getWriter().write(prodJson);
 		} catch (PersistenciaException e) {
-			logger.fatal("Excepcion en ServletObtLoc > processRequestGET: " + e.getMessage(), e);
+			logger.fatal("Excepcion en ServletObtProducto > processRequestGET: " + e.getMessage(), e);
 			response.setStatus(500);
 			response.getWriter().write(e.getMessage());
 		} catch (Exception e) {
-			logger.fatal("Excepcion genérica en ServletObtLoc > processRequestGET: " + e.getMessage(), e);
+			logger.fatal("Excepcion genérica en ServletObtProducto > processRequestGET: " + e.getMessage(), e);
 			response.setStatus(500);
             response.getWriter().write(e.getMessage());
 		}

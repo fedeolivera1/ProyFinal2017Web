@@ -94,5 +94,16 @@
     <servlet-name>ServletObtProducto</servlet-name>
     <url-pattern>/ServletObtProducto</url-pattern>
   </servlet-mapping>
+<!--   pedido -->
+  <servlet>
+    <description></description>
+    <display-name>ServletPedido</display-name>
+    <servlet-name>ServletPedido</servlet-name>
+    <servlet-class>gpw.servlets.ServletPedido</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ServletPedido</servlet-name>
+    <url-pattern>/ServletPedido</url-pattern>
+  </servlet-mapping>
   
 </web-app>
