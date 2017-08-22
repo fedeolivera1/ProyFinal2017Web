@@ -32,8 +32,6 @@ public class ParserPedido {
 				pedido.setFechaProg(paramPas.getFechaProg() != null ? new Fecha(paramPas.getFechaProg(), Fecha.AMD) : null);
 				pedido.setHoraProg(paramPas.getHoraProg() != null ? new Fecha(paramPas.getHoraProg(), Fecha.HMS) : null);
 				pedido.setOrigen(Origen.getOrigenPorChar(paramPas.getOrigen().charAt(0)));
-				pedido.setSubTotal(paramPas.getSubTotal());
-				pedido.setIva(paramPas.getIva());
 				pedido.setTotal(paramPas.getTotal());
 				pedido.setSinc(Sinc.getSincPorChar(paramPas.getSinc().charAt(0)));
 				pedido.setUltAct(new Fecha(paramPas.getUltAct(), Fecha.AMDHMS));
@@ -43,7 +41,6 @@ public class ParserPedido {
 					prod.setIdProducto(paramPl.getIdProducto());
 					pl.setProducto(prod);
 					pl.setCantidad(paramPl.getCantidad());
-					pl.setIva(paramPl.getIva());
 					pl.setPrecioUnit(paramPl.getPrecioUnit());
 					pedido.getListaPedidoLinea().add(pl);
 				}

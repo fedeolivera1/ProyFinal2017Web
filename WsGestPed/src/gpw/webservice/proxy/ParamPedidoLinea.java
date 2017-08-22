@@ -18,7 +18,6 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;sequence&gt;
  *         &lt;element name="cantidad" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/&gt;
  *         &lt;element name="idProducto" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/&gt;
- *         &lt;element name="iva" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/&gt;
  *         &lt;element name="precioUnit" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
@@ -32,14 +31,12 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "ParamPedidoLinea", propOrder = {
     "cantidad",
     "idProducto",
-    "iva",
     "precioUnit"
 })
 public class ParamPedidoLinea {
 
     protected Integer cantidad;
     protected Integer idProducto;
-    protected Double iva;
     protected Double precioUnit;
 
     /**
@@ -88,30 +85,6 @@ public class ParamPedidoLinea {
      */
     public void setIdProducto(Integer value) {
         this.idProducto = value;
-    }
-
-    /**
-     * Obtiene el valor de la propiedad iva.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Double }
-     *     
-     */
-    public Double getIva() {
-        return iva;
-    }
-
-    /**
-     * Define el valor de la propiedad iva.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Double }
-     *     
-     */
-    public void setIva(Double value) {
-        this.iva = value;
     }
 
     /**

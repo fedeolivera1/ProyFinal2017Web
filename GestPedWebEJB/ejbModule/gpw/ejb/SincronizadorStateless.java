@@ -398,8 +398,9 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 						 * actualizo el pedido a sincronizado, el mismo ya está listo para viajar por WS a dsk
 						 * en caso de problemas en cualquiera de los updates, se hace rollback de todo
 						 */
-						pedido.setSinc(Sinc.S);
-						getInterfacePedido().actualizarPedidoSinc(conn, pedido.getPersona().getIdPersona(), pedido.getFechaHora(), pedido.getSinc());
+						//FIXME arreglar esto, no puede marcarse como sincronizado a esta altura.
+//						pedido.setSinc(Sinc.S);
+//						getInterfacePedido().actualizarPedidoSinc(conn, pedido.getPersona().getIdPersona(), pedido.getFechaHora(), pedido.getSinc());
 					}
 					result = ParserResultSincPedido.parseResultObtPedidosNoSinc(listaPedido);
 				}

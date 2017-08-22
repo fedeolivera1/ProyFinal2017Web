@@ -17,8 +17,6 @@ public class ParamPedidoASinc implements Serializable {
 	private XMLGregorianCalendar fechaProg;
 	private XMLGregorianCalendar horaProg;
 	private String origen;
-	private Double subTotal;
-	private Double iva;
 	private Double total;
 	private String sinc;
 	private XMLGregorianCalendar ultAct;
@@ -62,18 +60,6 @@ public class ParamPedidoASinc implements Serializable {
 	}
 	public void setOrigen(String origen) {
 		this.origen = origen;
-	}
-	public Double getSubTotal() {
-		return subTotal;
-	}
-	public void setSubTotal(Double subTotal) {
-		this.subTotal = subTotal;
-	}
-	public Double getIva() {
-		return iva;
-	}
-	public void setIva(Double iva) {
-		this.iva = iva;
 	}
 	public Double getTotal() {
 		return total;

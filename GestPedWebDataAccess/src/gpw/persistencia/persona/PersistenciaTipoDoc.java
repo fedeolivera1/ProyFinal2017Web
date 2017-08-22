@@ -9,7 +9,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import gpw.db.constantes.CnstQryTipoDoc;
-import gpw.db.generic.GenSqlExecType;
 import gpw.db.generic.GenSqlSelectType;
 import gpw.dominio.persona.TipoDoc;
 import gpw.exceptions.ConectorException;
@@ -35,7 +34,6 @@ public class PersistenciaTipoDoc extends Conector implements IPersTipoDoc, CnstQ
 				tipoDoc.setNombre(rs.getString("nombre"));
 			}
 		} catch (ConectorException | SQLException e) {
-//			Conector.rollbackConn(conn);//TODO sacar
 			logger.fatal("Excepcion al obtenerListaTipoDoc: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
 		} finally {
@@ -57,7 +55,6 @@ public class PersistenciaTipoDoc extends Conector implements IPersTipoDoc, CnstQ
 				listaTipoDoc.add(tipoDoc);
 			}
 		} catch (ConectorException | SQLException e) {
-//			Conector.rollbackConn(conn);//TODO sacar
 			logger.fatal("Excepcion al obtenerListaTipoDoc: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
 		} finally {

@@ -32,8 +32,6 @@ public class ParserResultSincPedido {
 					resultPns.setFechaProg(pedido.getFechaProg() != null ? pedido.getFechaProg().getAsXMLGregorianCalendar(Fecha.AMD) : null);
 					resultPns.setHoraProg(pedido.getHoraProg() != null ? pedido.getHoraProg().getHoraAsXMLGregorianCalendar() : null);
 					resultPns.setOrigen(String.valueOf(pedido.getOrigen().getAsChar()));
-					resultPns.setSubTotal(pedido.getSubTotal());
-					resultPns.setIva(pedido.getIva());
 					resultPns.setTotal(pedido.getTotal());
 					resultPns.setSinc(String.valueOf(pedido.getSinc().getAsChar()));
 					resultPns.setUltAct(pedido.getUltAct().getAsXMLGregorianCalendar(Fecha.AMDHMS));
@@ -41,7 +39,6 @@ public class ParserResultSincPedido {
 						ResultPedidoLinea rpl = new ResultPedidoLinea();
 						rpl.setIdProducto(pl.getProducto().getIdProducto());
 						rpl.setCantidad(pl.getCantidad());
-						rpl.setIva(pl.getIva());
 						rpl.setPrecioUnit(pl.getPrecioUnit());
 						resultPns.getListaPedidoLinea().add(rpl);
 					}

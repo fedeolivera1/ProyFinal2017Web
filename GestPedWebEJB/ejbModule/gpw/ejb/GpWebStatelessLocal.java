@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.ejb.Local;
 
+import gpw.dominio.pedido.EstadoPedido;
+import gpw.dominio.pedido.Pedido;
 import gpw.dominio.persona.Departamento;
 import gpw.dominio.persona.Localidad;
 import gpw.dominio.persona.TipoDoc;
@@ -11,6 +13,7 @@ import gpw.dominio.producto.Producto;
 import gpw.dominio.producto.TipoProd;
 import gpw.dominio.usuario.UsuarioWeb;
 import gpw.exceptions.PersistenciaException;
+import gpw.types.Fecha;
 
 @Local
 public interface GpWebStatelessLocal {
@@ -45,5 +48,12 @@ public interface GpWebStatelessLocal {
 	//producto
 	public Producto obtenerProductoPorId(Integer id) throws PersistenciaException;
 	public List<Producto> obtenerListaProductoPorTipo(Integer tipoProd) throws PersistenciaException;
+	
+	/**
+	 * pedido
+	 */
+	public List<Pedido> obtenerListaPedido(EstadoPedido ep, Long idPersona, Fecha fechaDesde, Fecha fechaHasta) throws PersistenciaException;
+	public Integer guardarPedido(Pedido pedido) throws PersistenciaException;
+	public Integer modificarPedido(Pedido pedido) throws PersistenciaException;
 	
 }

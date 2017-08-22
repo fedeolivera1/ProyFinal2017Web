@@ -10,7 +10,6 @@ public class ResultPedidoLinea implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Integer idProducto;
 	private Integer cantidad;
-	private Double iva;
 	private Double precioUnit;
 	
 	public Integer getIdProducto() {
@@ -24,12 +23,6 @@ public class ResultPedidoLinea implements Serializable {
 	}
 	public void setCantidad(Integer cantidad) {
 		this.cantidad = cantidad;
-	}
-	public Double getIva() {
-		return iva;
-	}
-	public void setIva(Double iva) {
-		this.iva = iva;
 	}
 	public Double getPrecioUnit() {
 		return precioUnit;

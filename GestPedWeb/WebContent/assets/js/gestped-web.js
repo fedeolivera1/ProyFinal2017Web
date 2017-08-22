@@ -312,10 +312,10 @@ function agregarItemPed() {
 		if(!encontradoResultado) {
 			var data = "<tr>" +
 			"<td scope='row' class='row'>"+idProd+"</th>" +
-			"<td>"+prodText+"</td>" +
-			"<td>"+precio+"</td>" +
-			"<td>"+cant+"</td>" +
-			"<td>"+(precio*cant)+"</td>" +
+			"<td>" + prodText + "</td>" +
+			"<td>" + precio + "</td>" +
+			"<td>" + cant + "</td>" +
+			"<td>" + roundNumber((precio*cant), 2) + "</td>" +
 			"<th><button class='btn btn-default btn-sm delete' onclick='deleteRow()'><span class='glyphicon glyphicon-trash'></span></button></th>" +
 			"</tr>";
 			$("#tablaPedido tbody").append(data);
@@ -357,11 +357,11 @@ function envioPed() {
 					break;
 			}
 		});
-		dataPedido += idProd + "~" + cant + "|";
+		dataPedido += idProd + ";" + cant + "~";
 	});
 	
 	if(dataPedido !== '') {
-		data = 'pedido=' + dataPedido + '&fechaHora=' + $('#pedProg').val();
+		data = 'pedido=' + dataPedido + '&fechaHoraProg=' + $('#pedProg').val();
 		console.log('valores a servlet: [' + data + ']');
 		$.ajax({
 			type: "POST",
@@ -369,15 +369,50 @@ function envioPed() {
 			data: data,
 			success: function(response) {
 				//limpiar form
-				bootstrap_alert.success('El pedido ha enviado correctamente.');
+				if(response === 'success') {
+					bootstrap_alert.success('El pedido ha sido registrado correctamente.');
+				} else {
+					bootstrap_alert.warning('Han surgido problemas para registrar el pedido.');
+				}
 			}, error: function (response) {
 				bootstrap_alert.danger(response.responseText);
 			}
 		});
 	} else {
-		bootstrap_alert.warning('El pedido debe tener items para ser enviado.');
+		bootstrap_alert.warning('El pedido debe tener items para ser registrado.');
 	}
 	
 //});
+}
+
+function seleccionTipoPedido(tipo) {
+	if(tipo == 'N') {
+		alert('pedido nuevo');
+	} else {
+		alert('pedido existente');
+	}
+}
+
+
+/**********************************************************************************************************************************************/
+/** GENERICOS **/
+/**********************************************************************************************************************************************/
+
+function roundNumber (number, max = 2) {
+  if (typeof number !== 'number' || isNaN(number)) {
+	  throw new TypeError('Número inválido: ' + number);  
+  }
+  
+  if (typeof max !== 'number' || isNaN(max)) {
+	  throw new TypeError('Máximo de dígitos inválido: ' + max); 
+  }
+  
+  let fractionalPart = number.toString().split('.')[1];
+  
+  if (!fractionalPart || fractionalPart.length <= 2) {
+    return number;
+  }
+  
+  return Number(number.toFixed(max));
 }
 

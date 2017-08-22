@@ -38,7 +38,6 @@ public class PersistenciaPedidoLinea extends Conector implements IPersPedidoLine
 				PedidoLinea pedidoLinea = new PedidoLinea(pedido);
 				pedidoLinea.setProducto(pp.obtenerProductoPorId(conn, rs.getInt("id_producto")));
 				pedidoLinea.setCantidad(rs.getInt("cantidad"));
-				pedidoLinea.setIva(rs.getDouble("iva"));
 				pedidoLinea.setPrecioUnit(rs.getDouble("precio_unit"));
 				listaPedidoLinea.add(pedidoLinea);
 			}
@@ -64,7 +63,6 @@ public class PersistenciaPedidoLinea extends Conector implements IPersPedidoLine
 				paramList.add(pl.getPedido().getFechaHora());
 				paramList.add(pl.getProducto().getIdProducto());
 				paramList.add(pl.getCantidad());
-				paramList.add(pl.getIva());
 				paramList.add(pl.getPrecioUnit());
 				genExec.setParamList(paramList);
 			}

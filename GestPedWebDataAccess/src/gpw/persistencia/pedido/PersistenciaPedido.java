@@ -30,7 +30,13 @@ public class PersistenciaPedido extends Conector implements IPersPedido, CnstQry
 	private static final Logger logger = Logger.getLogger(PersistenciaPedido.class);
 	private ResultSet rs;
 	
-	
+	@Override
+	public List<Pedido> obtenerListaPedido(Connection conn, EstadoPedido ep, Long idPersona, Fecha fechaDesde,
+			Fecha fechaHasta) throws PersistenciaException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	@Override
 	public List<Pedido> obtenerListaPedidoNoSinc(Connection conn, Fecha fechaDesde, Fecha fechaHasta) throws PersistenciaException {
 		List<Pedido> listaPedido = new ArrayList<>();
@@ -60,8 +66,6 @@ public class PersistenciaPedido extends Conector implements IPersPedido, CnstQry
 				rs.getCharacterStream("origen").read(origenChar);
 				Origen origen = Origen.getOrigenPorChar(origenChar[0]);
 				pedido.setOrigen(origen);
-				pedido.setSubTotal(rs.getDouble("sub_total"));
-				pedido.setIva(rs.getDouble("iva"));
 				pedido.setTotal(rs.getDouble("total"));
 				char[] sincChar = new char[1];
 				rs.getCharacterStream("sinc").read(sincChar);
@@ -90,8 +94,6 @@ public class PersistenciaPedido extends Conector implements IPersPedido, CnstQry
 		genExec.setParam(pedido.getFechaProg());
 		genExec.setParam(pedido.getHoraProg());
 		genExec.setParam(pedido.getOrigen().getAsChar());
-		genExec.setParam(pedido.getSubTotal());
-		genExec.setParam(pedido.getIva());
 		genExec.setParam(pedido.getTotal());
 		genExec.setParam(pedido.getSinc().getAsChar());
 		genExec.setParam(pedido.getUltAct());
@@ -111,8 +113,6 @@ public class PersistenciaPedido extends Conector implements IPersPedido, CnstQry
 		genExec.setParam(pedido.getEstado().getAsChar());
 		genExec.setParam(pedido.getFechaProg());
 		genExec.setParam(pedido.getHoraProg());
-		genExec.setParam(pedido.getSubTotal());
-		genExec.setParam(pedido.getIva());
 		genExec.setParam(pedido.getTotal());
 		genExec.setParam(pedido.getSinc().getAsChar());
 		genExec.setParam(pedido.getUltAct());

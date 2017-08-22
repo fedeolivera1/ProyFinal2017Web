@@ -63,6 +63,35 @@
 			<!-- Form Name -->
 			<legend>Pedidos</legend>
 			
+			<div class="form-group col-md-12">
+			  <label class="col-md-4 control-label" for="tipoProd">Pedido:</label>
+				 <div class="col-sm-7 col-md-7">
+	    			<div class="input-group">
+	    				<div id="radioBtn" class="btn-group">
+	    					<a class="btn btn-default btn-sm active" data-toggle="tipoPedido" data-title="N" onclick="seleccionTipoPedido('N');">Nuevo</a>
+	    					<a class="btn btn-default btn-sm notActive" data-toggle="tipoPedido" data-title="E" onclick="seleccionTipoPedido('E');">Existente</a>
+	    				</div>
+	    				<input type="hidden" name="tipoPedido" id="tipoPedido">
+	    			</div>
+	    		</div>
+		  	</div>
+		  	
+		  	<!-- 	DIV PEDIDO NUEVO -->
+		  	<div id="divPedNuevo" class="oculto">
+		  	
+		  	</div>
+		  	<!-- 	DIV PEDIDO EXISTENTE -->
+		  	<div id="divPedExistente" class="oculto">
+			  	<!-- Select Basic [tipoProd]-->
+				<div class="form-group col-md-12">
+				  <label class="col-md-4 control-label" for="pedExistentes">Pedidos existentes</label>
+				  <div class="col-md-2">
+				    <select id="selPedExist" name="selPedExist" class="form-control" onchange="seleccionTipoPedido();">
+				    </select>
+				  </div>
+				</div>
+		  	</div>
+   
 			<!-- Select Basic [tipoProd]-->
 			<div class="form-group col-md-12">
 			  <label class="col-md-4 control-label" for="tipoProd">Tipo Producto</label>
@@ -200,6 +229,15 @@ $(document).ready(function() {
      		agregarItemPed();
         }
     });
+
+    $('#radioBtn a').on('click', function() {
+        var sel = $(this).data('title');
+        var tog = $(this).data('toggle');
+        $('#'+tog).prop('value', sel);
+        
+        $('a[data-toggle="'+tog+'"]').not('[data-title="'+sel+'"]').removeClass('active').addClass('notActive');
+        $('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').removeClass('notActive').addClass('active');
+    })
     
 });
 

@@ -134,11 +134,9 @@
       <xs:element minOccurs="0" name="fechaProg" type="xs:date"></xs:element>
       <xs:element minOccurs="0" name="horaProg" type="xs:time"></xs:element>
       <xs:element minOccurs="0" name="idPersona" type="xs:long"></xs:element>
-      <xs:element minOccurs="0" name="iva" type="xs:double"></xs:element>
       <xs:element maxOccurs="unbounded" minOccurs="0" name="listaPedidoLinea" nillable="true" type="tns:ParamPedidoLinea"></xs:element>
       <xs:element minOccurs="0" name="origen" type="xs:string"></xs:element>
       <xs:element minOccurs="0" name="sinc" type="xs:string"></xs:element>
-      <xs:element minOccurs="0" name="subTotal" type="xs:double"></xs:element>
       <xs:element minOccurs="0" name="total" type="xs:double"></xs:element>
       <xs:element minOccurs="0" name="ultAct" type="xs:dateTime"></xs:element>
     </xs:sequence>
@@ -148,7 +146,6 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="cantidad" type="xs:int"></xs:element>
       <xs:element minOccurs="0" name="idProducto" type="xs:int"></xs:element>
-      <xs:element minOccurs="0" name="iva" type="xs:double"></xs:element>
       <xs:element minOccurs="0" name="precioUnit" type="xs:double"></xs:element>
     </xs:sequence>
   </xs:complexType>
@@ -218,11 +215,9 @@
       <xs:element minOccurs="0" name="fechaProg" type="xs:date"></xs:element>
       <xs:element minOccurs="0" name="horaProg" type="xs:time"></xs:element>
       <xs:element minOccurs="0" name="idPersona" type="xs:long"></xs:element>
-      <xs:element minOccurs="0" name="iva" type="xs:double"></xs:element>
       <xs:element maxOccurs="unbounded" minOccurs="0" name="listaPedidoLinea" nillable="true" type="tns:ResultPedidoLinea"></xs:element>
       <xs:element minOccurs="0" name="origen" type="xs:string"></xs:element>
       <xs:element minOccurs="0" name="sinc" type="xs:string"></xs:element>
-      <xs:element minOccurs="0" name="subTotal" type="xs:double"></xs:element>
       <xs:element minOccurs="0" name="total" type="xs:double"></xs:element>
       <xs:element minOccurs="0" name="ultAct" type="xs:dateTime"></xs:element>
     </xs:sequence>
@@ -232,7 +227,6 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="cantidad" type="xs:int"></xs:element>
       <xs:element minOccurs="0" name="idProducto" type="xs:int"></xs:element>
-      <xs:element minOccurs="0" name="iva" type="xs:double"></xs:element>
       <xs:element minOccurs="0" name="precioUnit" type="xs:double"></xs:element>
     </xs:sequence>
   </xs:complexType>

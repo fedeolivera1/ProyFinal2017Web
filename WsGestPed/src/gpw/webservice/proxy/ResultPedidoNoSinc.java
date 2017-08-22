@@ -27,11 +27,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="fechaProg" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/&gt;
  *         &lt;element name="horaProg" type="{http://www.w3.org/2001/XMLSchema}time" minOccurs="0"/&gt;
  *         &lt;element name="idPersona" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
- *         &lt;element name="iva" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/&gt;
  *         &lt;element name="listaPedidoLinea" type="{http://localhost:8080}ResultPedidoLinea" maxOccurs="unbounded" minOccurs="0"/&gt;
  *         &lt;element name="origen" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="sinc" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="subTotal" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/&gt;
  *         &lt;element name="total" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/&gt;
  *         &lt;element name="ultAct" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
@@ -50,11 +48,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "fechaProg",
     "horaProg",
     "idPersona",
-    "iva",
     "listaPedidoLinea",
     "origen",
     "sinc",
-    "subTotal",
     "total",
     "ultAct"
 })
@@ -70,12 +66,10 @@ public class ResultPedidoNoSinc {
     @XmlSchemaType(name = "time")
     protected XMLGregorianCalendar horaProg;
     protected Long idPersona;
-    protected Double iva;
     @XmlElement(nillable = true)
     protected List<ResultPedidoLinea> listaPedidoLinea;
     protected String origen;
     protected String sinc;
-    protected Double subTotal;
     protected Double total;
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar ultAct;
@@ -230,30 +224,6 @@ public class ResultPedidoNoSinc {
     }
 
     /**
-     * Obtiene el valor de la propiedad iva.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Double }
-     *     
-     */
-    public Double getIva() {
-        return iva;
-    }
-
-    /**
-     * Define el valor de la propiedad iva.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Double }
-     *     
-     */
-    public void setIva(Double value) {
-        this.iva = value;
-    }
-
-    /**
      * Gets the value of the listaPedidoLinea property.
      * 
      * <p>
@@ -328,30 +298,6 @@ public class ResultPedidoNoSinc {
      */
     public void setSinc(String value) {
         this.sinc = value;
-    }
-
-    /**
-     * Obtiene el valor de la propiedad subTotal.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Double }
-     *     
-     */
-    public Double getSubTotal() {
-        return subTotal;
-    }
-
-    /**
-     * Define el valor de la propiedad subTotal.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Double }
-     *     
-     */
-    public void setSubTotal(Double value) {
-        this.subTotal = value;
     }
 
     /**

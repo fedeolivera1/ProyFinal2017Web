@@ -14,6 +14,8 @@ import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 
+import gpw.dominio.pedido.EstadoPedido;
+import gpw.dominio.pedido.Pedido;
 import gpw.dominio.persona.Departamento;
 import gpw.dominio.persona.Localidad;
 import gpw.dominio.persona.PersonaFisica;
@@ -25,18 +27,23 @@ import gpw.dominio.usuario.UsuarioWeb;
 import gpw.dominio.util.Origen;
 import gpw.dominio.util.Sinc;
 import gpw.exceptions.PersistenciaException;
+import gpw.interfaces.pedido.IPersPedido;
+import gpw.interfaces.pedido.IPersPedidoLinea;
 import gpw.interfaces.persona.IPersDepLoc;
 import gpw.interfaces.persona.IPersPersona;
 import gpw.interfaces.persona.IPersTipoDoc;
 import gpw.interfaces.producto.IPersProducto;
 import gpw.interfaces.producto.IPersTipoProd;
 import gpw.interfaces.usuario.IPersUsuario;
+import gpw.persistencia.pedido.PersistenciaPedido;
+import gpw.persistencia.pedido.PersistenciaPedidoLinea;
 import gpw.persistencia.persona.PersistenciaDepLoc;
 import gpw.persistencia.persona.PersistenciaPersona;
 import gpw.persistencia.persona.PersistenciaTipoDoc;
 import gpw.persistencia.producto.PersistenciaProducto;
 import gpw.persistencia.producto.PersistenciaTipoProd;
 import gpw.persistencia.usuario.PersistenciaUsuario;
+import gpw.types.Fecha;
 
 /**
  * Session Bean implementation class GpWebStateless
@@ -60,6 +67,8 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 	private static IPersDepLoc interfaceDepLoc;
 	private static IPersTipoProd interfaceTipoProd;
 	private static IPersProducto interfaceProducto;
+	private static IPersPedido interfacePedido;
+	private static IPersPedidoLinea interfacePedidoLinea;
 	
 	private static IPersUsuario getInterfaceUsuario() {
 		if(interfaceUsuario == null) {
@@ -96,6 +105,18 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 			interfaceProducto = new PersistenciaProducto();
 		}
 		return interfaceProducto;
+	}
+	private static IPersPedido getInterfacePedido() {
+		if(interfacePedido == null) {
+			interfacePedido = new PersistenciaPedido();
+		}
+		return interfacePedido;
+	}
+	private static IPersPedidoLinea getInterfacePedidoLinea() {
+		if(interfacePedidoLinea == null) {
+			interfacePedidoLinea = new PersistenciaPedidoLinea();
+		}
+		return interfacePedidoLinea;
 	}
 	
     /**
@@ -342,6 +363,65 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 			throw new PersistenciaException(e);
 		}
 		return listaProd;
+	}
+	
+	
+	/*****************************************************************************************************************************************************/
+	/* PEDIDO */
+	/*****************************************************************************************************************************************************/
+	
+	@Override
+	public List<Pedido> obtenerListaPedido(EstadoPedido ep, Long idPersona, Fecha fechaDesde, Fecha fechaHasta)
+			throws PersistenciaException {
+		logger.info("Se ingresa a obtenerListaPedido...");
+		List<Pedido> listaPedido = null;
+		try {
+			conn = ds.getConnection();
+			listaPedido = getInterfacePedido().obtenerListaPedido(conn, ep, idPersona, fechaDesde, fechaHasta);
+		} catch (PersistenciaException | SQLException e) {
+			logger.fatal("Excepcion en GpWebStateless > obtenerListaPedido: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return listaPedido;
+	}
+	
+	@Override
+	public Integer guardarPedido(Pedido pedido) throws PersistenciaException {
+		logger.info("Se ingresa a guardarPedido");
+		Integer resultado = null;
+		try {
+			if(pedido != null && pedido.getListaPedidoLinea() != null && 
+					!pedido.getListaPedidoLinea().isEmpty()) {
+				conn = ds.getConnection();
+				resultado = getInterfacePedido().guardarPedido(conn, pedido);
+				getInterfacePedidoLinea().guardarListaPedidoLinea(conn, pedido.getListaPedidoLinea());
+			}
+		} catch (PersistenciaException | SQLException e) {
+			context.setRollbackOnly();
+			logger.fatal("Excepcion en GpWebStateless > guardarPedido: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return resultado;
+	}
+	
+	@Override
+	public Integer modificarPedido(Pedido pedido) throws PersistenciaException {
+		logger.info("Se ingresa a guardarPedido");
+		Integer resultado = null;
+		try {
+			if(pedido != null && pedido.getListaPedidoLinea() != null && 
+					!pedido.getListaPedidoLinea().isEmpty()) {
+				conn = ds.getConnection();
+				resultado = getInterfacePedido().modificarPedido(conn, pedido);
+				getInterfacePedidoLinea().eliminarListaPedidoLinea(conn, pedido);
+				getInterfacePedidoLinea().guardarListaPedidoLinea(conn, pedido.getListaPedidoLinea());
+			}
+		} catch (PersistenciaException | SQLException e) {
+			context.setRollbackOnly();
+			logger.fatal("Excepcion en GpWebStateless > modificarPedido: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return resultado;
 	}
 	
 }
