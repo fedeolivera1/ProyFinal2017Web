@@ -2,7 +2,6 @@
  * alertas
  */
 bootstrap_alert = function() {
-	alert('entra scrolltop');
 	$('body, html').animate({
 		scrollTop: '0px'
 	}, 300);
@@ -51,6 +50,7 @@ bootstrap_alert.close = function() {
 		});
 	}, 0);
 }
+
 
 /**
  * personas
@@ -189,7 +189,7 @@ function cargarDatosPers() {
 		        	form.find('[name="apellidoPf1"]').val(response.persona.apellido1).end();
 		        	form.find('[name="apellidoPf2"]').val(response.persona.apellido2).end();
 		        	var d = new Date(response.persona.fechaNac.time);
-		        	form.find('[name="fNac"]').val(d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear()).end();
+		        	form.find('[name="fNac"]').val(ceroNum(d.getDate()) + '/' + ceroNum((d.getMonth()+1)) + '/' + d.getFullYear()).end();
 		        	form.find('[name="sexo"]').val(response.persona.sexo).end();
 		        } else if(tipoPers == "J") {
 		        	form.find('[name="rut"]').val(response.persona.rut).end();
@@ -214,9 +214,8 @@ function cargarDatosPers() {
 		        form.find('[name="celular"]').val(response.persona.celular).end();
 		        form.find('[name="selDep"]').val(response.persona.localidad.departamento.idDepartamento).end();
 		        $("#selDep").trigger("change");
-		        alert('loc:' + response.persona.localidad.idLocalidad + '-' + response.persona.localidad.nombreLocalidad)
+//		        alert('llama a change');
 		        form.find('[name="selLoc"]').val(response.persona.localidad.idLocalidad).end();
-		        alert('finaliza de cargar localidad del response');
 	    	}
         }, error: function (response) {
         	bootstrap_alert.danger(response.responseText);
@@ -323,7 +322,11 @@ function agregarItemPed() {
 			bootstrap_alert.info('El item ya existe en el pedido.');
 		}
 	} else {
-		bootstrap_alert.warning('Revise los datos para cargar el item al pedido.');
+		if((precio === '' || precio === '0')) {
+			bootstrap_alert.warning('El producto se encuentra sin stock o indisponible.');
+		} else {
+			bootstrap_alert.warning('Revise los datos para cargar el item al pedido.');
+		}
 	}
 }
 
@@ -334,15 +337,12 @@ function deleteRow() {
 }
 
 function envioPed() {
-//$("#generarPedido").click(function() {
 	var dataPedido = '';
 	//no necesito mas valores de th
 //	$(".row").parent("tr").find("th").each(function() {
 //		valores += $(this).html() + " ";
 //	});
 	var idProd;
-//	var nomProd;
-//	var precioUnit;
 	var cant;
 	$(".row").parent("tr").each(function(index) {
 		$(this).children("td").each(function (index2) {
@@ -381,16 +381,54 @@ function envioPed() {
 	} else {
 		bootstrap_alert.warning('El pedido debe tener items para ser registrado.');
 	}
-	
-//});
 }
 
 function seleccionTipoPedido(tipo) {
-	if(tipo == 'N') {
-		alert('pedido nuevo');
+	if(tipo == 'E') {
+		$('#divPedExistente').find('*').show();
+		$('#divPedExistente').show();
+		document.getElementById("fecPedDesde").required = true;
+		document.getElementById("fecPedHasta").required = true;
+		document.getElementById("generarPedido").disabled = true;
+		document.getElementById("actualizarPedido").disabled = false;
 	} else {
-		alert('pedido existente');
+		$('#divPedExistente').find('*').hide();
+		$('#divPedExistente').hide();
+		document.getElementById("fecPedDesde").required = false;
+		document.getElementById("fecPedHasta").required = false;
+		document.getElementById("generarPedido").disabled = false;
+		document.getElementById("actualizarPedido").disabled = true;
 	}
+}
+
+function cargarCbxPedExistentes() {
+	$(function() {
+		var fillCbxPed = function() {
+			console.log('se cargan los pedidos existentes...');
+			var data = "fechaDesde=" + $('#fecPedDesde').val() + 
+						"&fechaHasta=" + $('#fecPedHasta').val() +
+						"&estadoPedido=" + $('#selEstadoPed').val();
+			 $.ajax({
+	            type: "GET",
+	            url: "ServletObtPedido",
+	            data: data,
+	            success: function(response) {
+	            	$('#selPedExist').empty();
+	            	$.each(response, function (i, item) {
+	            		var idPersona = response[i].persona.idPersona;
+	            		var fhp = new Date(response[i].fechaHora.time);
+	            		var fechaHora = ceroNum(fhp.getDate()) + '/' + ceroNum((fhp.getMonth()+1)) + '/' + fhp.getFullYear() + ' ' + 
+	            						ceroNum(fhp.getHours()) + ':' + ceroNum(fhp.getMinutes()) + ':' + ceroNum(fhp.getSeconds());
+
+	            		$("#selPedExist").append($("<option></option>").val(this[idPersona + ';' + fechaHora]).html(fechaHora));
+	            	});
+	            }, error: function (response) {
+	            	bootstrap_alert.danger(response.responseText);
+	            }
+		    });
+		}
+		fillCbxPed();
+	});
 }
 
 
@@ -416,3 +454,9 @@ function roundNumber (number, max = 2) {
   return Number(number.toFixed(max));
 }
 
+function ceroNum(i) {
+	if(i < 10) {
+		i = '0' + i;
+	}
+	return i;
+}

@@ -63,11 +63,11 @@
 	    <div id="alert_placeholder"></div>
 	</div>
 	
+<fieldset>
+<legend>Registro</legend>
 	<form class="form-horizontal" action="ServletPersona" method="POST" id="ingrPersForm" data-toggle="validator">
-		<fieldset>
 		
 		<!-- Form Name -->
-		<legend>Registro</legend>
 		
 		<!-- Text input [Usuario Email]-->
 		<div class="form-group col-md-12">
@@ -327,8 +327,8 @@
 		  </div>
 		</div>
 	
-	</fieldset>
 	</form>
+</fieldset>
 </body>
   
 <script type="text/javascript">

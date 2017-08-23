@@ -13,6 +13,10 @@ public class PedidoLinea implements Serializable {
 	private Double precioUnit;
 	
 	
+	public PedidoLinea() {
+		super();
+	}
+	
 	public PedidoLinea(Pedido pedido) {
 		super();
 		this.pedido = pedido;

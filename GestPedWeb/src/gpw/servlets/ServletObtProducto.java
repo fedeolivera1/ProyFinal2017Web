@@ -33,7 +33,8 @@ public class ServletObtProducto extends HttpServlet {
 			final Gson gson = new Gson();
 			final Type tipoListaProd = new TypeToken<List<Producto>>(){}.getType();
 			final String listaProdJson = gson.toJson(listaProd, tipoListaProd);
-			System.out.print(listaProdJson);
+			logger.debug("Lista de productos JSON: " + listaProdJson);
+			
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
 			//ajax mode

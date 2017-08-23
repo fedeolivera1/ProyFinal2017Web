@@ -12,7 +12,7 @@ import gpw.types.Fecha;
 public interface IPersPedido {
 
 	public List<Pedido> obtenerListaPedidoNoSinc(Connection conn, Fecha fechaDesde, Fecha fechaHasta) throws PersistenciaException;
-	public List<Pedido> obtenerListaPedido(Connection conn, EstadoPedido ep, Long idPersona, Fecha fechaDesde, Fecha fechaHasta) throws PersistenciaException;
+	public List<Pedido> obtenerListaPedido(Connection conn, Long idPersona, EstadoPedido ep, Fecha fechaDesde, Fecha fechaHasta) throws PersistenciaException;
 	public Integer guardarPedido(Connection conn, Pedido pedido) throws PersistenciaException;
 	public Integer modificarPedido(Connection conn, Pedido pedido) throws PersistenciaException;
 	public Integer eliminarPedido(Connection conn, Pedido pedido) throws PersistenciaException;

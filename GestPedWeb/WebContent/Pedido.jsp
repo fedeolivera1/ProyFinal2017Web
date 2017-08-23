@@ -56,42 +56,76 @@
 	<div class="page-alerts">
 	    <div id="alert_placeholder"></div>
 	</div>
-	<br>
+<!-- 	<div id='loader' style="position:relative; left: 50%; top: 50%; display: none;"><img src="assets/images/loading-icon.gif"/></div> -->
 	
-	<form class="form-horizontal" action="ServletPedido" method="POST" id="pedidoForm" data-toggle="validator">
-		<fieldset>
+<fieldset>
+<legend>Pedidos</legend>
+
 			<!-- Form Name -->
-			<legend>Pedidos</legend>
 			
-			<div class="form-group col-md-12">
-			  <label class="col-md-4 control-label" for="tipoProd">Pedido:</label>
-				 <div class="col-sm-7 col-md-7">
-	    			<div class="input-group">
-	    				<div id="radioBtn" class="btn-group">
-	    					<a class="btn btn-default btn-sm active" data-toggle="tipoPedido" data-title="N" onclick="seleccionTipoPedido('N');">Nuevo</a>
-	    					<a class="btn btn-default btn-sm notActive" data-toggle="tipoPedido" data-title="E" onclick="seleccionTipoPedido('E');">Existente</a>
-	    				</div>
-	    				<input type="hidden" name="tipoPedido" id="tipoPedido">
-	    			</div>
-	    		</div>
-		  	</div>
-		  	
-		  	<!-- 	DIV PEDIDO NUEVO -->
-		  	<div id="divPedNuevo" class="oculto">
-		  	
-		  	</div>
+  	<form class="form-horizontal">
+		<div class="form-group col-md-12">
+		  <label class="col-md-4 control-label" for="tipoPedido">Pedido:</label>
+			 <div class="col-sm-4 col-md-4">
+	   			<div class="input-group">
+	   				<div id="radioBtn" class="btn-group">
+	   					<a class="btn btn-default btn-sm active" data-toggle="tipoPedido" data-title="N" onclick="seleccionTipoPedido('N');">Nuevo</a>
+	   					<a class="btn btn-default btn-sm notActive" data-toggle="tipoPedido" data-title="E" onclick="seleccionTipoPedido('E');">Existente</a>
+	   				</div>
+	   				<input type="hidden" name="tipoPedido" id="tipoPedido">
+	   			</div>
+	   		</div>
+	  	</div>
+  	</form>
+  	<form class="form-horizontal" action="ServletObtPedido" method="GET" id="obtPedidoForm" data-toggle="validator">
 		  	<!-- 	DIV PEDIDO EXISTENTE -->
-		  	<div id="divPedExistente" class="oculto">
+		  	<div id="divPedExistente" class="oculto" style="display:none">
+				<div class="form-group col-md-12">
+				  <label class="col-md-4 control-label" for="pedExistentes">Rango de fechas</label>
+					<div class="col-md-2">
+						<div class="col-md-12 input-group date" id="dtpPedDesde">
+				            <input type="text" id="fecPedDesde" name="fecPedDesde" class="form-control"/>
+				            <span class="input-group-addon">
+				                <span class="glyphicon glyphicon-calendar"></span>
+				            </span>
+			        	</div>
+						<div class="help-block with-errors"></div>
+				  	</div>
+				    <div class="col-md-2">
+						<div class="col-md-12 input-group date" id="dtpPedHasta">
+				            <input type="text" id="fecPedHasta" name="fecPedHasta" class="form-control"/>
+				            <span class="input-group-addon">
+				                <span class="glyphicon glyphicon-calendar"></span>
+				            </span>
+			        	</div>
+						<div class="help-block with-errors"></div>
+				  	</div>
+				</div>
+				<div class="form-group col-md-12">
+					<label class="col-md-4 control-label" for="pedExistentes">Estado</label>
+					 <div class="col-md-2">
+						<select id="selEstadoPed" name="selEstadoPed" class="form-control">
+							<option value="P" selected>Pendiente</option>
+			      			<option value="R">Revision</option>
+			      			<option value="C">Confirmado</option>
+			      			<option value="A">Anulado</option>
+					    </select>
+					 </div>
+					 <div class="col-md-2">
+					    <button type="button" id="obtenerPedido" name="obtenerPedido" class="btn btn-primary">Obtener</button>
+					 </div>
+				</div>
 			  	<!-- Select Basic [tipoProd]-->
 				<div class="form-group col-md-12">
-				  <label class="col-md-4 control-label" for="pedExistentes">Pedidos existentes</label>
-				  <div class="col-md-2">
-				    <select id="selPedExist" name="selPedExist" class="form-control" onchange="seleccionTipoPedido();">
-				    </select>
-				  </div>
+					<label class="col-md-4 control-label" for="pedExistentes">Pedidos existentes</label>
+					<div class="col-md-4">
+					  <select id="selPedExist" name="selPedExist" class="form-control" onchange="seleccionTipoPedido();">
+					  </select>
+					</div>
 				</div>
 		  	</div>
-   
+  	</form>
+   	<form class="form-horizontal" action="ServletPedido" method="POST" id="pedidoForm" data-toggle="validator">
 			<!-- Select Basic [tipoProd]-->
 			<div class="form-group col-md-12">
 			  <label class="col-md-4 control-label" for="tipoProd">Tipo Producto</label>
@@ -173,12 +207,12 @@
 			  <label class="col-md-4 control-label" for="registrar"></label>
 			  <div class="col-md-4">
 			  	<button type="button" id="generarPedido" name="generarPedido" class="btn btn-primary" onclick="envioPed();">Generar</button>
-			  	<button type="button" id="actualizarPedido" name="actualizarPedido" class="btn btn-primary" onclick="actualizarPedido();">Actualizar</button>
+			  	<button type="button" id="actualizarPedido" name="actualizarPedido" class="btn btn-primary" onclick="actualizarPedido();" disabled>Actualizar</button>
 			  </div>
 			</div>
 			
-		</fieldset>
-	</form>
+		</form>
+	</fieldset>
 <% 
 	} else {
 %>
@@ -198,6 +232,10 @@
 
 //document ready
 $(document).ready(function() {
+
+	$('#divPedExistente').find('*').hide();
+	$('#divPedExistente').hide();
+	
 	//datetimepicker con fecha y hora, intervalos de 30 min, fecha minima hoy
 	$('#dtpPedProg').datetimepicker({
 		format: 'dd/mm/yyyy hh:ii',
@@ -205,6 +243,21 @@ $(document).ready(function() {
         startDate: new Date(),
         minuteStep: 30,
         clearBtn: true,
+        language: 'es'
+	});
+
+	$('#dtpPedDesde').datetimepicker({
+		format: 'dd/mm/yyyy',
+        minView: 2,
+        maxView: 4,
+        autoclose: true,
+        language: 'es'
+	});
+	$('#dtpPedHasta').datetimepicker({
+		format: 'dd/mm/yyyy',
+        minView: 2,
+        maxView: 4,
+        autoclose: true,
         language: 'es'
 	});
 
@@ -227,6 +280,15 @@ $(document).ready(function() {
        	} else {
 	    	e.preventDefault();
      		agregarItemPed();
+        }
+    });
+
+    $('#obtenerPedido').on('click', function (e) {
+    	if ($('#obtPedidoForm').validator('validate').has('.has-error').length) {
+  			// manejo form inválido (opc)
+       	} else {
+	    	e.preventDefault();
+	    	cargarCbxPedExistentes();
         }
     });
 

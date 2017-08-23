@@ -124,6 +124,15 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
      */
     public GpWebStateless() {
     }
+    
+    private static void closeConnection(Connection conn) throws PersistenciaException {
+    	try {
+			conn.close();
+		} catch (SQLException e) {
+			logger.fatal("Excepcion en GpWebStateless al cerrar la conexion." + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+    }
 
     
     /*****************************************************************************************************************************************************/
@@ -140,6 +149,8 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
     	} catch (PersistenciaException | SQLException e) {
     		logger.fatal("Excepcion en GpWebStateless > obtenerUsuario: " + e.getMessage(), e);
     		throw new PersistenciaException(e);
+    	} finally {
+    		closeConnection(conn);
     	}
     	return usuario;
     }
@@ -154,7 +165,9 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 		} catch (PersistenciaException | SQLException e) {
 			logger.fatal("Excepcion en GpWebStateless > obtenerUsuario: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		}
+		} finally {
+    		closeConnection(conn);
+    	}
 		return usuario;
 	}
 
@@ -178,7 +191,9 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 			context.setRollbackOnly();
 			logger.fatal("Excepcion en GpWebStateless > guardarUsuario: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		}
+		} finally {
+    		closeConnection(conn);
+    	}
 		return resultado;
 	}
 
@@ -219,7 +234,9 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 			context.setRollbackOnly();
 			logger.fatal("Excepcion en GpWebStateless > modificarUsuario: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		}
+		} finally {
+    		closeConnection(conn);
+    	}
 		return resultado;
 	}
 
@@ -244,7 +261,9 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 		} catch (PersistenciaException | SQLException e) {
 			logger.fatal("Excepcion en GpWebStateless > obtenerTipoDocPorId: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		}
+		} finally {
+    		closeConnection(conn);
+    	}
 		return tipoDoc;
 	}
 	@Override
@@ -257,7 +276,9 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 		} catch (PersistenciaException | SQLException e) {
 			logger.fatal("Excepcion en GpWebStateless > obtenerListaTipoDoc: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		}
+		} finally {
+    		closeConnection(conn);
+    	}
 		return listaTd;
 	}
 	
@@ -272,7 +293,9 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 		} catch (PersistenciaException | SQLException e) {
 			logger.fatal("Excepcion en GpWebStateless > obtenerListaDepartamentos: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		}
+		} finally {
+    		closeConnection(conn);
+    	}
 		return listaDep;
 	}
 
@@ -286,7 +309,9 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 		} catch (PersistenciaException | SQLException e) {
 			logger.fatal("Excepcion en GpWebStateless > obtenerDepartamentoPorId: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		}
+		} finally {
+    		closeConnection(conn);
+    	}
 		return dep;
 	}
 
@@ -300,7 +325,9 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 		} catch (PersistenciaException | SQLException e) {
 			logger.fatal("Excepcion en GpWebStateless > obtenerListaLocPorDep: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		}
+		} finally {
+    		closeConnection(conn);
+    	}
 		return listaLoc;
 	}
 
@@ -314,7 +341,9 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 		} catch (PersistenciaException | SQLException e) {
 			logger.fatal("Excepcion en GpWebStateless > obtenerLocalidadPorId: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		}
+		} finally {
+    		closeConnection(conn);
+    	}
 		return loc;
 	}
 	
@@ -333,7 +362,9 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 		} catch (PersistenciaException | SQLException e) {
 			logger.fatal("Excepcion en GpWebStateless > obtenerListaTipoProd: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		}
+		} finally {
+    		closeConnection(conn);
+    	}
 		return listaTp;
 	}
 	
@@ -348,7 +379,9 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 		} catch (PersistenciaException | SQLException e) {
 			logger.fatal("Excepcion en GpWebStateless > obtenerProductoPorId: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		}
+		} finally {
+    		closeConnection(conn);
+    	}
 		return producto;
 	}
 	@Override
@@ -361,7 +394,9 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 		} catch (PersistenciaException | SQLException e) {
 			logger.fatal("Excepcion en GpWebStateless > obtenerListaProductoPorTipo: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		}
+		} finally {
+    		closeConnection(conn);
+    	}
 		return listaProd;
 	}
 	
@@ -377,11 +412,13 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 		List<Pedido> listaPedido = null;
 		try {
 			conn = ds.getConnection();
-			listaPedido = getInterfacePedido().obtenerListaPedido(conn, ep, idPersona, fechaDesde, fechaHasta);
+			listaPedido = getInterfacePedido().obtenerListaPedido(conn, idPersona, ep, fechaDesde, fechaHasta);
 		} catch (PersistenciaException | SQLException e) {
 			logger.fatal("Excepcion en GpWebStateless > obtenerListaPedido: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		}
+		} finally {
+    		closeConnection(conn);
+    	}
 		return listaPedido;
 	}
 	
@@ -400,7 +437,9 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 			context.setRollbackOnly();
 			logger.fatal("Excepcion en GpWebStateless > guardarPedido: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		}
+		} finally {
+    		closeConnection(conn);
+    	}
 		return resultado;
 	}
 	
@@ -420,7 +459,9 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 			context.setRollbackOnly();
 			logger.fatal("Excepcion en GpWebStateless > modificarPedido: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		}
+		} finally {
+    		closeConnection(conn);
+    	}
 		return resultado;
 	}
 	

@@ -105,5 +105,16 @@
     <servlet-name>ServletPedido</servlet-name>
     <url-pattern>/ServletPedido</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ServletObtPedido</display-name>
+    <servlet-name>ServletObtPedido</servlet-name>
+    <servlet-class>gpw.servlets.ServletObtPedido</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ServletObtPedido</servlet-name>
+    <url-pattern>/ServletObtPedido</url-pattern>
+  </servlet-mapping>
+  
   
 </web-app>
