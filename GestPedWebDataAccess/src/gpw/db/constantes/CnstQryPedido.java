@@ -2,6 +2,12 @@ package gpw.db.constantes;
 
 public interface CnstQryPedido {
 
+	public static final String QRY_SELECT_PEDIDO_XID = "SELECT p.id_persona, p.fecha_hora, p.estado, p.fecha_prog, p.hora_prog, p.origen, "
+													+ "p.total, p.sinc, p.ult_act "
+												+ "FROM pedido p "
+												+ "WHERE p.id_persona = ? "
+												+ "AND p.fecha_hora = ? ";
+	
 	public static final String QRY_SELECT_PEDIDO = "SELECT p.id_persona, p.fecha_hora, p.estado, p.fecha_prog, p.hora_prog, p.origen, "
 													+ "p.total, p.sinc, p.ult_act "
 												+ "FROM pedido p "

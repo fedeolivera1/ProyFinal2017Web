@@ -17,6 +17,7 @@ import com.google.gson.reflect.TypeToken;
 
 import gpw.dominio.pedido.EstadoPedido;
 import gpw.dominio.pedido.Pedido;
+import gpw.dominio.producto.Producto;
 import gpw.dominio.usuario.UsuarioWeb;
 import gpw.ejb.GpWebStatelessLocal;
 import gpw.ejblookup.LookUps;
@@ -28,8 +29,16 @@ public class ServletObtPedido extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static Logger logger = Logger.getLogger(ServletPedido.class);
 	
+	/**
+	 * metodo que obtiene todos los pedidos de la persona logueada por fechas y estado
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	private void processRequestGET(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
 		try {
+			logger.debug("Llega a processRequestGET en ServletObtPedido");
 			HttpSession httpSession = request.getSession();
 			String usr = (String) httpSession.getAttribute("usuario");
 			String estadoPedido = request.getParameter("estadoPedido");
@@ -50,6 +59,52 @@ public class ServletObtPedido extends HttpServlet {
 			//ajax mode
 			response.getWriter().write(listaPedJson);
 		} catch (PersistenciaException e) {
+			logger.fatal("Excepcion en ServletObtProducto > processRequestGET: " + e.getMessage(), e);
+			response.setStatus(500);
+			response.getWriter().write(e.getMessage());
+		} catch (Exception e) {
+			logger.fatal("Excepcion genérica en ServletObtProducto > processRequestGET: " + e.getMessage(), e);
+			response.setStatus(500);
+			response.getWriter().write(e.getMessage());
+		}
+	}
+	
+	/**
+	 * metodo que recibe un string con los datos del pedido (idPersona;fechaHora), los splitea, parsea y 
+	 * obtiene el pedido en base para devolverlo como JSON
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	private void processRequestPOST(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+		logger.debug("Llega a processRequestPOST en ServletObtPedido");
+		try {
+			String dataPedidoStr = request.getParameter("dataPedido");
+			String[] datosPedidoSpl = dataPedidoStr.split(";");
+			if(datosPedidoSpl != null && datosPedidoSpl.length == 2) {
+				Long idPersona = Long.valueOf(datosPedidoSpl[0]);
+				String fechaHoraStr = datosPedidoSpl[1];
+				Fecha fechaHora = new Fecha(fechaHoraStr, Fecha.AMDHMS);
+				GpWebStatelessLocal gpwStLoc = LookUps.lookUpGpWebStateless();
+				Pedido pedido = gpwStLoc.obtenerPedidoPorId(idPersona, fechaHora);
+				if(pedido != null) {
+					final Gson gson = new Gson();
+					final Type tipoPedidp = new TypeToken<Pedido>(){}.getType();
+					final String pedidoJson = gson.toJson(pedido, tipoPedidp);
+					logger.debug("Pedido JSON: " + pedidoJson);
+					response.setContentType("application/json");
+					response.setCharacterEncoding("UTF-8");
+					//ajax mode
+					response.getWriter().write(pedidoJson);
+				} else {
+					response.setStatus(500);
+					response.getWriter().write("El pedido no se ha encontrado, consulte ayuda.");
+				}
+			} else {
+				throw new Exception("Hubo un problema del lado del servidor al procesar los datos para el pedido.");
+			}
+		} catch (PersistenciaException e) {
 			logger.fatal("Excepcion en ServletObtProducto > processRequestPOST: " + e.getMessage(), e);
 			response.setStatus(500);
 			response.getWriter().write(e.getMessage());
@@ -65,7 +120,7 @@ public class ServletObtPedido extends HttpServlet {
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        processRequestPOST(request, response);
+        processRequestPOST(request, response);
     }
     
 }

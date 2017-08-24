@@ -1,6 +1,8 @@
 package gpw.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -39,18 +41,17 @@ public class ServletPedido extends HttpServlet {
 	 * @throws IOException
 	 */
 	protected void processRequestGET(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 	}
 	
 	/**
-	 * request que recibe el metodo POST, el cual manda el NUEVO pedido a ingresarse a la base de datos
+	 * request que recibe el metodo POST, el cual manda el NUEVO/EXISTENTE pedido a ingresarse a la base de datos
 	 * en caso de no haber problemas.
 	 * @param request
 	 * @param response
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	protected void processRequestPOST(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void processRequestPOST_nuevo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Integer resultado = null;
 		try {
 			String pedidoStr = request.getParameter("pedido");
@@ -110,11 +111,83 @@ public class ServletPedido extends HttpServlet {
 			}
 			
 		} catch (PersistenciaException e) {
-			logger.fatal("Excepcion en ServletPedido > processRequestPOST: " + e.getMessage(), e);
+			logger.fatal("Excepcion en ServletPedido > processRequestPOST_nuevo: " + e.getMessage(), e);
 			response.setStatus(500);
 			response.getWriter().write(e.getMessage());
 		} catch (Exception e) {
-			logger.fatal("Excepcion genérica en ServletPedido > processRequestPOST: " + e.getMessage(), e);
+			logger.fatal("Excepcion genérica en ServletPedido > processRequestPOST_nuevo: " + e.getMessage(), e);
+			response.setStatus(500);
+			response.getWriter().write(e.getMessage());
+		}
+	}
+	
+	private void processRequestPOST_existente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		try {
+			String keyPedido = request.getParameter("keyPedido");
+			String pedidoStr = request.getParameter("pedido");
+			String fechaHoraProgStr = request.getParameter("fechaHoraProg");
+			if((keyPedido != null && keyPedido.equals("")) && 
+					(pedidoStr != null && !pedidoStr.isEmpty())) {
+				GpWebStatelessLocal gpwStLoc = LookUps.lookUpGpWebStateless();
+				
+				
+//				HttpSession httpSession = request.getSession();
+				//obtengo usuario de sesion para conocer la persona
+//				String usr = (String) httpSession.getAttribute("usuario");
+				//levanto obj usuarioweb de persistencia a partir del usuario de sesion
+//				UsuarioWeb usuario = gpwStLoc.obtenerUsuario(usr);
+				
+				
+				String[] keyPedidoSpl = keyPedido.split(";");
+				String[] pedidosSpl = pedidoStr.split(CHAR_SPLIT_PEDIDO);//Hago split para separar las lineas
+				Long idPersona = Long.valueOf(keyPedidoSpl[0]);
+				String fechaHoraStr = keyPedidoSpl[1];
+				Fecha fechaHora = new Fecha(fechaHoraStr, Fecha.AMDHMS);
+				Pedido pedido = gpwStLoc.obtenerPedidoPorId(idPersona, fechaHora);
+				if( pedido != null && (EstadoPedido.P.equals(pedido.getEstado()) || (EstadoPedido.R.equals(pedido.getEstado()))) ) {
+					ArrayList<PedidoLinea> listaLineasNuevas = new ArrayList<>();
+					Double total = new Double(0);
+					for (int i=0; i<pedidosSpl.length; i++) {
+						String[] pedidoLinea = pedidosSpl[i].split(CHAR_SPLIT_LINEA);//Se hace un split para separar los valores de cada linea
+						if(pedidoLinea != null && !pedidoLinea.equals(CHAR_EMPTY)) {
+							PedidoLinea pl = new PedidoLinea(pedido);
+							Producto prod = gpwStLoc.obtenerProductoPorId(Integer.valueOf(pedidoLinea[0]));
+							Integer cant = Integer.valueOf(pedidoLinea[1]);
+							pl.setProducto(prod);
+							pl.setPrecioUnit(prod.getPrecioVta());
+							pl.setCantidad(cant);
+//							pedido.getListaPedidoLinea().add(pl);
+							listaLineasNuevas.add(pl);
+							total += (prod.getPrecioVta()*cant);
+						} else {
+							throw new Exception("Ha surgido un error al ingresar el pedido. Verifique lineas y/o cabezal.");
+						}
+					}
+					pedido.setListaPedidoLinea(listaLineasNuevas);
+					total = Converters.redondearDosDec(total);
+					if(fechaHoraProgStr != null && !fechaHoraProgStr.equals(CHAR_EMPTY)) {
+						Fecha fechaProg = new Fecha(fechaHoraProgStr, Fecha.DMA);
+						Fecha horaProg = new Fecha(fechaHoraProgStr, Fecha.HM);
+						pedido.setFechaProg(fechaProg);
+						pedido.setHoraProg(horaProg);
+					}
+					pedido.setTotal(total);
+					pedido.setSinc(Sinc.N);
+					pedido.setUltAct(new Fecha(Fecha.AMDHMS));
+					gpwStLoc.modificarPedido(pedido);
+				} else {
+					response.setStatus(500);
+					response.getWriter().write("Pedido en error o su estado no permite modificacion.");
+				}
+			} else {
+				response.getWriter().write("warning");
+			}
+		} catch (PersistenciaException e) {
+			logger.fatal("Excepcion en ServletPedido > processRequestPOST_existente: " + e.getMessage(), e);
+			response.setStatus(500);
+			response.getWriter().write(e.getMessage());
+		} catch (Exception e) {
+			logger.fatal("Excepcion genérica en ServletPedido > processRequestPOST_existente: " + e.getMessage(), e);
 			response.setStatus(500);
 			response.getWriter().write(e.getMessage());
 		}
@@ -125,6 +198,15 @@ public class ServletPedido extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequestPOST(request, response);
+    	String accion = request.getParameter("accion");
+    	if(accion.equals("N")) {
+    		processRequestPOST_nuevo(request, response);
+    	} else if(accion.equals("E")) {
+    		processRequestPOST_existente(request, response);
+    	} else {
+    		response.setStatus(500);
+			response.getWriter().write("Implementacion desconocida para pedidos");
+    	}
     }
+
 }

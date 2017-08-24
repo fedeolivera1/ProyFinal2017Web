@@ -406,6 +406,22 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 	/*****************************************************************************************************************************************************/
 	
 	@Override
+	public Pedido obtenerPedidoPorId(Long idPersona, Fecha fechaHora) throws PersistenciaException {
+		logger.info("Se ingresa a obtenerListaProductoPorTipo...");
+		Pedido pedido = null;
+		try {
+			conn = ds.getConnection();
+			pedido = getInterfacePedido().obtenerPedidoPorId(conn, idPersona, fechaHora);
+		} catch (PersistenciaException | SQLException e) {
+			logger.fatal("Excepcion en GpWebStateless > obtenerPedidoPorId: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		} finally {
+    		closeConnection(conn);
+    	}
+		return pedido;
+	}
+	
+	@Override
 	public List<Pedido> obtenerListaPedido(EstadoPedido ep, Long idPersona, Fecha fechaDesde, Fecha fechaHasta)
 			throws PersistenciaException {
 		logger.info("Se ingresa a obtenerListaPedido...");

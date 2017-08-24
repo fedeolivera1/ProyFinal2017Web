@@ -332,6 +332,7 @@
 </body>
   
 <script type="text/javascript">
+
 	$('#dtpFnac').datetimepicker({
 		format: 'dd/mm/yyyy',
         minView: 2,
@@ -353,17 +354,17 @@
             	bootstrap_alert.danger(response.responseText);
             }
 	    });
-	    $.ajax({
-            type: "POST",
-            url: "ServletObtDep",
-            contentType: "application/json",              
-            dataType: "json",
-            success: function(response) {
-				cargarCbxDep(response);
-            }, error: function (response) {
-            	bootstrap_alert.danger(response.responseText);
-            }
-	    });
+// 	    $.ajax({
+//             type: "POST",
+//             url: "ServletObtDep",
+//             contentType: "application/json",              
+//             dataType: "json",
+//             success: function(response) {
+// 				cargarCbxDep(response);
+//             }, error: function (response) {
+//             	bootstrap_alert.danger(response.responseText);
+//             }
+// 	    });
 	    seleccionTipoPers();
 		cargarDatosPers();
 	});
@@ -435,7 +436,14 @@
 		        }
 		    });
 		  }
-	})
+	});
+	
+	//generar requerido en password de confimacion -solamente- si la primera es agregada
+	var $password = $('#passwdReg1')
+	var $confirm  = $('#passwdReg2')
+	$password.on('input', function (e) {
+	  $confirm.attr('required', !!$password.val())
+	});
 
 </script>
 </html>

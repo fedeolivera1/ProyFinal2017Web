@@ -191,8 +191,8 @@ public class Fecha extends GregorianCalendar {
 			sdf = new SimpleDateFormat("dd/MM/yyyy");
 		} else if(formato == DMAHM || formato == HM) {
 			sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-//		} else if(formato == HM) {
-//			sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		} else if(formato == AMDHMS) {
+			sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		}
 		try {
 			super.setTime(sdf.parse(fechaStr));

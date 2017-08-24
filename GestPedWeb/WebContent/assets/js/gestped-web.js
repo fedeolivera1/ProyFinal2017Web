@@ -68,13 +68,25 @@ function cargarCbxTd(response) {
  * personas
  * carga select con departamentos
  */
-function cargarCbxDep(response) {
+function cargarCbxDep() {
+	console.log('entra a cargarCbxDep');
 	$("#selDep").empty();
-    $.each(response, function () {
-        $("#selDep").append($("<option></option>").val(this['idDepartamento']).html(this['nombreDepartamento']));
+	$.ajax({
+        type: "POST",
+        url: "ServletObtDep",
+        contentType: "application/json",              
+        dataType: "json",
+        success: function(response) {
+        	$.each(response, function () {
+        		$("#selDep").append($("<option></option>").val(this['idDepartamento']).html(this['nombreDepartamento']));
+        	});
+//        	$('#selDep').trigger('change');
+        	//inmediatamente a la carga de dep, cargo las loc.
+        	cargarCbxLoc();
+        }, error: function (response) {
+        	bootstrap_alert.danger(response.responseText);
+        }
     });
-    //inmediatamente a la carga de dep, cargo las loc.
-    cargarCbxLoc();
 }
 
 /**
@@ -85,23 +97,25 @@ function cargarCbxLoc() {
 	console.log('entra a cargarCbxLoc');
 	$(function() {
 		var fillCbxLoc = function() {
-			console.log('entra a fill de localidad');
 			var selected = $('#selDep').val();
-			var data = "idDep=" + selected;
-			 $.ajax({
-	            type: "POST",
-	            url: "ServletObtLoc",
-	            data: data,
-	            success: function(response) {
-	            	$('#selLoc').empty();
-	            	$.each(response, function () {
-	            		$("#selLoc").append($("<option></option>").val(this['idLocalidad']).html(this['nombreLocalidad']));
-	            	});
-	                
-	            }, error: function (response) {
-	            	bootstrap_alert.danger(response.responseText);
-	            }
-		    });
+			console.log('entra a fill de localidad con dep=' + selected);
+			if(selected != null) {
+				var data = "idDep=" + selected;
+				$.ajax({
+					type: "POST",
+					url: "ServletObtLoc",
+					data: data,
+					success: function(response) {
+						$('#selLoc').empty();
+						$.each(response, function () {
+							$("#selLoc").append($("<option></option>").val(this['idLocalidad']).html(this['nombreLocalidad']));
+						});
+//						$('#selLoc').trigger('change');
+					}, error: function (response) {
+						bootstrap_alert.danger(response.responseText);
+					}
+				});
+			}
 		}
 		fillCbxLoc();
 	});
@@ -152,6 +166,7 @@ function seleccionTipoPers() {
  * cuando respone devuelve persona, maneja controles para usuarios existentes
  */
 function cargarDatosPers() {
+	cargarCbxDep();
 	$.ajax({
         url: 'ServletPersona',
         method: 'GET',
@@ -212,9 +227,11 @@ function cargarDatosPers() {
 		        form.find('[name="comp"]').val(response.persona.complemento).end();
 		        form.find('[name="telefono"]').val(response.persona.telefono).end();
 		        form.find('[name="celular"]').val(response.persona.celular).end();
+		        console.log('previo a carga de DEP datos:' + response.persona.localidad.departamento.idDepartamento + ' ' + response.persona.localidad.departamento.nombreDepartamento);
 		        form.find('[name="selDep"]').val(response.persona.localidad.departamento.idDepartamento).end();
 		        $("#selDep").trigger("change");
-//		        alert('llama a change');
+		        console.log('previo a carga de LOC datos:' + response.persona.localidad.idLocalidad + ' ' + response.persona.localidad.nombreLocalidad);
+		        cargarCbxLoc(response.persona.localidad.idLocalidad);
 		        form.find('[name="selLoc"]').val(response.persona.localidad.idLocalidad).end();
 	    	}
         }, error: function (response) {
@@ -255,6 +272,7 @@ function cargarCbxProd() {
 	            	$.each(response, function () {
 	            		$("#selProd").append($("<option></option>").val(this['idProducto']).html(this['nombre']));
 	            	});
+	            	$('#selProd').trigger('change');
 	            }, error: function (response) {
 	            	bootstrap_alert.danger(response.responseText);
 	            }
@@ -270,23 +288,30 @@ function cargarCbxProd() {
  * carga datos de cada producto seleccionado
  */
 function cargarDatosProd() {
-	var selected = $('#selProd').val();
-	var data = "idProd=" + selected;
-	//
-	console.log('entra a cargarDatosProd() > data=' + data);
-	//
-	$.ajax({
-        type: "GET",
-        url: "ServletObtProducto",
-        data: data,
-        success: function(response) {
-        	$("#prodPrecio").val('');
-        	var form = $('#pedidoForm');
-        	form.find('[name="prodPrecio"]').val(response.precioVta).end();
-        }, error: function (response) {
-        	bootstrap_alert.danger(response.responseText);
-        }
-    });	
+	$(function() {
+		var fillDatosProd = function() {
+			var selected = $('#selProd').val();
+			if(selected != null) {
+				var data = "idProd=" + selected;
+				//
+				console.log('entra a cargarDatosProd() > data: ' + data);
+				//
+				$.ajax({
+					type: "GET",
+					url: "ServletObtProducto",
+					data: data,
+					success: function(response) {
+						$("#prodPrecio").val('');
+						var form = $('#pedidoForm');
+						form.find('[name="prodPrecio"]').val(response.precioVta).end();
+					}, error: function (response) {
+						bootstrap_alert.danger(response.responseText);
+					}
+				});	
+			}
+		}
+		fillDatosProd();
+	});
 }
 
 function agregarItemPed() {
@@ -294,7 +319,6 @@ function agregarItemPed() {
 	var prodText = $('#selProd option:selected').text();
     var precio = $('#prodPrecio').val();
     var cant = $('#pedCant').val();
-	console.log(data);
 	if( (precio !== '' && precio > 0) &&
 			(cant !== '' && cant > 0) ) {
 		var buscarExistente = $("#selProd").val();
@@ -336,12 +360,11 @@ function deleteRow() {
 	});
 }
 
+/*
+ * metodo que genera el nuevo pedido
+ */
 function envioPed() {
 	var dataPedido = '';
-	//no necesito mas valores de th
-//	$(".row").parent("tr").find("th").each(function() {
-//		valores += $(this).html() + " ";
-//	});
 	var idProd;
 	var cant;
 	$(".row").parent("tr").each(function(index) {
@@ -361,7 +384,9 @@ function envioPed() {
 	});
 	
 	if(dataPedido !== '') {
-		data = 'pedido=' + dataPedido + '&fechaHoraProg=' + $('#pedProg').val();
+		data = 'accion=' + $('#tipoPedido').val() + 
+				'&pedido=' + dataPedido + 
+				'&fechaHoraProg=' + $('#pedProg').val();
 		console.log('valores a servlet: [' + data + ']');
 		$.ajax({
 			type: "POST",
@@ -383,6 +408,57 @@ function envioPed() {
 	}
 }
 
+function actualizarPed() {
+	var dataPedido = '';
+	var idProd;
+	var cant;
+	$(".row").parent("tr").each(function(index) {
+		$(this).children("td").each(function (index2) {
+			switch (index2) {
+				case 0:
+					//obtengo dato de idProd
+				   idProd = $(this).text();
+				   break;
+				case 3:
+					//obtengo dato de cant
+					cant = $(this).text();
+					break;
+			}
+		});
+		dataPedido += idProd + ";" + cant + "~";
+	});
+	
+	var pedidoSel = $('#selPedExist').val();
+	if(pedidoSel != undefined && pedidoSel !== '') {
+		if(dataPedido !== '') {
+			data = 'accion=' + $('#tipoPedido').val() + 
+			'&keyPedido=' + pedidoSel +
+			'&pedido=' + dataPedido + 
+			'&fechaHoraProg=' + $('#pedProg').val();
+			console.log('valores a servlet: [' + data + ']');
+			$.ajax({
+				type: "POST",
+				url: "ServletPedido",
+				data: data,
+				success: function(response) {
+					//limpiar form
+					if(response === 'success') {
+						bootstrap_alert.success('El pedido ha sido actualizado correctamente.');
+					} else {
+						bootstrap_alert.warning('Han surgido problemas para actualizado el pedido.');
+					}
+				}, error: function (response) {
+					bootstrap_alert.danger(response.responseText);
+				}
+			});
+		} else {
+			bootstrap_alert.warning('El pedido debe tener items para ser actualizado.');
+		}
+	} else {
+		bootstrap_alert.warning('Debe seleccionar un pedido para actualizar.');
+	}
+}
+
 function seleccionTipoPedido(tipo) {
 	if(tipo == 'E') {
 		$('#divPedExistente').find('*').show();
@@ -391,6 +467,8 @@ function seleccionTipoPedido(tipo) {
 		document.getElementById("fecPedHasta").required = true;
 		document.getElementById("generarPedido").disabled = true;
 		document.getElementById("actualizarPedido").disabled = false;
+		
+//		$('.selectpicker').selectpicker('refresh');
 	} else {
 		$('#divPedExistente').find('*').hide();
 		$('#divPedExistente').hide();
@@ -398,12 +476,15 @@ function seleccionTipoPedido(tipo) {
 		document.getElementById("fecPedHasta").required = false;
 		document.getElementById("generarPedido").disabled = false;
 		document.getElementById("actualizarPedido").disabled = true;
+//		$('.selectpicker').selectpicker('refresh');
 	}
+	clearFieldsPedido();
 }
 
 function cargarCbxPedExistentes() {
 	$(function() {
 		var fillCbxPed = function() {
+			clearFieldsPedido();
 			console.log('se cargan los pedidos existentes...');
 			var data = "fechaDesde=" + $('#fecPedDesde').val() + 
 						"&fechaHasta=" + $('#fecPedHasta').val() +
@@ -420,8 +501,9 @@ function cargarCbxPedExistentes() {
 	            		var fechaHora = ceroNum(fhp.getDate()) + '/' + ceroNum((fhp.getMonth()+1)) + '/' + fhp.getFullYear() + ' ' + 
 	            						ceroNum(fhp.getHours()) + ':' + ceroNum(fhp.getMinutes()) + ':' + ceroNum(fhp.getSeconds());
 
-	            		$("#selPedExist").append($("<option></option>").val(this[idPersona + ';' + fechaHora]).html(fechaHora));
+	            		$("#selPedExist").append($("<option></option>").val(idPersona + ';' + fechaHora).html(fechaHora));            		
 	            	});
+	            	$('#selPedExist').trigger('change');
 	            }, error: function (response) {
 	            	bootstrap_alert.danger(response.responseText);
 	            }
@@ -431,18 +513,69 @@ function cargarCbxPedExistentes() {
 	});
 }
 
+function seleccionPedidoExist() {
+	var keyPedido = $('#selPedExist').val();
+	console.log('Se procede a invocar servlet para el pedido: ' + keyPedido);
+	var data = 'dataPedido=' + keyPedido;
+	$.ajax({
+		type: "POST",
+		url: "ServletObtPedido",
+		data: data,
+		success: function(response) {
+			var lineasPedido = response.listaPedidoLinea;
+			var estadoPed = response.estado;
+			var fechaHoraEst = '';
+			if(response.fechaProg !== undefined) {
+				console.log('entra a dateParser: ' + response.fechaProg.time);
+				fechaHoraEst += dateParser(response.fechaProg.time);
+			}
+			if(response.horaProg !== undefined) {
+				console.log('entra a hourParser: ' + response.fechaProg.time);
+				fechaHoraEst += ' ' + hourParser(response.horaProg.time);
+			}
+			console.log('fechaHoraEst=' + fechaHoraEst);
+			//se limpia la tabla
+			$("#cargaTabla").empty();
+			$("#pedProg").val('');
+			//
+			$.each(lineasPedido, function (i, item) {
+				var lineaAct = lineasPedido[i];
+				var claseTr = devolverClaseTablaSegunEstado(estadoPed);
+				console.log('precio=' + lineaAct.producto.precioVta + ' cant=' + lineaAct.cantidad);
+				var subTotalLn = (lineaAct.producto.precioVta * lineaAct.cantidad);
+				var data = "<tr class=" + claseTr + ">" +
+				"<td scope='row' class='row'>" + lineaAct.producto.idProducto + "</th>" +
+				"<td>" + lineaAct.producto.nombre + "</td>" +
+				"<td>" + lineaAct.producto.precioVta + "</td>" +
+				"<td>" + lineaAct.cantidad + "</td>" +
+				"<td>" + roundNumber(subTotalLn, 2) + "</td>" +
+				"<th><button class='btn btn-default btn-sm delete' onclick='deleteRow()'><span class='glyphicon glyphicon-trash'></span></button></th>" +
+				"</tr>";
+				$("#tablaPedido tbody").append(data);
+				
+				if(fechaHoraEst != '') {
+					$('#pedProg').val(fechaHoraEst);
+				}
+			});
+			
+		}, error: function (response) {
+			bootstrap_alert.danger(response.responseText);
+			clearFieldsDataPedido();
+		}
+	});
+}
+
 
 /**********************************************************************************************************************************************/
 /** GENERICOS **/
 /**********************************************************************************************************************************************/
-
 function roundNumber (number, max = 2) {
   if (typeof number !== 'number' || isNaN(number)) {
-	  throw new TypeError('Número inválido: ' + number);  
+	  throw new TypeError('Numero invalido: ' + number);  
   }
   
   if (typeof max !== 'number' || isNaN(max)) {
-	  throw new TypeError('Máximo de dígitos inválido: ' + max); 
+	  throw new TypeError('Maximo de digitos invalido: ' + max); 
   }
   
   let fractionalPart = number.toString().split('.')[1];
@@ -453,10 +586,53 @@ function roundNumber (number, max = 2) {
   
   return Number(number.toFixed(max));
 }
-
+/**********************************************************************************************************************************************/
 function ceroNum(i) {
 	if(i < 10) {
 		i = '0' + i;
 	}
 	return i;
+}
+/**********************************************************************************************************************************************/
+function devolverClaseTablaSegunEstado(estado) {
+	var clase = 'default';
+	if(estado === 'C') {//confirmado
+		clase = 'success';
+	} else if(estado === 'A') {//anulado
+		clase = 'danger';
+	} else if(estado === 'R') {
+		clase = 'info';
+	}
+	return clase;
+}
+/**********************************************************************************************************************************************/
+function dateParser(fecha) {
+	var fechaRet = '';
+	if(fecha !== undefined) {
+		var d = new Date(fecha);
+		fechaRet = ceroNum(d.getDate()) + '/' + ceroNum((d.getMonth()+1)) + '/' + d.getFullYear();
+	}
+	return fechaRet;
+}
+function hourParser(hora) {
+	var horaRet = '';
+	if(hora !== undefined) {
+		var t = new Date(hora);
+		horaRet = ceroNum(t.getHours()) + ':' + ceroNum(t.getMinutes()) + ':' + ceroNum(t.getSeconds());
+	}
+	return horaRet;
+}
+/**********************************************************************************************************************************************/
+/** CLEAR FIELDS **/
+/**********************************************************************************************************************************************/
+function clearFieldsPedido() {
+	console.log('se limpian los campos de pedido.');
+	$('#selPedExist').empty();
+	$("#cargaTabla").empty();
+	$("#pedProg").val('');
+}
+function clearFieldsDataPedido() {
+	console.log('se limpian los datos de pedido.');
+	$("#cargaTabla").empty();
+	$("#pedProg").val('');
 }
