@@ -29,10 +29,11 @@ public class PersistenciaPersona extends Conector implements IPersPersona, CnstQ
 
 	private static final Logger logger = Logger.getLogger(PersistenciaPersona.class);
 	private Integer resultado;
-	private ResultSet rs;
+
 	
 	@Override
 	public PersonaFisica obtenerPersFisicaPorId(Connection conn, Long id) throws PersistenciaException {
+		ResultSet rs = null;
 		PersonaFisica pf = null;
 		PersistenciaTipoDoc ptd = new PersistenciaTipoDoc();
 		PersistenciaDepLoc pdl = new PersistenciaDepLoc();
@@ -89,6 +90,7 @@ public class PersistenciaPersona extends Conector implements IPersPersona, CnstQ
 	
 	@Override
 	public PersonaJuridica obtenerPersJuridicaPorId(Connection conn, Long id) throws PersistenciaException {
+		ResultSet rs = null;
 		PersonaJuridica pj = null;
 		PersistenciaDepLoc pdl = new PersistenciaDepLoc();
 		try {
@@ -141,6 +143,7 @@ public class PersistenciaPersona extends Conector implements IPersPersona, CnstQ
 	
 	@Override
 	public List<PersonaFisica> obtPersonaFisicaNoSinc(Connection conn, Fecha fechaDesde, Fecha fechaHasta) throws PersistenciaException {
+		ResultSet rs = null;
 		List<PersonaFisica> listaPf = new ArrayList<>();
 		try {
 			GenSqlSelectType genType = new GenSqlSelectType(QRY_SELECT_PF_NOSINC);
@@ -217,6 +220,7 @@ public class PersistenciaPersona extends Conector implements IPersPersona, CnstQ
 
 	@Override
 	public List<PersonaJuridica> obtPersonaJuridicaNoSinc(Connection conn, Fecha fechaDesde, Fecha fechaHasta) throws PersistenciaException {
+		ResultSet rs = null;
 		List<PersonaJuridica> listaPj = new ArrayList<>();
 		try {
 			GenSqlSelectType genType = new GenSqlSelectType(QRY_SELECT_PJ_NOSINC);
@@ -251,7 +255,6 @@ public class PersistenciaPersona extends Conector implements IPersPersona, CnstQ
 			genExec.setParam(pj.getBse());
 			genExec.setParam(pj.getEsProv() ? S_CHAR : N_CHAR);
 			resultado = (Integer) runGeneric(conn, genExec);
-			
 		} catch (ConectorException e) {
 			logger.fatal("Excepcion al guardarPersJuridica: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
@@ -278,7 +281,6 @@ public class PersistenciaPersona extends Conector implements IPersPersona, CnstQ
 			genExec.setParam(pj.getEsProv() ? S_CHAR : N_CHAR);
 			genExec.setParam(rut);
 			resultado = (Integer) runGeneric(conn, genExec);
-			
 		} catch (ConectorException e) {
 			logger.fatal("Excepcion al modificarPersJuridica: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
@@ -307,6 +309,7 @@ public class PersistenciaPersona extends Conector implements IPersPersona, CnstQ
 	
 	@Override
 	public Persona obtenerPersGenerico(Connection conn, Long idPersona) throws PersistenciaException {
+		ResultSet rs = null;
 		Persona persona = null;
 		try {
 			GenSqlSelectType genType = new GenSqlSelectType(QRY_SELECT_PERS_GENERIC);
@@ -385,7 +388,6 @@ public class PersistenciaPersona extends Conector implements IPersPersona, CnstQ
 				listaPf.add(pf);
 			}
 		} catch (SQLException | PersistenciaException | IOException e) {
-//			Conector.rollbackConn(conn);//TODO sacar
 			logger.fatal("Excepcion al cargarRsConPf: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
 		}
@@ -440,7 +442,6 @@ public class PersistenciaPersona extends Conector implements IPersPersona, CnstQ
 				listaPj.add(pj);
 			}
 		} catch (SQLException | PersistenciaException | IOException e) {
-//			Conector.rollbackConn(conn);//TODO sacar
 			logger.fatal("Excepcion al cargarRsConPf: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
 		}

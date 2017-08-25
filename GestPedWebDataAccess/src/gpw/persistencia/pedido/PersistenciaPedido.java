@@ -29,10 +29,11 @@ import gpw.types.Fecha;
 public class PersistenciaPedido extends Conector implements IPersPedido, CnstQryPedido {
 
 	private static final Logger logger = Logger.getLogger(PersistenciaPedido.class);
-	private ResultSet rs;
+
 	
 	@Override
 	public Pedido obtenerPedidoPorId(Connection conn, Long idPersona, Fecha fechaHora) throws PersistenciaException {
+		ResultSet rs = null;
 		Pedido pedido = null;
 		PersistenciaPersona pp = new PersistenciaPersona();
 		PersistenciaPedidoLinea ppl = new PersistenciaPedidoLinea();
@@ -83,6 +84,7 @@ public class PersistenciaPedido extends Conector implements IPersPedido, CnstQry
 	
 	@Override
 	public List<Pedido> obtenerListaPedido(Connection conn, Long idPersona, EstadoPedido ep, Fecha fechaDesde, Fecha fechaHasta) throws PersistenciaException {
+		ResultSet rs = null;
 		List<Pedido> listaPedido = new ArrayList<>();
 		PersistenciaPersona pp = new PersistenciaPersona();
 		PersistenciaPedidoLinea ppl = new PersistenciaPedidoLinea();
@@ -137,6 +139,7 @@ public class PersistenciaPedido extends Conector implements IPersPedido, CnstQry
 
 	@Override
 	public List<Pedido> obtenerListaPedidoNoSinc(Connection conn, Fecha fechaDesde, Fecha fechaHasta) throws PersistenciaException {
+		ResultSet rs = null;
 		List<Pedido> listaPedido = new ArrayList<>();
 		PersistenciaPersona pp = new PersistenciaPersona();
 		PersistenciaPedidoLinea ppl = new PersistenciaPedidoLinea();
@@ -230,6 +233,24 @@ public class PersistenciaPedido extends Conector implements IPersPedido, CnstQry
 	}
 
 	@Override
+	public Integer modificarEstadoPedido(Connection conn, Pedido pedido) throws PersistenciaException  {
+		Integer resultado = null;
+		GenSqlExecType genExec = new GenSqlExecType(QRY_UPDATE_ESTADO_PEDIDO);
+		genExec.setParam(pedido.getEstado().getAsChar());
+		genExec.setParam(pedido.getSinc().getAsChar());
+		genExec.setParam(pedido.getUltAct());
+		genExec.setParam(pedido.getPersona().getIdPersona());
+		genExec.setParam(pedido.getFechaHora());
+		try {
+			resultado = (Integer) runGeneric(conn, genExec);
+		} catch (ConectorException e) {
+			logger.error("Excepcion al modificarPedido: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return resultado;
+	}
+	
+	@Override
 	public Integer eliminarPedido(Connection conn, Pedido pedido) throws PersistenciaException  {
 		Integer resultado = null;
 		GenSqlExecType genExec = new GenSqlExecType(QRY_DELETE_PEDIDO);
@@ -246,6 +267,7 @@ public class PersistenciaPedido extends Conector implements IPersPedido, CnstQry
 	
 	@Override
 	public Boolean checkExistPedido(Connection conn, Pedido pedido) throws PersistenciaException  {
+		ResultSet rs = null;
 		try {
 			GenSqlSelectType genType = new GenSqlSelectType(QRY_CHK_EXIST_PEDIDO);
 			genType.setParam(pedido.getPersona().getIdPersona());

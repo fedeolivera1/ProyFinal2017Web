@@ -28,21 +28,20 @@ public class ServletPedido extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	private static Logger logger = Logger.getLogger(ServletPedido.class);
+	
+	private String tipoPedido = "";
+	private Integer resultado = null;
+	private final static String TIPO_PEDIDO_NUEVO = "N";
+	private final static String TIPO_PEDIDO_EXISTENTE = "E";
 	private final static String CHAR_EMPTY = "";
 	private final static String CHAR_SPLIT_PEDIDO = "~";
 	private final static String CHAR_SPLIT_LINEA = ";";
+	private final static String ACCION_CONFIRMAR = "C";
+	private final static String ACCION_RECHAZAR = "X";
+	private final static String ACCION_ANULAR = "A";
+	private final static String ACCION_ACTUALIZAR = "U";
+	
 
-	
-	/**
-	 * 
-	 * @param request
-	 * @param response
-	 * @throws ServletException
-	 * @throws IOException
-	 */
-	protected void processRequestGET(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	}
-	
 	/**
 	 * request que recibe el metodo POST, el cual manda el NUEVO/EXISTENTE pedido a ingresarse a la base de datos
 	 * en caso de no haber problemas.
@@ -52,7 +51,6 @@ public class ServletPedido extends HttpServlet {
 	 * @throws IOException
 	 */
 	protected void processRequestPOST_nuevo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Integer resultado = null;
 		try {
 			String pedidoStr = request.getParameter("pedido");
 			String fechaHoraProgStr = request.getParameter("fechaHoraProg");
@@ -67,7 +65,7 @@ public class ServletPedido extends HttpServlet {
 				UsuarioWeb usuario = gpwStLoc.obtenerUsuario(usr);
 				pedido.setPersona(usuario.getPersona());
 				pedido.setFechaHora(new Fecha(Fecha.AMDHMS));
-				pedido.setEstado(EstadoPedido.P);
+				pedido.setEstado(EstadoPedido.P);// pedido PENDIENTE
 				String[] pedidosSpl = pedidoStr.split(CHAR_SPLIT_PEDIDO);//Hago split para separar las lineas
 				if(fechaHoraProgStr != null && !fechaHoraProgStr.equals(CHAR_EMPTY)) {
 					Fecha fechaProg = new Fecha(fechaHoraProgStr, Fecha.DMA);
@@ -101,7 +99,6 @@ public class ServletPedido extends HttpServlet {
 				if(resultado > 0) {
 					response.setContentType("text/plain");
 					response.setCharacterEncoding("UTF-8");
-					//ajax mode
 					response.getWriter().write("success");
 				} else {
 					response.getWriter().write("warning");
@@ -124,63 +121,102 @@ public class ServletPedido extends HttpServlet {
 	private void processRequestPOST_existente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			String keyPedido = request.getParameter("keyPedido");
-			String pedidoStr = request.getParameter("pedido");
-			String fechaHoraProgStr = request.getParameter("fechaHoraProg");
-			if((keyPedido != null && keyPedido.equals("")) && 
-					(pedidoStr != null && !pedidoStr.isEmpty())) {
-				GpWebStatelessLocal gpwStLoc = LookUps.lookUpGpWebStateless();
-				
-				
+			String accion = request.getParameter("accion"); 
+			
 //				HttpSession httpSession = request.getSession();
-				//obtengo usuario de sesion para conocer la persona
+			//obtengo usuario de sesion para conocer la persona
 //				String usr = (String) httpSession.getAttribute("usuario");
-				//levanto obj usuarioweb de persistencia a partir del usuario de sesion
+			//levanto obj usuarioweb de persistencia a partir del usuario de sesion
 //				UsuarioWeb usuario = gpwStLoc.obtenerUsuario(usr);
-				
-				
-				String[] keyPedidoSpl = keyPedido.split(";");
-				String[] pedidosSpl = pedidoStr.split(CHAR_SPLIT_PEDIDO);//Hago split para separar las lineas
-				Long idPersona = Long.valueOf(keyPedidoSpl[0]);
-				String fechaHoraStr = keyPedidoSpl[1];
-				Fecha fechaHora = new Fecha(fechaHoraStr, Fecha.AMDHMS);
-				Pedido pedido = gpwStLoc.obtenerPedidoPorId(idPersona, fechaHora);
-				if( pedido != null && (EstadoPedido.P.equals(pedido.getEstado()) || (EstadoPedido.R.equals(pedido.getEstado()))) ) {
-					ArrayList<PedidoLinea> listaLineasNuevas = new ArrayList<>();
-					Double total = new Double(0);
-					for (int i=0; i<pedidosSpl.length; i++) {
-						String[] pedidoLinea = pedidosSpl[i].split(CHAR_SPLIT_LINEA);//Se hace un split para separar los valores de cada linea
-						if(pedidoLinea != null && !pedidoLinea.equals(CHAR_EMPTY)) {
-							PedidoLinea pl = new PedidoLinea(pedido);
-							Producto prod = gpwStLoc.obtenerProductoPorId(Integer.valueOf(pedidoLinea[0]));
-							Integer cant = Integer.valueOf(pedidoLinea[1]);
-							pl.setProducto(prod);
-							pl.setPrecioUnit(prod.getPrecioVta());
-							pl.setCantidad(cant);
-//							pedido.getListaPedidoLinea().add(pl);
-							listaLineasNuevas.add(pl);
-							total += (prod.getPrecioVta()*cant);
-						} else {
-							throw new Exception("Ha surgido un error al ingresar el pedido. Verifique lineas y/o cabezal.");
+			
+			String[] keyPedidoSpl = keyPedido.split(";");
+			Long idPersona = Long.valueOf(keyPedidoSpl[0]);
+			String fechaHoraStr = keyPedidoSpl[1];
+			Fecha fechaHora = new Fecha(fechaHoraStr, Fecha.AMDHMS);
+			GpWebStatelessLocal gpwStLoc = LookUps.lookUpGpWebStateless();
+			Pedido pedido = gpwStLoc.obtenerPedidoPorId(idPersona, fechaHora);
+			if(pedido != null) {
+			
+				/*caso modifica pedido PENDIENTE (solo modifica el pedido, no modifica su estado, vuelve a sinc = 'N')*/
+				if( EstadoPedido.P.equals(pedido.getEstado()) && ACCION_ACTUALIZAR.equalsIgnoreCase(accion) ) {
+					
+					String pedidoStr = request.getParameter("pedido");
+					String fechaHoraProgStr = request.getParameter("fechaHoraProg");
+					if(pedidoStr != null && !pedidoStr.isEmpty()) {
+						String[] pedidosSpl = pedidoStr.split(CHAR_SPLIT_PEDIDO);//Hago split para separar las lineas
+						ArrayList<PedidoLinea> listaLineasNuevas = new ArrayList<>();
+						if(fechaHoraProgStr != null && !fechaHoraProgStr.equals(CHAR_EMPTY)) {
+							Fecha fechaProg = new Fecha(fechaHoraProgStr, Fecha.DMA);
+							Fecha horaProg = new Fecha(fechaHoraProgStr, Fecha.HM);
+							pedido.setFechaProg(fechaProg);
+							pedido.setHoraProg(horaProg);
 						}
+						Double total = new Double(0);
+						for (int i=0; i<pedidosSpl.length; i++) {
+							String[] pedidoLinea = pedidosSpl[i].split(CHAR_SPLIT_LINEA);//Se hace un split para separar los valores de cada linea
+							if(pedidoLinea != null && !pedidoLinea.equals(CHAR_EMPTY)) {
+								PedidoLinea pl = new PedidoLinea(pedido);
+								Producto prod = gpwStLoc.obtenerProductoPorId(Integer.valueOf(pedidoLinea[0]));
+								Integer cant = Integer.valueOf(pedidoLinea[1]);
+								pl.setProducto(prod);
+								pl.setPrecioUnit(prod.getPrecioVta());
+								pl.setCantidad(cant);
+								listaLineasNuevas.add(pl);
+								total += (prod.getPrecioVta()*cant);
+							} else {
+								throw new Exception("Ha surgido un error al ingresar el pedido. Verifique lineas y/o cabezal.");
+							}
+						}
+						total = Converters.redondearDosDec(total);
+						pedido.setTotal(total);
+						pedido.setSinc(Sinc.N);
+						pedido.setUltAct(new Fecha(Fecha.AMDHMS));
+						resultado = gpwStLoc.modificarPedido(pedido, listaLineasNuevas);
+						if(resultado > 0) {
+							response.setContentType("text/plain");
+							response.setCharacterEncoding("UTF-8");
+							response.getWriter().write("success");
+						} else {
+							response.getWriter().write("warning");
+						}
+					} else {
+						response.getWriter().write("error");
 					}
-					pedido.setListaPedidoLinea(listaLineasNuevas);
-					total = Converters.redondearDosDec(total);
-					if(fechaHoraProgStr != null && !fechaHoraProgStr.equals(CHAR_EMPTY)) {
-						Fecha fechaProg = new Fecha(fechaHoraProgStr, Fecha.DMA);
-						Fecha horaProg = new Fecha(fechaHoraProgStr, Fecha.HM);
-						pedido.setFechaProg(fechaProg);
-						pedido.setHoraProg(horaProg);
-					}
-					pedido.setTotal(total);
+				/*caso pedido en estado REVISION, para CONFIRMAR o RECHAZAR*/
+				} else if( EstadoPedido.R.equals(pedido.getEstado()) && 
+						(ACCION_CONFIRMAR.equalsIgnoreCase(accion) || ACCION_RECHAZAR.equalsIgnoreCase(accion)) ) {
+					pedido.setEstado(EstadoPedido.getEstadoPedidoPorChar(accion.charAt(0)));
 					pedido.setSinc(Sinc.N);
 					pedido.setUltAct(new Fecha(Fecha.AMDHMS));
-					gpwStLoc.modificarPedido(pedido);
+					resultado = gpwStLoc.modificarEstadoPedido(pedido);
+					if(resultado > 0) {
+						response.setContentType("text/plain");
+						response.setCharacterEncoding("UTF-8");
+						response.getWriter().write("success");
+					} else {
+						response.getWriter().write("warning");
+					}
+				/*caso pedido en estado PENDIENTE, para ANULAR*/
+				} else if( EstadoPedido.P.equals(pedido.getEstado()) && ACCION_ANULAR.equalsIgnoreCase(accion) ) {
+					pedido.setEstado(EstadoPedido.A);
+					pedido.setSinc(Sinc.N);
+					pedido.setUltAct(new Fecha(Fecha.AMDHMS));
+					resultado = gpwStLoc.modificarEstadoPedido(pedido);
+					if(resultado > 0) {
+						response.setContentType("text/plain");
+						response.setCharacterEncoding("UTF-8");
+						response.getWriter().write("success");
+					} else {
+						response.getWriter().write("warning");
+					}
+				/*caso NO SOPORTADO*/
 				} else {
 					response.setStatus(500);
 					response.getWriter().write("Pedido en error o su estado no permite modificacion.");
 				}
 			} else {
-				response.getWriter().write("warning");
+				response.setStatus(500);
+				response.getWriter().write("Han surgido errores al obtener el pedido.");
 			}
 		} catch (PersistenciaException e) {
 			logger.fatal("Excepcion en ServletPedido > processRequestPOST_existente: " + e.getMessage(), e);
@@ -194,18 +230,17 @@ public class ServletPedido extends HttpServlet {
 	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequestGET(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	String accion = request.getParameter("accion");
-    	if(accion.equals("N")) {
+    	tipoPedido = request.getParameter("tipoPedido");
+    	if(TIPO_PEDIDO_NUEVO.equals(tipoPedido)) {
     		processRequestPOST_nuevo(request, response);
-    	} else if(accion.equals("E")) {
+    	} else if(TIPO_PEDIDO_EXISTENTE.equals(tipoPedido)) {
     		processRequestPOST_existente(request, response);
     	} else {
     		response.setStatus(500);
-			response.getWriter().write("Implementacion desconocida para pedidos");
+			response.getWriter().write("Implementacion desconocida para ServletPedido");
     	}
     }
 

@@ -16,6 +16,7 @@ public interface IPersPedido {
 	public List<Pedido> obtenerListaPedido(Connection conn, Long idPersona, EstadoPedido ep, Fecha fechaDesde, Fecha fechaHasta) throws PersistenciaException;
 	public Integer guardarPedido(Connection conn, Pedido pedido) throws PersistenciaException;
 	public Integer modificarPedido(Connection conn, Pedido pedido) throws PersistenciaException;
+	public Integer modificarEstadoPedido(Connection conn, Pedido pedido) throws PersistenciaException;
 	public Integer eliminarPedido(Connection conn, Pedido pedido) throws PersistenciaException;
 	public Boolean checkExistPedido(Connection conn, Pedido pedido) throws PersistenciaException;
 	public Integer actualizarPedidoSinc(Connection conn, Long idPersona, Fecha fechaHora, Sinc sinc) throws PersistenciaException;

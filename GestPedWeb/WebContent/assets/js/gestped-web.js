@@ -72,13 +72,13 @@ function cargarCbxDep() {
 	console.log('entra a cargarCbxDep');
 	$("#selDep").empty();
 	$.ajax({
-        type: "POST",
-        url: "ServletObtDep",
-        contentType: "application/json",              
-        dataType: "json",
+        type: 'POST',
+        url: 'ServletObtDep',
+        contentType: 'application/json',              
+        dataType: 'json',
         success: function(response) {
         	$.each(response, function () {
-        		$("#selDep").append($("<option></option>").val(this['idDepartamento']).html(this['nombreDepartamento']));
+        		$('#selDep').append($('<option></option>').val(this['idDepartamento']).html(this['nombreDepartamento']));
         	});
 //        	$('#selDep').trigger('change');
         	//inmediatamente a la carga de dep, cargo las loc.
@@ -260,9 +260,11 @@ function cargarCbxTipoProd(response) {
 function cargarCbxProd() {
 	$(function() {
 		var fillCbxProd = function() {
+			//
 			console.log('entra a fill de producto');
+			//
 			var selected = $('#selTipoProd').val();
-			var data = "idTipoProd=" + selected;
+			var data = 'tipoRequest=L' + '&idTipoProd=' + selected;
 			 $.ajax({
 	            type: "POST",
 	            url: "ServletObtProducto",
@@ -292,12 +294,12 @@ function cargarDatosProd() {
 		var fillDatosProd = function() {
 			var selected = $('#selProd').val();
 			if(selected != null) {
-				var data = "idProd=" + selected;
+				var data = 'tipoRequest=O' + '&idProd=' + selected;
 				//
 				console.log('entra a cargarDatosProd() > data: ' + data);
 				//
 				$.ajax({
-					type: "GET",
+					type: "POST",
 					url: "ServletObtProducto",
 					data: data,
 					success: function(response) {
@@ -384,7 +386,8 @@ function envioPed() {
 	});
 	
 	if(dataPedido !== '') {
-		data = 'accion=' + $('#tipoPedido').val() + 
+		data = 'accion=N' +
+				'&tipoPedido=' + $('#tipoPedido').val() +  
 				'&pedido=' + dataPedido + 
 				'&fechaHoraProg=' + $('#pedProg').val();
 		console.log('valores a servlet: [' + data + ']');
@@ -396,6 +399,7 @@ function envioPed() {
 				//limpiar form
 				if(response === 'success') {
 					bootstrap_alert.success('El pedido ha sido registrado correctamente.');
+					clearFieldsDataPedido();
 				} else {
 					bootstrap_alert.warning('Han surgido problemas para registrar el pedido.');
 				}
@@ -408,7 +412,7 @@ function envioPed() {
 	}
 }
 
-function actualizarPed() {
+function actualizarPed(accion) {
 	var dataPedido = '';
 	var idProd;
 	var cant;
@@ -431,7 +435,8 @@ function actualizarPed() {
 	var pedidoSel = $('#selPedExist').val();
 	if(pedidoSel != undefined && pedidoSel !== '') {
 		if(dataPedido !== '') {
-			data = 'accion=' + $('#tipoPedido').val() + 
+			data = 'accion=' + accion +
+			'&tipoPedido=' + $('#tipoPedido').val() + 
 			'&keyPedido=' + pedidoSel +
 			'&pedido=' + dataPedido + 
 			'&fechaHoraProg=' + $('#pedProg').val();
@@ -444,6 +449,7 @@ function actualizarPed() {
 					//limpiar form
 					if(response === 'success') {
 						bootstrap_alert.success('El pedido ha sido actualizado correctamente.');
+						clearFieldsPedido();
 					} else {
 						bootstrap_alert.warning('Han surgido problemas para actualizado el pedido.');
 					}
@@ -466,8 +472,7 @@ function seleccionTipoPedido(tipo) {
 		document.getElementById("fecPedDesde").required = true;
 		document.getElementById("fecPedHasta").required = true;
 		document.getElementById("generarPedido").disabled = true;
-		document.getElementById("actualizarPedido").disabled = false;
-		
+		$("#generarPedido").removeClass("btn-info").addClass("btn-default");
 //		$('.selectpicker').selectpicker('refresh');
 	} else {
 		$('#divPedExistente').find('*').hide();
@@ -475,7 +480,7 @@ function seleccionTipoPedido(tipo) {
 		document.getElementById("fecPedDesde").required = false;
 		document.getElementById("fecPedHasta").required = false;
 		document.getElementById("generarPedido").disabled = false;
-		document.getElementById("actualizarPedido").disabled = true;
+		$("#generarPedido").removeClass("btn-default").addClass("btn-info");
 //		$('.selectpicker').selectpicker('refresh');
 	}
 	clearFieldsPedido();
@@ -486,12 +491,13 @@ function cargarCbxPedExistentes() {
 		var fillCbxPed = function() {
 			clearFieldsPedido();
 			console.log('se cargan los pedidos existentes...');
-			var data = "fechaDesde=" + $('#fecPedDesde').val() + 
-						"&fechaHasta=" + $('#fecPedHasta').val() +
-						"&estadoPedido=" + $('#selEstadoPed').val();
+			var data = 'tipoRequest=L' +
+						'&fechaDesde=' + $('#fecPedDesde').val() + 
+						'&fechaHasta=' + $('#fecPedHasta').val() +
+						'&estadoPedido=' + $('#selEstadoPed').val();
 			 $.ajax({
-	            type: "GET",
-	            url: "ServletObtPedido",
+	            type: 'POST',
+	            url: 'ServletObtPedido',
 	            data: data,
 	            success: function(response) {
 	            	$('#selPedExist').empty();
@@ -501,7 +507,7 @@ function cargarCbxPedExistentes() {
 	            		var fechaHora = ceroNum(fhp.getDate()) + '/' + ceroNum((fhp.getMonth()+1)) + '/' + fhp.getFullYear() + ' ' + 
 	            						ceroNum(fhp.getHours()) + ':' + ceroNum(fhp.getMinutes()) + ':' + ceroNum(fhp.getSeconds());
 
-	            		$("#selPedExist").append($("<option></option>").val(idPersona + ';' + fechaHora).html(fechaHora));            		
+	            		$("#selPedExist").append($("<option></option>").val(idPersona + ';' + fechaHora).html(fechaHora));
 	            	});
 	            	$('#selPedExist').trigger('change');
 	            }, error: function (response) {
@@ -513,56 +519,118 @@ function cargarCbxPedExistentes() {
 	});
 }
 
+function manejarControlesPorEstadoPed(estado) {
+	//generarPedido, actualizarPedido, confirmarPedido, rechazarPedido, anularPedido
+	if(estado === 'P') {//pendiente
+		document.getElementById("generarPedido").disabled = true;
+		$("#generarPedido").removeClass("btn-info").addClass("btn-default");
+		
+		document.getElementById("actualizarPedido").disabled = false;
+		$("#actualizarPedido").removeClass("btn-default").addClass("btn-primary");
+		
+		document.getElementById("confirmarPedido").disabled = true;
+		$("#confirmarPedido").removeClass("btn-success").addClass("btn-default");
+		
+		document.getElementById("rechazarPedido").disabled = true;
+		$("#rechazarPedido").removeClass("btn-warning").addClass("btn-default");
+		
+		document.getElementById("anularPedido").disabled = false;
+		$("#anularPedido").removeClass("btn-default").addClass("btn-danger");
+		
+//		$("#dtpPedProg").datetimepicker('disable', false);
+	} else if(estado === 'R') {//revision
+		document.getElementById("generarPedido").disabled = true;
+		$("#generarPedido").removeClass("btn-info").addClass("btn-default");
+		
+		document.getElementById("actualizarPedido").disabled = true;
+		$("#actualizarPedido").removeClass("btn-primary").addClass("btn-default");
+		
+		document.getElementById("confirmarPedido").disabled = false;
+		$("#confirmarPedido").removeClass("btn-default").addClass("btn-success");
+		
+		document.getElementById("rechazarPedido").disabled = false;
+		$("#rechazarPedido").removeClass("btn-default").addClass("btn-warning");
+		
+		document.getElementById("anularPedido").disabled = true;
+		$("#anularPedido").removeClass("btn-danger").addClass("btn-default");
+		
+//		$("#dtpPedProg").datetimepicker('disable');
+	} else {//confirmado, anulado o rechazado
+		document.getElementById("generarPedido").disabled = true;
+		$("#generarPedido").removeClass("btn-info").addClass("btn-default");
+		
+		document.getElementById("actualizarPedido").disabled = true;
+		$("#actualizarPedido").removeClass("btn-primary").addClass("btn-default");
+		
+		document.getElementById("confirmarPedido").disabled = true;
+		$("#confirmarPedido").removeClass("btn-success").addClass("btn-default");
+		
+		document.getElementById("rechazarPedido").disabled = true;
+		$("#rechazarPedido").removeClass("btn-warning").addClass("btn-default");
+		
+		document.getElementById("anularPedido").disabled = true;
+		$("#anularPedido").removeClass("btn-danger").addClass("btn-default");
+		
+//		$("#dtpPedProg").datetimepicker('disable');
+	}
+}
+
 function seleccionPedidoExist() {
 	var keyPedido = $('#selPedExist').val();
 	console.log('Se procede a invocar servlet para el pedido: ' + keyPedido);
-	var data = 'dataPedido=' + keyPedido;
-	$.ajax({
-		type: "POST",
-		url: "ServletObtPedido",
-		data: data,
-		success: function(response) {
-			var lineasPedido = response.listaPedidoLinea;
-			var estadoPed = response.estado;
-			var fechaHoraEst = '';
-			if(response.fechaProg !== undefined) {
-				console.log('entra a dateParser: ' + response.fechaProg.time);
-				fechaHoraEst += dateParser(response.fechaProg.time);
-			}
-			if(response.horaProg !== undefined) {
-				console.log('entra a hourParser: ' + response.fechaProg.time);
-				fechaHoraEst += ' ' + hourParser(response.horaProg.time);
-			}
-			console.log('fechaHoraEst=' + fechaHoraEst);
-			//se limpia la tabla
-			$("#cargaTabla").empty();
-			$("#pedProg").val('');
-			//
-			$.each(lineasPedido, function (i, item) {
-				var lineaAct = lineasPedido[i];
-				var claseTr = devolverClaseTablaSegunEstado(estadoPed);
-				console.log('precio=' + lineaAct.producto.precioVta + ' cant=' + lineaAct.cantidad);
-				var subTotalLn = (lineaAct.producto.precioVta * lineaAct.cantidad);
-				var data = "<tr class=" + claseTr + ">" +
-				"<td scope='row' class='row'>" + lineaAct.producto.idProducto + "</th>" +
-				"<td>" + lineaAct.producto.nombre + "</td>" +
-				"<td>" + lineaAct.producto.precioVta + "</td>" +
-				"<td>" + lineaAct.cantidad + "</td>" +
-				"<td>" + roundNumber(subTotalLn, 2) + "</td>" +
-				"<th><button class='btn btn-default btn-sm delete' onclick='deleteRow()'><span class='glyphicon glyphicon-trash'></span></button></th>" +
-				"</tr>";
-				$("#tablaPedido tbody").append(data);
-				
-				if(fechaHoraEst != '') {
-					$('#pedProg').val(fechaHoraEst);
+	if(!!keyPedido) {
+		var data = 'tipoRequest=O' + '&dataPedido=' + keyPedido;
+		$.ajax({
+			type: "POST",
+			url: "ServletObtPedido",
+			data: data,
+			success: function(response) {
+				var lineasPedido = response.listaPedidoLinea;
+				var estadoPed = response.estado;
+				var fechaHoraEst = '';
+				if(response.fechaProg !== undefined) {
+					console.log('entra a dateParser: ' + response.fechaProg.time);
+					fechaHoraEst += dateParser(response.fechaProg.time);
 				}
-			});
-			
-		}, error: function (response) {
-			bootstrap_alert.danger(response.responseText);
-			clearFieldsDataPedido();
-		}
-	});
+				if(response.horaProg !== undefined) {
+					console.log('entra a hourParser: ' + response.fechaProg.time);
+					fechaHoraEst += ' ' + hourParser(response.horaProg.time);
+				}
+				console.log('fechaHoraEst=' + fechaHoraEst);
+				$("#estadoPedido").val(estadoPed);
+				manejarControlesPorEstadoPed(estadoPed);
+				//se limpia la tabla
+				$("#cargaTabla").empty();
+				$("#pedProg").val('');
+				//
+				$.each(lineasPedido, function (i, item) {
+					var lineaAct = lineasPedido[i];
+					var claseTr = devolverClaseTablaSegunEstado(estadoPed);
+					console.log('precio=' + lineaAct.producto.precioVta + ' cant=' + lineaAct.cantidad);
+					var subTotalLn = (lineaAct.producto.precioVta * lineaAct.cantidad);
+					var data = "<tr class=" + claseTr + ">" +
+					"<td scope='row' class='row'>" + lineaAct.producto.idProducto + "</th>" +
+					"<td>" + lineaAct.producto.nombre + "</td>" +
+					"<td>" + lineaAct.producto.precioVta + "</td>" +
+					"<td>" + lineaAct.cantidad + "</td>" +
+					"<td>" + roundNumber(subTotalLn, 2) + "</td>" +
+					"<th><button class='btn btn-default btn-sm delete' onclick='deleteRow()'><span class='glyphicon glyphicon-trash'></span></button></th>" +
+					"</tr>";
+					$("#tablaPedido tbody").append(data);
+					
+					if(fechaHoraEst != '') {
+						$('#pedProg').val(fechaHoraEst);
+					}
+				});
+				
+			}, error: function (response) {
+				bootstrap_alert.danger(response.responseText);
+				clearFieldsDataPedido();
+			}
+		});
+	} else {
+		manejarControlesPorEstadoPed();//paso sin param para que anule todos los controles
+	}
 }
 
 
@@ -602,6 +670,8 @@ function devolverClaseTablaSegunEstado(estado) {
 		clase = 'danger';
 	} else if(estado === 'R') {
 		clase = 'info';
+	} else if(estado === 'X') {
+		clase = 'warning';
 	}
 	return clase;
 }

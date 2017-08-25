@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 
 import gpw.dominio.pedido.EstadoPedido;
 import gpw.dominio.pedido.Pedido;
+import gpw.dominio.pedido.PedidoLinea;
 import gpw.dominio.persona.Departamento;
 import gpw.dominio.persona.Localidad;
 import gpw.dominio.persona.PersonaFisica;
@@ -147,7 +148,7 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
     		conn = ds.getConnection();
     		usuario = getInterfaceUsuario().loginUsuario(conn, nombreUsuario, password);
     	} catch (PersistenciaException | SQLException e) {
-    		logger.fatal("Excepcion en GpWebStateless > obtenerUsuario: " + e.getMessage(), e);
+    		logger.fatal("Excepcion en GpWebStateless > loginUsuario: " + e.getMessage(), e);
     		throw new PersistenciaException(e);
     	} finally {
     		closeConnection(conn);
@@ -199,7 +200,7 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 
 	@Override
 	public Integer modificarUsuario(UsuarioWeb usr, Boolean modificaPasswd) throws PersistenciaException {
-		logger.info("Se ingresa a guardarUsuario para " + usr.getNomUsu());
+		logger.info("Se ingresa a modificarUsuario para " + usr.getNomUsu());
 		Integer resultado = null;
 		try {
 			conn = ds.getConnection();
@@ -253,7 +254,7 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 	//tipo doc
 	@Override
 	public TipoDoc obtenerTipoDocPorId(Integer id) throws PersistenciaException {
-		logger.info("Se ingresa a obtenerListaDepartamentos...");
+		logger.info("Se ingresa a obtenerTipoDocPorId...");
 		TipoDoc tipoDoc = null;
 		try {
 			conn = ds.getConnection();
@@ -268,7 +269,7 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 	}
 	@Override
 	public List<TipoDoc> obtenerListaTipoDoc() throws PersistenciaException {
-		logger.info("Se ingresa a obtenerListaDepartamentos...");
+		logger.info("Se ingresa a obtenerListaTipoDoc...");
 		List<TipoDoc> listaTd = null;
 		try {
 			conn = ds.getConnection();
@@ -371,7 +372,7 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 	//producto
 	@Override
 	public Producto obtenerProductoPorId(Integer id) throws PersistenciaException {
-		logger.info("Se ingresa a obtenerListaProductoPorTipo...");
+		logger.info("Se ingresa a obtenerProductoPorId...");
 		Producto producto = null;
 		try {
 			conn = ds.getConnection();
@@ -407,7 +408,7 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 	
 	@Override
 	public Pedido obtenerPedidoPorId(Long idPersona, Fecha fechaHora) throws PersistenciaException {
-		logger.info("Se ingresa a obtenerListaProductoPorTipo...");
+		logger.info("Se ingresa a obtenerPedidoPorId...");
 		Pedido pedido = null;
 		try {
 			conn = ds.getConnection();
@@ -460,8 +461,8 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 	}
 	
 	@Override
-	public Integer modificarPedido(Pedido pedido) throws PersistenciaException {
-		logger.info("Se ingresa a guardarPedido");
+	public Integer modificarPedido(Pedido pedido, List<PedidoLinea> lineaLineasNuevas) throws PersistenciaException {
+		logger.info("Se ingresa a modificarPedido");
 		Integer resultado = null;
 		try {
 			if(pedido != null && pedido.getListaPedidoLinea() != null && 
@@ -469,6 +470,7 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 				conn = ds.getConnection();
 				resultado = getInterfacePedido().modificarPedido(conn, pedido);
 				getInterfacePedidoLinea().eliminarListaPedidoLinea(conn, pedido);
+				pedido.setListaPedidoLinea(lineaLineasNuevas);
 				getInterfacePedidoLinea().guardarListaPedidoLinea(conn, pedido.getListaPedidoLinea());
 			}
 		} catch (PersistenciaException | SQLException e) {
@@ -478,6 +480,25 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 		} finally {
     		closeConnection(conn);
     	}
+		return resultado;
+	}
+	
+	@Override
+	public Integer modificarEstadoPedido(Pedido pedido) throws PersistenciaException {
+		logger.info("Se ingresa a modificarEstadoPedido");
+		Integer resultado = null;
+		try {
+			if(pedido != null) {
+				conn = ds.getConnection();
+				resultado = getInterfacePedido().modificarEstadoPedido(conn, pedido);
+			}
+		} catch (PersistenciaException | SQLException e) {
+			context.setRollbackOnly();
+			logger.fatal("Excepcion en GpWebStateless > modificarEstadoPedido: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		} finally {
+			closeConnection(conn);
+		}
 		return resultado;
 	}
 	

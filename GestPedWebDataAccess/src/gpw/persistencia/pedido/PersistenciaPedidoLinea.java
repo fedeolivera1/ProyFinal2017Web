@@ -22,11 +22,11 @@ import gpw.persistencia.producto.PersistenciaProducto;
 public class PersistenciaPedidoLinea extends Conector implements IPersPedidoLinea, CnstQryPedidoLinea {
 
 	private static final Logger logger = Logger.getLogger(PersistenciaPedidoLinea.class);
-	private ResultSet rs;
 	
 	
 	@Override
 	public List<PedidoLinea> obtenerListaPedidoLinea(Connection conn, Pedido pedido) throws PersistenciaException {
+		ResultSet rs = null;
 		List<PedidoLinea> listaPedidoLinea = new ArrayList<>();	
 		PersistenciaProducto pp = new PersistenciaProducto();
 		try {

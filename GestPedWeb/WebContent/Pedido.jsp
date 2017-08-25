@@ -80,7 +80,8 @@
 	   					<a class="btn btn-default btn-sm active" data-toggle="tipoPedido" data-title="N" onclick="seleccionTipoPedido('N');">Nuevo</a>
 	   					<a class="btn btn-default btn-sm notActive" data-toggle="tipoPedido" data-title="E" onclick="seleccionTipoPedido('E');">Existente</a>
 	   				</div>
-	   				<input type="hidden" name="tipoPedido" id="tipoPedido">
+	   				<input type="hidden" name="tipoPedido" id="tipoPedido" value="N">
+	   				<input type="hidden" name="estadoPedido" id="estadoPedido">
 	   			</div>
 	   		</div>
 	  	</div>
@@ -117,6 +118,7 @@
 							<option value="P">Pendiente</option>
 			      			<option value="R">Revision</option>
 			      			<option value="C">Confirmado</option>
+			      			<option value="X">Rechazado</option>
 			      			<option value="A">Anulado</option>
 					    </select>
 					 </div>
@@ -210,12 +212,15 @@
 			  </div>  
 			</div>
 			
-			<!-- Buttons [Generar pedido]-->
+			<!-- Buttons [Generar-Modificar pedido]-->
 			<div class="form-group col-md-12">
 			  <label class="col-md-4 control-label" for="registrar"></label>
 			  <div class="col-md-4">
-			  	<button type="button" id="generarPedido" name="generarPedido" class="btn btn-primary" onclick="envioPed();">Generar</button>
-			  	<button type="button" id="actualizarPedido" name="actualizarPedido" class="btn btn-primary" onclick="actualizarPedido();" disabled>Actualizar</button>
+			  	<button type="button" id="generarPedido" name="generarPedido" class="btn btn-info" onclick="envioPed();">Generar</button>
+			  	<button type="button" id="actualizarPedido" name="actualizarPedido" class="btn btn-default" onclick="actualizarPed('U');" disabled>Actualizar</button>
+			  	<button type="button" id="confirmarPedido" name="confirmarPedido" class="btn btn-default" onclick="actualizarPed('C');" disabled>Confirmar</button>
+			  	<button type="button" id="rechazarPedido" name="rechazarPedido" class="btn btn-default" onclick="actualizarPed('X');" disabled>Rechazar</button>
+			  	<button type="button" id="anularPedido" name="anularPedido" class="btn btn-default" onclick="actualizarPed('A');" disabled>Anular</button>
 			  </div>
 			</div>
 			

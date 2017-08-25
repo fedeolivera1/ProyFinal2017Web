@@ -23,9 +23,19 @@ public class ServletObtProducto extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	private static Logger logger = Logger.getLogger(ServletObtProducto.class);
+	
+	private static final String TIPO_REQ_OBJ = "O";
+	private static final String TIPO_REQ_LIST = "L";
 
 	
-	protected void processRequestPOST(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	/**
+	 * obtiene lista de productos a partir del tipo
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	protected void processRequestPOST_list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			Integer idTipoProd = (request.getParameter("idTipoProd") != null ? Integer.valueOf(request.getParameter("idTipoProd")) : -1);
 			GpWebStatelessLocal gpwStLoc = LookUps.lookUpGpWebStateless();
@@ -50,7 +60,14 @@ public class ServletObtProducto extends HttpServlet {
 		}
 	}
 	
-	protected void processRequestGET(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	/**
+	 * obtiene objeto producto a partir del id
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	protected void processRequestPOST_obj(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			Integer idProd = (request.getParameter("idProd") != null ? Integer.valueOf(request.getParameter("idProd")) : -1);
 			GpWebStatelessLocal gpwStLoc = LookUps.lookUpGpWebStateless();
@@ -75,10 +92,17 @@ public class ServletObtProducto extends HttpServlet {
 	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequestGET(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequestPOST(request, response);
+    	String tipoReq = request.getParameter("tipoRequest");
+		if(TIPO_REQ_OBJ.equals(tipoReq)) {
+			processRequestPOST_obj(request, response);
+		} else if(TIPO_REQ_LIST.equals(tipoReq)) {
+			processRequestPOST_list(request, response);
+		} else {
+			response.setStatus(500);
+			response.getWriter().write("Implementacion desconocida para ServletObtProducto");
+		}
     }
 }

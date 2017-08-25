@@ -24,7 +24,15 @@ public class ServletObtTipoProd extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static Logger logger = Logger.getLogger(ServletObtTipoProd.class);
 
-	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+	/**
+	 * obtiene lista de tipos de producto
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	private void processRequestPOST(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			GpWebStatelessLocal gpwStLoc = LookUps.lookUpGpWebStateless();
 			List<TipoProd> listaTp = gpwStLoc.obtenerListaTipoProd();
@@ -48,10 +56,9 @@ public class ServletObtTipoProd extends HttpServlet {
 	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
+        processRequestPOST(request, response);
     }
 }

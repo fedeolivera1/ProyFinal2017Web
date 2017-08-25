@@ -21,11 +21,12 @@ import gpw.persistencia.persona.PersistenciaTipoDoc;
 public class PersistenciaUnidad extends Conector implements IPersUnidad, CnstQryUnidad {
 
 	private static final Logger logger = Logger.getLogger(PersistenciaTipoDoc.class);
-	private ResultSet rs;
 	private Integer resultado;
+	
 	
 	@Override
 	public Unidad obtenerUnidadPorId(Connection conn, Integer id) throws PersistenciaException {
+		ResultSet rs = null;
 		Unidad Unidad = null;
 		try {
 			GenSqlSelectType genType = new GenSqlSelectType(QRY_SELECT_UNI_X_ID);
@@ -47,6 +48,7 @@ public class PersistenciaUnidad extends Conector implements IPersUnidad, CnstQry
 	
 	@Override
 	public List<Unidad> obtenerListaUnidad(Connection conn) throws PersistenciaException {
+		ResultSet rs = null;
 		List<Unidad> listaUnidad = new ArrayList<>();
 		try {
 			GenSqlSelectType genType = new GenSqlSelectType(QRY_SELECT_UNI);
@@ -128,6 +130,7 @@ public class PersistenciaUnidad extends Conector implements IPersUnidad, CnstQry
 
 	@Override
 	public Boolean checkExistUnidad(Connection conn, Integer id) throws PersistenciaException {
+		ResultSet rs = null;
 		try {
 			GenSqlSelectType genType = new GenSqlSelectType(QRY_CHECK_EXIST_UNIDAD);
 			genType.setParam(id);

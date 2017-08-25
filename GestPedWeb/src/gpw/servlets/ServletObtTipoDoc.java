@@ -24,7 +24,15 @@ public class ServletObtTipoDoc extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static Logger logger = Logger.getLogger(ServletObtTipoDoc.class);
 	
-	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+	/**
+	 * obtiene lista de tipos de documento
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	protected void processRequestPOST(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			GpWebStatelessLocal gpwStLoc = LookUps.lookUpGpWebStateless();
 			List<TipoDoc> listaTd = gpwStLoc.obtenerListaTipoDoc();
@@ -46,11 +54,10 @@ public class ServletObtTipoDoc extends HttpServlet {
 	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
+        processRequestPOST(request, response);
     }
 
 }

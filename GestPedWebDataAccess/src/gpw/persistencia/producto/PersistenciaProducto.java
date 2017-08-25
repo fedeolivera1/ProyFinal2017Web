@@ -27,10 +27,11 @@ public class PersistenciaProducto extends Conector implements IPersProducto, Cns
 
 	private static final Logger logger = Logger.getLogger(PersistenciaPersona.class);
 	private Integer resultado;
-	private ResultSet rs;
+	
 	
 	@Override
 	public Producto obtenerProductoPorId(Connection conn, Integer id) throws PersistenciaException {
+		ResultSet rs = null;
 		Producto producto = null;
 		PersistenciaTipoProd ptp = new PersistenciaTipoProd();
 		PersistenciaUnidad pu = new PersistenciaUnidad();
@@ -62,12 +63,15 @@ public class PersistenciaProducto extends Conector implements IPersProducto, Cns
 		} catch (ConectorException | SQLException | IOException e) {
 			logger.fatal("Excepcion al obtenerProductoPorId: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
+		} finally {
+			closeRs(rs);
 		}
 		return producto;
 	}
 	
 	@Override
 	public List<Producto> obtenerListaProductoPorTipo(Connection conn, Integer tipoProd) throws PersistenciaException {
+		ResultSet rs = null;
 		List<Producto> listaProducto = new ArrayList<>();
 		PersistenciaTipoProd ptp = new PersistenciaTipoProd();
 		PersistenciaUnidad pu = new PersistenciaUnidad();
@@ -100,6 +104,8 @@ public class PersistenciaProducto extends Conector implements IPersProducto, Cns
 		} catch (ConectorException | SQLException | IOException e) {
 			logger.fatal("Excepcion al obtenerProductoPorId: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
+		} finally {
+			closeRs(rs);
 		}
 		return listaProducto;
 	}
@@ -167,6 +173,7 @@ public class PersistenciaProducto extends Conector implements IPersProducto, Cns
 
 	@Override
 	public Boolean checkExistProducto(Connection conn, Integer idProducto) throws PersistenciaException {
+		ResultSet rs = null;
 		try {
 			GenSqlSelectType genType = new GenSqlSelectType(QRY_CHECK_EXIST_PROD);
 			genType.setParam(idProducto);

@@ -25,7 +25,7 @@ public class ServletObtLoc extends HttpServlet {
 	private static Logger logger = Logger.getLogger(ServletObtLoc.class);
 	
 
-	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void processRequestPOST(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			Integer idDep = (request.getParameter("idDep") != null ? Integer.valueOf(request.getParameter("idDep")) : -1);
 			GpWebStatelessLocal gpwStLoc = LookUps.lookUpGpWebStateless();
@@ -48,11 +48,11 @@ public class ServletObtLoc extends HttpServlet {
 			response.getWriter().write(e.getMessage());
 		}
 	}
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
+        processRequestPOST(request, response);
     }
 }

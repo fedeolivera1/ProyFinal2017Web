@@ -20,12 +20,12 @@ import gpw.persistencia.conector.Conector;
 public class PersistenciaTipoProd extends Conector implements IPersTipoProd, CnstQryTipoProd {
 
 	private static final Logger logger = Logger.getLogger(PersistenciaTipoProd.class);
-	private ResultSet rs;
 	
 	
 	@Override
 	public TipoProd obtenerTipoProdPorId(Connection conn, Integer id) throws PersistenciaException {
 		TipoProd tipoProd = null;
+		ResultSet rs = null;
 		try {
 			GenSqlSelectType genType = new GenSqlSelectType(QRY_SELECT_TIPOPROD_X_ID);
 			genType.setParam(id);
@@ -46,6 +46,7 @@ public class PersistenciaTipoProd extends Conector implements IPersTipoProd, Cns
 	
 	@Override
 	public List<TipoProd> obtenerListaTipoProd(Connection conn) throws PersistenciaException {
+		ResultSet rs = null;
 		List<TipoProd> listaTipoProd = new ArrayList<>();
 		try {
 			GenSqlSelectType genType = new GenSqlSelectType(QRY_SELECT_TIPOPROD);
@@ -130,6 +131,7 @@ public class PersistenciaTipoProd extends Conector implements IPersTipoProd, Cns
 
 	@Override
 	public Boolean checkExistTipoProd(Connection conn, Integer id) throws PersistenciaException {
+		ResultSet rs = null;
 		try {
 			GenSqlSelectType genType = new GenSqlSelectType(QRY_CHECK_EXIST_TIPOPROD);
 			genType.setParam(id);

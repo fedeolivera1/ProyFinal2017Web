@@ -19,10 +19,11 @@ import gpw.persistencia.conector.Conector;
 public class PersistenciaTipoDoc extends Conector implements IPersTipoDoc, CnstQryTipoDoc {
 
 	private static final Logger logger = Logger.getLogger(PersistenciaTipoDoc.class);
-	private ResultSet rs;
+
 	
 	@Override
 	public TipoDoc obtenerTipoDocPorId(Connection conn, Integer id) throws PersistenciaException {
+		ResultSet rs = null;
 		TipoDoc tipoDoc = null;
 		try {
 			GenSqlSelectType genSel = new GenSqlSelectType(QRY_SELECT_TIPODOC_XID);
@@ -44,6 +45,7 @@ public class PersistenciaTipoDoc extends Conector implements IPersTipoDoc, CnstQ
 
 	@Override
 	public List<TipoDoc> obtenerListaTipoDoc(Connection conn) throws PersistenciaException {
+		ResultSet rs = null;
 		List<TipoDoc> listaTipoDoc = new ArrayList<>();
 		try {
 			GenSqlSelectType genType = new GenSqlSelectType(QRY_SELECT_TIPODOC);

@@ -31,6 +31,47 @@ public class ServletPersona extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static Logger logger = Logger.getLogger(ServletPersona.class);
 
+	/**
+	 * metodo que obtiene la persona a partir del usuario logueado
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	protected void processRequestGET(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		try {
+			HttpSession session = request.getSession();
+			String usr = (String) session.getAttribute("usuario");
+			if(usr != null) {
+				GpWebStatelessLocal gpwStLoc = LookUps.lookUpGpWebStateless();
+				UsuarioWeb usuario = gpwStLoc.obtenerUsuario(usr);
+				final Gson gson = new Gson();
+				final Type tipoUsr = new TypeToken<UsuarioWeb>(){}.getType();
+				final String usrJson = gson.toJson(usuario, tipoUsr);
+				response.setContentType("application/json");
+				response.setCharacterEncoding("UTF-8");
+				response.getWriter().write(usrJson);
+			} else {
+				response.getWriter().write("nodata");
+			}
+		} catch (PersistenciaException e) {
+			logger.fatal("Excepcion en ServletPersona > processRequestGET: " + e.getMessage(), e);
+			response.setStatus(500);
+			response.getWriter().write(e.getMessage());
+		} catch (Exception e) {
+			logger.fatal("Excepcion genérica en ServletPersona > processRequestGET: " + e.getMessage(), e);
+			response.setStatus(500);
+			response.getWriter().write(e.getMessage());
+		}
+	}
+	
+	/**
+	 * metodo que mantiene la persona a partir de los parametros ingresados
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	protected void processRequestPOST(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			String emailReg = request.getParameter("emailReg");
@@ -108,10 +149,10 @@ public class ServletPersona extends HttpServlet {
 	        usr.getPersona().setFechaReg(fechaAct);
 	        usr.getPersona().setUltAct(fechaAct);
 	        
-	        HttpSession httpSession = request.getSession();
-	        String usrSession = (String) httpSession.getAttribute("usuario");
+	        HttpSession session = request.getSession();
+	        String usrSession = (String) session.getAttribute("usuario");
 	        Integer resultado = 0;
-	        if(usrSession.equalsIgnoreCase(usr.getNomUsu())) {
+	        if(usrSession != null && usrSession.equalsIgnoreCase(usr.getNomUsu())) {
 	        	//usuario existente, modifica
 	        	Boolean modifPasswd = false;
 	        	if(passwdReg1 != null && !passwdReg1.equals("")) {
@@ -120,18 +161,16 @@ public class ServletPersona extends HttpServlet {
 	        	}
 	        	resultado = gpwStLoc.modificarUsuario(usr, modifPasswd);
 	        } else {
-	        	//usuario nuevo, agrega
+	        	//usuario nuevo, agrega y setea sesion
 	        	usr.setPass(passwdReg1);
 	        	resultado = gpwStLoc.guardarUsuario(usr);
+	        	session.setAttribute("usuario", usr.getNomUsu());
+	        	session.setAttribute("id", session.getId());
 	        }
 	        
 			if(resultado > 0) {
-				HttpSession session = request.getSession();
-				session.setAttribute("usr", usr.getNomUsu());
-				
 				response.setContentType("text/plain");
 				response.setCharacterEncoding("UTF-8");
-				//ajax mode
 				response.getWriter().write("success");
 	        } else {
 	        	response.getWriter().write("warning");
@@ -142,33 +181,6 @@ public class ServletPersona extends HttpServlet {
 			response.getWriter().write(e.getMessage());
 		} catch (Exception e) {
 			logger.fatal("Excepcion genérica en ServletPersona > processRequestPOST: " + e.getMessage(), e);
-			response.setStatus(500);
-			response.getWriter().write(e.getMessage());
-		}
-	}
-	
-	protected void processRequestGET(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-			HttpSession session = request.getSession();
-			String usr = (String) session.getAttribute("usuario");
-			if(usr != null) {
-				GpWebStatelessLocal gpwStLoc = LookUps.lookUpGpWebStateless();
-				UsuarioWeb usuario = gpwStLoc.obtenerUsuario(usr);
-				final Gson gson = new Gson();
-				final Type tipoUsr = new TypeToken<UsuarioWeb>(){}.getType();
-				final String usrJson = gson.toJson(usuario, tipoUsr);
-				response.setContentType("application/json");
-				response.setCharacterEncoding("UTF-8");
-				response.getWriter().write(usrJson);
-			} else {
-				response.getWriter().write("nodata");
-			}
-		} catch (PersistenciaException e) {
-			logger.fatal("Excepcion en ServletPersona > processRequestGET: " + e.getMessage(), e);
-			response.setStatus(500);
-			response.getWriter().write(e.getMessage());
-		} catch (Exception e) {
-			logger.fatal("Excepcion genérica en ServletPersona > processRequestGET: " + e.getMessage(), e);
 			response.setStatus(500);
 			response.getWriter().write(e.getMessage());
 		}

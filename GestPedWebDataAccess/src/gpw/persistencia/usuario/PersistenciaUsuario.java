@@ -22,11 +22,12 @@ import gpw.persistencia.persona.PersistenciaPersona;
 public class PersistenciaUsuario extends Conector implements IPersUsuario, CnstQryUsuario {
 
 	private static final Logger logger = Logger.getLogger(PersistenciaUsuario.class);
-	private ResultSet rs;
+	
 	
 	@Override
 	public String loginUsuario(Connection conn, String nombreUsuario, String passwd) throws PersistenciaException {
 		logger.info("Ejecucion de loginUsuario para: " + nombreUsuario);
+		ResultSet rs = null;
 		String usuario = null;
 		try {
 			PreparedStatement ps = conn.prepareStatement(QRY_LOGIN);
@@ -48,6 +49,7 @@ public class PersistenciaUsuario extends Conector implements IPersUsuario, CnstQ
 	@Override
 	public UsuarioWeb obtenerUsuario(Connection conn, String nombreUsuario) throws PersistenciaException {
 		logger.info("Ejecucion de obtenerUsuario para: " + nombreUsuario);
+		ResultSet rs = null;
 		UsuarioWeb usuario = null;
 		PersistenciaPersona pp = new PersistenciaPersona();
 		try {
@@ -72,6 +74,7 @@ public class PersistenciaUsuario extends Conector implements IPersUsuario, CnstQ
 	@Override
 	public Long obtenerUsuarioPersActual(Connection conn, String nombreUsuario) throws PersistenciaException {
 		logger.info("Ejecucion de obtenerUsuario para: " + nombreUsuario);
+		ResultSet rs = null;
 		Long idPers = null;
 		try {
 			PreparedStatement ps = conn.prepareStatement(QRY_OBT_USR_PERSACT);

@@ -25,7 +25,7 @@ public class ServletObtDep extends HttpServlet {
 	private static Logger logger = Logger.getLogger(ServletObtDep.class);
 	
 	
-	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void processRequestPOST(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			GpWebStatelessLocal gpwStLoc = LookUps.lookUpGpWebStateless();
 			List<Departamento> listaDep = gpwStLoc.obtenerListaDepartamentos();
@@ -47,10 +47,9 @@ public class ServletObtDep extends HttpServlet {
 	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
+        processRequestPOST(request, response);
     }
 }
