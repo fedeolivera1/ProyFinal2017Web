@@ -140,27 +140,26 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
      */
     public SincronizadorStateless() {
     }
-
+    
 	
 	public String servicioFuncional() {
 		String mensaje = null;
-		ResultSet resultado = null;
 		PreparedStatement sentencia = null;
 		String consulta = "SELECT (1) FROM unidad";
 		try {
 			sentencia = ds.getConnection().prepareStatement(consulta, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			resultado = sentencia.executeQuery();
-			if(resultado.next()) {
-				mensaje = "Servicio funcional";
-			} else {
-				mensaje = "Servicio NO DISPONIBLE";
-				
+			try (ResultSet resultado = sentencia.executeQuery()) {
+				if(resultado.next()) {
+					mensaje = "Servicio funcional";
+				} else {
+					mensaje = "Servicio NO DISPONIBLE";
+				}
 			}
 		} catch (SQLException e) {
 			logger.fatal("Excepcion en EJB > obtPersonasNoSinc: " + e.getMessage(), e);
 			mensaje = e.getMessage();
 		} finally {
-			Conector.closeConn(ds, sentencia, resultado);
+			Conector.closeConn(ds, sentencia);
 		}
 		return mensaje;
 	}
@@ -178,7 +177,6 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 		ResultObtPersonasNoSinc result = new ResultObtPersonasNoSinc();
 		List<Persona> listaPersona = new ArrayList<>();
 		try {
-			
 			if(ParamGenValidator.validarParam(param, result)) {
 				Fecha fechaDesde = new Fecha(param.getFechaDesde(), Fecha.AMD);
 				Fecha fechaHasta = new Fecha(param.getFechaHasta(), Fecha.AMD);
@@ -190,10 +188,12 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 				listaPersona.addAll((List<Persona>) (List<? extends Persona>) listaPj);
 				result = ParserResultSincPers.parseResultObtPersonasNoSinc(listaPersona);
 			}
-			Conector.closeConn(ds, null, null);
 		} catch (PersistenciaException | SQLException | EjbException e) {
+			context.setRollbackOnly();
 			logger.fatal("Excepcion en EJB > obtPersonasNoSinc: " + e.getMessage(), e);
 			result.getErroresServ().add(new ErrorServicio(ErroresServicioCod.CODERR_EXCEP, e.getMessage()));
+		} finally {
+			Conector.closeConn(ds, null);
 		}
 		return result;
 	}
@@ -240,6 +240,8 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 			context.setRollbackOnly();
 			logger.fatal("Excepcion en EJB > obtPersonasNoSinc: " + e.getMessage(), e);
 			result.getErroresServ().add(new ErrorServicio(ErroresServicioCod.CODERR_EXCEP, e.getMessage()));
+		} finally {
+			Conector.closeConn(ds, null);
 		}
 		return result;
 	}
@@ -367,6 +369,8 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 			context.setRollbackOnly();
 			logger.fatal("Excepcion en EJB > recProductosSinc: " + e.getMessage(), e);
 			result.getErroresServ().add(new ErrorServicio(ErroresServicioCod.CODERR_EXCEP, e.getMessage()));
+		} finally {
+			Conector.closeConn(ds, null);
 		}
 		return result;
 	}
@@ -409,6 +413,8 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 			context.setRollbackOnly();
 			logger.fatal("Excepcion en EJB > obtPedidosNoSinc: " + e.getMessage(), e);
 			result.getErroresServ().add(new ErrorServicio(ErroresServicioCod.CODERR_EXCEP, e.getMessage()));
+		} finally {
+			Conector.closeConn(ds, null);
 		}
 		return result;
 	}
@@ -457,8 +463,9 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 			context.setRollbackOnly();
 			logger.fatal("Excepcion en EJB > recPedidosASinc: " + e.getMessage(), e);
 			result.getErroresServ().add(new ErrorServicio(ErroresServicioCod.CODERR_EXCEP, e.getMessage()));
+		} finally {
+			Conector.closeConn(ds, null);
 		}
-		
 		return result;
 	}
 	

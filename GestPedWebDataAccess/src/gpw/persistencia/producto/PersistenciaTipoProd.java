@@ -25,43 +25,45 @@ public class PersistenciaTipoProd extends Conector implements IPersTipoProd, Cns
 	@Override
 	public TipoProd obtenerTipoProdPorId(Connection conn, Integer id) throws PersistenciaException {
 		TipoProd tipoProd = null;
-		ResultSet rs = null;
 		try {
-			GenSqlSelectType genType = new GenSqlSelectType(QRY_SELECT_TIPOPROD_X_ID);
-			genType.setParam(id);
-			rs = (ResultSet) runGeneric(conn, genType);
-			if(rs.next()) {
-				tipoProd = new TipoProd();
-				tipoProd.setIdTipoProd(rs.getInt("id_tipo_prod"));
-				tipoProd.setDescripcion(rs.getString("descripcion"));
+			GenSqlSelectType genSel = new GenSqlSelectType(QRY_SELECT_TIPOPROD_X_ID);
+			genSel.setParam(id);
+			try (ResultSet rs = (ResultSet) runGeneric(conn, genSel)) {
+				if(rs.next()) {
+					tipoProd = new TipoProd();
+					tipoProd.setIdTipoProd(rs.getInt("id_tipo_prod"));
+					tipoProd.setDescripcion(rs.getString("descripcion"));
+				}
 			}
 		} catch (ConectorException | SQLException e) {
 			logger.fatal("Excepcion al obtenerTipoProdPorId: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-			closeRs(rs);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al obtenerTipoProdPorId: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
 		}
 		return tipoProd;
 	}
 	
 	@Override
 	public List<TipoProd> obtenerListaTipoProd(Connection conn) throws PersistenciaException {
-		ResultSet rs = null;
 		List<TipoProd> listaTipoProd = new ArrayList<>();
 		try {
-			GenSqlSelectType genType = new GenSqlSelectType(QRY_SELECT_TIPOPROD);
-			rs = (ResultSet) runGeneric(conn, genType);
-			while(rs.next()) {
-				TipoProd tipoProd = new TipoProd();
-				tipoProd.setIdTipoProd(rs.getInt("id_tipo_prod"));
-				tipoProd.setDescripcion(rs.getString("descripcion"));
-				listaTipoProd.add(tipoProd);
+			GenSqlSelectType genSel = new GenSqlSelectType(QRY_SELECT_TIPOPROD);
+			try (ResultSet rs = (ResultSet) runGeneric(conn, genSel)) {
+				while(rs.next()) {
+					TipoProd tipoProd = new TipoProd();
+					tipoProd.setIdTipoProd(rs.getInt("id_tipo_prod"));
+					tipoProd.setDescripcion(rs.getString("descripcion"));
+					listaTipoProd.add(tipoProd);
+				}
 			}
 		} catch (ConectorException | SQLException e) {
 			logger.fatal("Excepcion al obtenerListaTipoProd: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-			closeRs(rs);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al obtenerListaTipoProd: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
 		}
 		return listaTipoProd;
 	}
@@ -79,6 +81,9 @@ public class PersistenciaTipoProd extends Conector implements IPersTipoProd, Cns
 		} catch (ConectorException e) {
 			logger.fatal("Excepcion al guardarTipoProd: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al guardarTipoProd: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
 		}
 		return resultado;
 	}
@@ -94,6 +99,9 @@ public class PersistenciaTipoProd extends Conector implements IPersTipoProd, Cns
 			resultado = (Integer) runGeneric(conn, genExec);
 		} catch (ConectorException e) {
 			logger.fatal("Excepcion al modificarTipoProd: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al modificarTipoProd: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
 		}
 		return resultado;
@@ -125,25 +133,29 @@ public class PersistenciaTipoProd extends Conector implements IPersTipoProd, Cns
 		} catch (ConectorException e) {
 			logger.fatal("Excepcion al eliminarTipoProd: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al eliminarTipoProd: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
 		}
 		return resultado;
 	}
 
 	@Override
 	public Boolean checkExistTipoProd(Connection conn, Integer id) throws PersistenciaException {
-		ResultSet rs = null;
 		try {
-			GenSqlSelectType genType = new GenSqlSelectType(QRY_CHECK_EXIST_TIPOPROD);
-			genType.setParam(id);
-			rs = (ResultSet) runGeneric(conn, genType);
-			if(rs.next()) {
-				return true;
+			GenSqlSelectType genSel = new GenSqlSelectType(QRY_CHECK_EXIST_TIPOPROD);
+			genSel.setParam(id);
+			try (ResultSet rs = (ResultSet) runGeneric(conn, genSel)) {
+				if(rs.next()) {
+					return true;
+				}
 			}
 		} catch (ConectorException | SQLException e) {
-			logger.fatal("Excepcion al obtenerListaEmpresasPorTipo: " + e.getMessage(), e);
+			logger.fatal("Excepcion al checkExistTipoProd: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-			closeRs(rs);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al checkExistTipoProd: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
 		}
 		return false;
 	}

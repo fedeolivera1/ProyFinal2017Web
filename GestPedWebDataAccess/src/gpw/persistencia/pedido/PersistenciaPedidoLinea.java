@@ -26,26 +26,27 @@ public class PersistenciaPedidoLinea extends Conector implements IPersPedidoLine
 	
 	@Override
 	public List<PedidoLinea> obtenerListaPedidoLinea(Connection conn, Pedido pedido) throws PersistenciaException {
-		ResultSet rs = null;
 		List<PedidoLinea> listaPedidoLinea = new ArrayList<>();	
 		PersistenciaProducto pp = new PersistenciaProducto();
 		try {
-			GenSqlSelectType genType = new GenSqlSelectType(QRY_SELECT_PL);
-			genType.setParam(pedido.getPersona().getIdPersona());
-			genType.setParam(pedido.getFechaHora());
-			rs = (ResultSet) runGeneric(conn, genType);
-			while(rs.next()) {
-				PedidoLinea pedidoLinea = new PedidoLinea();
-				pedidoLinea.setProducto(pp.obtenerProductoPorId(conn, rs.getInt("id_producto")));
-				pedidoLinea.setCantidad(rs.getInt("cantidad"));
-				pedidoLinea.setPrecioUnit(rs.getDouble("precio_unit"));
-				listaPedidoLinea.add(pedidoLinea);
+			GenSqlSelectType genSel = new GenSqlSelectType(QRY_SELECT_PL);
+			genSel.setParam(pedido.getPersona().getIdPersona());
+			genSel.setParam(pedido.getFechaHora());
+			try (ResultSet rs = (ResultSet) runGeneric(conn, genSel)) {
+				while(rs.next()) {
+					PedidoLinea pedidoLinea = new PedidoLinea();
+					pedidoLinea.setProducto(pp.obtenerProductoPorId(conn, rs.getInt("id_producto")));
+					pedidoLinea.setCantidad(rs.getInt("cantidad"));
+					pedidoLinea.setPrecioUnit(rs.getDouble("precio_unit"));
+					listaPedidoLinea.add(pedidoLinea);
+				}
 			}
 		} catch (ConectorException | SQLException e) {
 			logger.fatal("Excepcion al obtenerListaPedidoLinea: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-			closeRs(rs);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al eliminarUsuario: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
 		}
 		return listaPedidoLinea;
 	}
@@ -70,6 +71,9 @@ public class PersistenciaPedidoLinea extends Conector implements IPersPedidoLine
 		} catch (ConectorException e) {
 			logger.error("Excepcion al guardarListaPedidoLinea: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al eliminarUsuario: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
 		}
 		return resultado;
 	}
@@ -84,6 +88,9 @@ public class PersistenciaPedidoLinea extends Conector implements IPersPedidoLine
 			resultado = (Integer) runGeneric(conn, genExec);
 		} catch (ConectorException e) {
 			logger.error("Excepcion al eliminarListaPedidoLinea: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al eliminarUsuario: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
 		}
 		return resultado;

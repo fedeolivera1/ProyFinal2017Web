@@ -23,44 +23,46 @@ public class PersistenciaTipoDoc extends Conector implements IPersTipoDoc, CnstQ
 	
 	@Override
 	public TipoDoc obtenerTipoDocPorId(Connection conn, Integer id) throws PersistenciaException {
-		ResultSet rs = null;
 		TipoDoc tipoDoc = null;
 		try {
 			GenSqlSelectType genSel = new GenSqlSelectType(QRY_SELECT_TIPODOC_XID);
 			genSel.setParam(id);
-			rs = (ResultSet) runGeneric(conn, genSel);
-			if(rs.next()) {
-				tipoDoc = new TipoDoc();
-				tipoDoc.setIdTipoDoc(rs.getInt("id_tipo_doc"));
-				tipoDoc.setNombre(rs.getString("nombre"));
+			try (ResultSet rs = (ResultSet) runGeneric(conn, genSel)) {
+				if(rs.next()) {
+					tipoDoc = new TipoDoc();
+					tipoDoc.setIdTipoDoc(rs.getInt("id_tipo_doc"));
+					tipoDoc.setNombre(rs.getString("nombre"));
+				}
 			}
 		} catch (ConectorException | SQLException e) {
-			logger.fatal("Excepcion al obtenerListaTipoDoc: " + e.getMessage(), e);
+			logger.fatal("Excepcion al obtenerTipoDocPorId: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-			closeRs(rs);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al obtenerTipoDocPorId: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
 		}
 		return tipoDoc;
 	}
 
 	@Override
 	public List<TipoDoc> obtenerListaTipoDoc(Connection conn) throws PersistenciaException {
-		ResultSet rs = null;
 		List<TipoDoc> listaTipoDoc = new ArrayList<>();
 		try {
-			GenSqlSelectType genType = new GenSqlSelectType(QRY_SELECT_TIPODOC);
-			rs = (ResultSet) runGeneric(conn, genType);
-			while(rs.next()) {
-				TipoDoc tipoDoc = new TipoDoc();
-				tipoDoc.setIdTipoDoc(rs.getInt("id_tipo_doc"));
-				tipoDoc.setNombre(rs.getString("nombre"));
-				listaTipoDoc.add(tipoDoc);
+			GenSqlSelectType genSel = new GenSqlSelectType(QRY_SELECT_TIPODOC);
+			try (ResultSet rs = (ResultSet) runGeneric(conn, genSel)) {
+				while(rs.next()) {
+					TipoDoc tipoDoc = new TipoDoc();
+					tipoDoc.setIdTipoDoc(rs.getInt("id_tipo_doc"));
+					tipoDoc.setNombre(rs.getString("nombre"));
+					listaTipoDoc.add(tipoDoc);
+				}
 			}
 		} catch (ConectorException | SQLException e) {
 			logger.fatal("Excepcion al obtenerListaTipoDoc: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-			closeRs(rs);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al obtenerListaTipoDoc: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
 		}
 		return listaTipoDoc;
 	}

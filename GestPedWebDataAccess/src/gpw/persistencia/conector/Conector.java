@@ -39,10 +39,10 @@ public abstract class Conector {
 	 * @param nameOp
 	 * cierra la conexion activa, y hace commit de la misma
 	 */
-	public static void closeConn(final DataSource ds, final PreparedStatement ps, final ResultSet rs) {
-		if (null != rs) {
+	public static void closeConn(final DataSource ds, final PreparedStatement ps) {
+		if (null != ds) {
 			try {
-				rs.close();
+				ds.getConnection().close();
 			} catch (final SQLException e) {
 				logger.fatal(e.getMessage(), e);
 			}
@@ -54,29 +54,22 @@ public abstract class Conector {
 				logger.fatal(e.getMessage(), e);
 			}
 		}
-		if (null != ds) {
-			try {
-				ds.getConnection().close();
-			} catch (final SQLException e) {
-				logger.fatal(e.getMessage(), e);
-			}
-		}
 	}
 	
 	/**
 	 * @param ResultSet
 	 * cierra el resultset de consulta
 	 */
-	public static void closeRs(final ResultSet rs) {
-		try {
-			if(rs != null && !rs.isClosed()) {
-				rs.close();
-			}
-			logger.debug("Se cierra ResultSet. Thread: " + Thread.currentThread().getId());
-		} catch (SQLException e) {
-			logger.fatal("ERROR - Conector al cerrar resultset." + e.getMessage(), e);
-		}
-	}
+//	public static void closeRs(final ResultSet rs) {
+//		try {
+//			if(rs != null && !rs.isClosed()) {
+//				rs.close();
+//			}
+//			logger.debug("Se cierra ResultSet. Thread: " + Thread.currentThread().getId());
+//		} catch (SQLException e) {
+//			logger.fatal("ERROR - Conector al cerrar resultset." + e.getMessage(), e);
+//		}
+//	}
 	
 	/**
 	 * @param GenSqlSelectType

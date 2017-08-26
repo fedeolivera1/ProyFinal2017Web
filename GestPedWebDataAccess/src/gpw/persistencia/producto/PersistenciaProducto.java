@@ -31,104 +31,109 @@ public class PersistenciaProducto extends Conector implements IPersProducto, Cns
 	
 	@Override
 	public Producto obtenerProductoPorId(Connection conn, Integer id) throws PersistenciaException {
-		ResultSet rs = null;
 		Producto producto = null;
-		PersistenciaTipoProd ptp = new PersistenciaTipoProd();
-		PersistenciaUnidad pu = new PersistenciaUnidad();
 		try {
+			PersistenciaTipoProd ptp = new PersistenciaTipoProd();
+			PersistenciaUnidad pu = new PersistenciaUnidad();
 			GenSqlSelectType genSel = new GenSqlSelectType(QRY_SELECT_PROD_XID);
 			genSel.setParam(id);
-			rs = (ResultSet) runGeneric(conn, genSel);
-			if(rs.next()) {
-				producto = new Producto();
-				producto.setIdProducto(rs.getInt("id_producto"));
-				producto.setTipoProd(ptp.obtenerTipoProdPorId(conn, rs.getInt("id_tipo_prod")));
-				producto.setCodigo(rs.getString("codigo"));
-				producto.setNombre(rs.getString("nombre"));
-				producto.setDescripcion(rs.getString("descripcion"));
-				char[] aplIvaChar = new char[1];
-				rs.getCharacterStream("apl_iva").read(aplIvaChar);
-				AplicaIva aplIva = AplicaIva.getAplicaIvaPorChar(aplIvaChar[0]);
-				producto.setAplIva(aplIva);
-				producto.setUnidad(pu.obtenerUnidadPorId(conn, rs.getInt("id_unidad")));
-				producto.setCantUnidad(rs.getInt("cant_unidad"));
-				producto.setPrecioVta(rs.getDouble("precio_vta"));
-				char[] sincChar = new char[1];
-				rs.getCharacterStream("sinc").read(sincChar);
-				Sinc sinc = Sinc.getSincPorChar(sincChar[0]);
-				producto.setSinc(sinc);
-				producto.setUltAct(new Fecha(rs.getTimestamp("ult_act")));
-				producto.setEstadoProd(Estado.getEstadoPorInt(rs.getInt("activo")));
+			try (ResultSet rs = (ResultSet) runGeneric(conn, genSel)) {
+				if(rs.next()) {
+					producto = new Producto();
+					producto.setIdProducto(rs.getInt("id_producto"));
+					producto.setTipoProd(ptp.obtenerTipoProdPorId(conn, rs.getInt("id_tipo_prod")));
+					producto.setCodigo(rs.getString("codigo"));
+					producto.setNombre(rs.getString("nombre"));
+					producto.setDescripcion(rs.getString("descripcion"));
+					char[] aplIvaChar = new char[1];
+					rs.getCharacterStream("apl_iva").read(aplIvaChar);
+					AplicaIva aplIva = AplicaIva.getAplicaIvaPorChar(aplIvaChar[0]);
+					producto.setAplIva(aplIva);
+					producto.setUnidad(pu.obtenerUnidadPorId(conn, rs.getInt("id_unidad")));
+					producto.setCantUnidad(rs.getInt("cant_unidad"));
+					producto.setPrecioVta(rs.getDouble("precio_vta"));
+					char[] sincChar = new char[1];
+					rs.getCharacterStream("sinc").read(sincChar);
+					Sinc sinc = Sinc.getSincPorChar(sincChar[0]);
+					producto.setSinc(sinc);
+					producto.setUltAct(new Fecha(rs.getTimestamp("ult_act")));
+					producto.setEstadoProd(Estado.getEstadoPorInt(rs.getInt("activo")));
+				}
 			}
 		} catch (ConectorException | SQLException | IOException e) {
 			logger.fatal("Excepcion al obtenerProductoPorId: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-			closeRs(rs);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al obtenerProductoPorId: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
 		}
 		return producto;
 	}
 	
 	@Override
 	public List<Producto> obtenerListaProductoPorTipo(Connection conn, Integer tipoProd) throws PersistenciaException {
-		ResultSet rs = null;
 		List<Producto> listaProducto = new ArrayList<>();
-		PersistenciaTipoProd ptp = new PersistenciaTipoProd();
-		PersistenciaUnidad pu = new PersistenciaUnidad();
 		try {
+			PersistenciaTipoProd ptp = new PersistenciaTipoProd();
+			PersistenciaUnidad pu = new PersistenciaUnidad();
 			GenSqlSelectType genSel = new GenSqlSelectType(QRY_SELECT_PROD_X_TIPOPROD);
 			genSel.setParam(tipoProd);
-			rs = (ResultSet) runGeneric(conn, genSel);
-			while(rs.next()) {
-				Producto producto = new Producto();
-				producto.setIdProducto(rs.getInt("id_producto"));
-				producto.setTipoProd(ptp.obtenerTipoProdPorId(conn, rs.getInt("id_tipo_prod")));
-				producto.setCodigo(rs.getString("codigo"));
-				producto.setNombre(rs.getString("nombre"));
-				producto.setDescripcion(rs.getString("descripcion"));
-				char[] aplIvaChar = new char[1];
-				rs.getCharacterStream("apl_iva").read(aplIvaChar);
-				AplicaIva aplIva = AplicaIva.getAplicaIvaPorChar(aplIvaChar[0]);
-				producto.setAplIva(aplIva);
-				producto.setUnidad(pu.obtenerUnidadPorId(conn, rs.getInt("id_unidad")));
-				producto.setCantUnidad(rs.getInt("cant_unidad"));
-				producto.setPrecioVta(rs.getDouble("precio_vta"));
-				char[] sincChar = new char[1];
-				rs.getCharacterStream("sinc").read(sincChar);
-				Sinc sinc = Sinc.getSincPorChar(sincChar[0]);
-				producto.setSinc(sinc);
-				producto.setUltAct(new Fecha(rs.getTimestamp("ult_act")));
-				producto.setEstadoProd(Estado.getEstadoPorInt(rs.getInt("activo")));
-				listaProducto.add(producto);
+			try (ResultSet rs = (ResultSet) runGeneric(conn, genSel)) {
+				while(rs.next()) {
+					Producto producto = new Producto();
+					producto.setIdProducto(rs.getInt("id_producto"));
+					producto.setTipoProd(ptp.obtenerTipoProdPorId(conn, rs.getInt("id_tipo_prod")));
+					producto.setCodigo(rs.getString("codigo"));
+					producto.setNombre(rs.getString("nombre"));
+					producto.setDescripcion(rs.getString("descripcion"));
+					char[] aplIvaChar = new char[1];
+					rs.getCharacterStream("apl_iva").read(aplIvaChar);
+					AplicaIva aplIva = AplicaIva.getAplicaIvaPorChar(aplIvaChar[0]);
+					producto.setAplIva(aplIva);
+					producto.setUnidad(pu.obtenerUnidadPorId(conn, rs.getInt("id_unidad")));
+					producto.setCantUnidad(rs.getInt("cant_unidad"));
+					producto.setPrecioVta(rs.getDouble("precio_vta"));
+					char[] sincChar = new char[1];
+					rs.getCharacterStream("sinc").read(sincChar);
+					Sinc sinc = Sinc.getSincPorChar(sincChar[0]);
+					producto.setSinc(sinc);
+					producto.setUltAct(new Fecha(rs.getTimestamp("ult_act")));
+					producto.setEstadoProd(Estado.getEstadoPorInt(rs.getInt("activo")));
+					listaProducto.add(producto);
+				}
 			}
 		} catch (ConectorException | SQLException | IOException e) {
-			logger.fatal("Excepcion al obtenerProductoPorId: " + e.getMessage(), e);
+			logger.fatal("Excepcion al obtenerListaProductoPorTipo: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-			closeRs(rs);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al obtenerListaProductoPorTipo: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
 		}
 		return listaProducto;
 	}
 	
 	@Override
 	public Integer guardarProducto(Connection conn, Producto producto) throws PersistenciaException {
-		GenSqlExecType genExec = new GenSqlExecType(QRY_INSERT_PROD);
-		genExec.setParam(producto.getIdProducto());
-		genExec.setParam(producto.getTipoProd().getIdTipoProd());
-		genExec.setParam(producto.getCodigo());
-		genExec.setParam(producto.getNombre());
-		genExec.setParam(producto.getDescripcion());
-		genExec.setParam(producto.getAplIva().getAsChar());
-		genExec.setParam(producto.getUnidad().getIdUnidad());
-		genExec.setParam(producto.getCantUnidad());
-		genExec.setParam(producto.getPrecioVta());
-		genExec.setParam(producto.getSinc().getAsChar());
-		genExec.setParam(producto.getUltAct());
-		genExec.setParam(producto.getEstadoProd().getAsInt());
 		try {
+			GenSqlExecType genExec = new GenSqlExecType(QRY_INSERT_PROD);
+			genExec.setParam(producto.getIdProducto());
+			genExec.setParam(producto.getTipoProd().getIdTipoProd());
+			genExec.setParam(producto.getCodigo());
+			genExec.setParam(producto.getNombre());
+			genExec.setParam(producto.getDescripcion());
+			genExec.setParam(producto.getAplIva().getAsChar());
+			genExec.setParam(producto.getUnidad().getIdUnidad());
+			genExec.setParam(producto.getCantUnidad());
+			genExec.setParam(producto.getPrecioVta());
+			genExec.setParam(producto.getSinc().getAsChar());
+			genExec.setParam(producto.getUltAct());
+			genExec.setParam(producto.getEstadoProd().getAsInt());
 			resultado = (Integer) runGeneric(conn, genExec);
 		} catch (ConectorException e) {
 			logger.fatal("Excepcion al guardarProducto: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al guardarProducto: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
 		}
 		return resultado;
@@ -136,22 +141,25 @@ public class PersistenciaProducto extends Conector implements IPersProducto, Cns
 
 	@Override
 	public Integer modificarProducto(Connection conn, Producto producto) throws PersistenciaException {
-		GenSqlExecType genExec = new GenSqlExecType(QRY_UPDATE_PROD);
-		genExec.setParam(producto.getTipoProd().getIdTipoProd());
-		genExec.setParam(producto.getCodigo());
-		genExec.setParam(producto.getNombre());
-		genExec.setParam(producto.getDescripcion());
-		genExec.setParam(producto.getAplIva().getAsChar());
-		genExec.setParam(producto.getUnidad().getIdUnidad());
-		genExec.setParam(producto.getCantUnidad());
-		genExec.setParam(producto.getPrecioVta());
-		genExec.setParam(producto.getSinc().getAsChar());
-		genExec.setParam(producto.getUltAct());
-		genExec.setParam(producto.getIdProducto());
 		try {
+			GenSqlExecType genExec = new GenSqlExecType(QRY_UPDATE_PROD);
+			genExec.setParam(producto.getTipoProd().getIdTipoProd());
+			genExec.setParam(producto.getCodigo());
+			genExec.setParam(producto.getNombre());
+			genExec.setParam(producto.getDescripcion());
+			genExec.setParam(producto.getAplIva().getAsChar());
+			genExec.setParam(producto.getUnidad().getIdUnidad());
+			genExec.setParam(producto.getCantUnidad());
+			genExec.setParam(producto.getPrecioVta());
+			genExec.setParam(producto.getSinc().getAsChar());
+			genExec.setParam(producto.getUltAct());
+			genExec.setParam(producto.getIdProducto());
 			resultado = (Integer) runGeneric(conn, genExec);
 		} catch (ConectorException e) {
 			logger.fatal("Excepcion al modificarProducto: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al modificarProducto: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
 		}
 		return resultado;
@@ -159,13 +167,16 @@ public class PersistenciaProducto extends Conector implements IPersProducto, Cns
 
 	@Override
 	public Integer desactivarProducto(Connection conn, Producto producto) throws PersistenciaException {
-		GenSqlExecType genExec = new GenSqlExecType(QRY_DESACT_PROD);
-		genExec.setParam(producto.getEstadoProd().getAsInt());
-		genExec.setParam(producto.getIdProducto());
 		try {
+			GenSqlExecType genExec = new GenSqlExecType(QRY_DESACT_PROD);
+			genExec.setParam(producto.getEstadoProd().getAsInt());
+			genExec.setParam(producto.getIdProducto());
 			resultado = (Integer) runGeneric(conn, genExec);
 		} catch (ConectorException e) {
 			logger.fatal("Excepcion al desactivarProducto: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al desactivarProducto: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
 		}
 		return resultado;
@@ -173,19 +184,20 @@ public class PersistenciaProducto extends Conector implements IPersProducto, Cns
 
 	@Override
 	public Boolean checkExistProducto(Connection conn, Integer idProducto) throws PersistenciaException {
-		ResultSet rs = null;
 		try {
-			GenSqlSelectType genType = new GenSqlSelectType(QRY_CHECK_EXIST_PROD);
-			genType.setParam(idProducto);
-			rs = (ResultSet) runGeneric(conn, genType);
-			if(rs.next()) {
-				return true;
+			GenSqlSelectType genSel = new GenSqlSelectType(QRY_CHECK_EXIST_PROD);
+			genSel.setParam(idProducto);
+			try (ResultSet rs = (ResultSet) runGeneric(conn, genSel)) {
+				if(rs.next()) {
+					return true;
+				}
 			}
 		} catch (ConectorException | SQLException e) {
-			logger.fatal("Excepcion al obtenerListaEmpresasPorTipo: " + e.getMessage(), e);
+			logger.fatal("Excepcion al checkExistProducto: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-			closeRs(rs);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al checkExistProducto: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
 		}
 		return false;
 	}

@@ -5,7 +5,8 @@ public enum EstadoPedido {
 	R("Revision", 'R'),
 	C("Confirmado", 'C'),
 	A("Anulado", 'A'),
-	X("Rechazado", 'X');
+	X("Rechazado", 'X'),
+	V("Vendido", 'V');
 	
 	private final String estadoPedido;
 	private final char asChar;

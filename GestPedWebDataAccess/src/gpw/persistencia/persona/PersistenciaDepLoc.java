@@ -24,91 +24,95 @@ public class PersistenciaDepLoc extends Conector implements IPersDepLoc, CnstQry
 	
 	@Override
 	public List<Departamento> obtenerListaDepartamentos(Connection conn) throws PersistenciaException {
-		ResultSet rs = null;
 		List<Departamento> listaDep = new ArrayList<>();
 		try {
-			GenSqlSelectType genType = new GenSqlSelectType(QRY_SELECT_DEP);
-			rs = (ResultSet) runGeneric(conn, genType);
-			while(rs.next()) {
-				Departamento departamento = new Departamento();
-				departamento.setIdDepartamento(rs.getInt("id_dep"));
-				departamento.setNombreDepartamento(rs.getString("nombre"));
-				listaDep.add(departamento);
+			GenSqlSelectType genSel = new GenSqlSelectType(QRY_SELECT_DEP);
+			try (ResultSet rs = (ResultSet) runGeneric(conn, genSel)) {
+				while(rs.next()) {
+					Departamento departamento = new Departamento();
+					departamento.setIdDepartamento(rs.getInt("id_dep"));
+					departamento.setNombreDepartamento(rs.getString("nombre"));
+					listaDep.add(departamento);
+				}
 			}
 		} catch (ConectorException | SQLException e) {
 			logger.fatal("Excepcion al obtenerListaDepartamentos: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-			closeRs(rs);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al obtenerListaDepartamentos: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
 		}
 		return listaDep;
 	}
 	
 	@Override
 	public Departamento obtenerDepartamentoPorId(Connection conn, Integer idDep) throws PersistenciaException {
-		ResultSet rs = null;
 		Departamento departamento = null;
 		try {
-			GenSqlSelectType genType = new GenSqlSelectType(QRY_SELECT_DEP_XID);
-			genType.setParam(idDep);
-			rs = (ResultSet) runGeneric(conn, genType);
-			if(rs.next()) {
-				departamento = new Departamento();
-				departamento.setIdDepartamento(rs.getInt("id_dep"));
-				departamento.setNombreDepartamento(rs.getString("nombre"));
+			GenSqlSelectType genSel = new GenSqlSelectType(QRY_SELECT_DEP_XID);
+			genSel.setParam(idDep);
+			try (ResultSet rs = (ResultSet) runGeneric(conn, genSel)) {
+				if(rs.next()) {
+					departamento = new Departamento();
+					departamento.setIdDepartamento(rs.getInt("id_dep"));
+					departamento.setNombreDepartamento(rs.getString("nombre"));
+				}
 			}
 		} catch (ConectorException | SQLException e) {
 			logger.fatal("Excepcion al obtenerDepartamentoPorId: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-			closeRs(rs);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al obtenerDepartamentoPorId: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
 		}
 		return departamento;
 	}
 
 	@Override
 	public List<Localidad> obtenerListaLocPorDep(Connection conn, Integer idDep) throws PersistenciaException {
-		ResultSet rs = null;
 		List<Localidad> listaLoc = new ArrayList<>();
 		try {
-			GenSqlSelectType genType = new GenSqlSelectType(QRY_SELECT_LOC_XDEP);
-			genType.setParam(idDep);
-			rs = (ResultSet) runGeneric(conn, genType);
-			while(rs.next()) {
-				Localidad localidad = new Localidad();
-				localidad.setIdLocalidad(rs.getInt("id_loc"));
-				localidad.setNombreLocalidad(rs.getString("nombre"));
-				localidad.setDepartamento(obtenerDepartamentoPorId(conn, rs.getInt("id_dep")));
-				listaLoc.add(localidad);
+			GenSqlSelectType genSel = new GenSqlSelectType(QRY_SELECT_LOC_XDEP);
+			genSel.setParam(idDep);
+			try (ResultSet rs = (ResultSet) runGeneric(conn, genSel)) {
+				while(rs.next()) {
+					Localidad localidad = new Localidad();
+					localidad.setIdLocalidad(rs.getInt("id_loc"));
+					localidad.setNombreLocalidad(rs.getString("nombre"));
+					localidad.setDepartamento(obtenerDepartamentoPorId(conn, rs.getInt("id_dep")));
+					listaLoc.add(localidad);
+				}
 			}
 		} catch (ConectorException | SQLException e) {
 			logger.fatal("Excepcion al obtenerListaLocPorDep: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-			closeRs(rs);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al obtenerListaLocPorDep: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
 		}
 		return listaLoc;
 	}
 
 	@Override
 	public Localidad obtenerLocalidadPorId(Connection conn, Integer idLoc) throws PersistenciaException {
-		ResultSet rs = null;
 		Localidad localidad = null;
 		try {
-			GenSqlSelectType genType = new GenSqlSelectType(QRY_SELECT_LOC_XID);
-			genType.setParam(idLoc);
-			rs = (ResultSet) runGeneric(conn, genType);
-			if(rs.next()) {
-				localidad = new Localidad();
-				localidad.setIdLocalidad(rs.getInt("id_loc"));
-				localidad.setNombreLocalidad(rs.getString("nombre"));
-				localidad.setDepartamento(obtenerDepartamentoPorId(conn, rs.getInt("id_dep")));
+			GenSqlSelectType genSel = new GenSqlSelectType(QRY_SELECT_LOC_XID);
+			genSel.setParam(idLoc);
+			try (ResultSet rs = (ResultSet) runGeneric(conn, genSel)) {
+				if(rs.next()) {
+					localidad = new Localidad();
+					localidad.setIdLocalidad(rs.getInt("id_loc"));
+					localidad.setNombreLocalidad(rs.getString("nombre"));
+					localidad.setDepartamento(obtenerDepartamentoPorId(conn, rs.getInt("id_dep")));
+				}
 			}
 		} catch (ConectorException | SQLException e) {
 			logger.fatal("Excepcion al obtenerLocalidadPorId: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-			closeRs(rs);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al obtenerLocalidadPorId: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
 		}
 		return localidad;
 	}

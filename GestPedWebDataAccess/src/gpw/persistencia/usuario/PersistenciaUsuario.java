@@ -27,21 +27,22 @@ public class PersistenciaUsuario extends Conector implements IPersUsuario, CnstQ
 	@Override
 	public String loginUsuario(Connection conn, String nombreUsuario, String passwd) throws PersistenciaException {
 		logger.info("Ejecucion de loginUsuario para: " + nombreUsuario);
-		ResultSet rs = null;
 		String usuario = null;
 		try {
 			PreparedStatement ps = conn.prepareStatement(QRY_LOGIN);
 			ps.setString(1, nombreUsuario);
 			ps.setString(2, passwd);
-			rs = ps.executeQuery();
-			if(rs.next()) {
-				usuario = rs.getString("nom_usu");
+			try (ResultSet rs = ps.executeQuery()) {
+				if(rs.next()) {
+					usuario = rs.getString("nom_usu");
+				}
 			}
 		} catch (SQLException e) {
-			logger.fatal("Excepcion al obtenerUsuario: " + e.getMessage(), e);
+			logger.fatal("Excepcion al loginUsuario: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-			closeRs(rs);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al loginUsuario: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
 		}
 		return usuario;
 	}
@@ -49,24 +50,25 @@ public class PersistenciaUsuario extends Conector implements IPersUsuario, CnstQ
 	@Override
 	public UsuarioWeb obtenerUsuario(Connection conn, String nombreUsuario) throws PersistenciaException {
 		logger.info("Ejecucion de obtenerUsuario para: " + nombreUsuario);
-		ResultSet rs = null;
 		UsuarioWeb usuario = null;
 		PersistenciaPersona pp = new PersistenciaPersona();
 		try {
 			PreparedStatement ps = conn.prepareStatement(QRY_OBT_USR);
 			ps.setString(1, nombreUsuario);
-			rs = ps.executeQuery();
-			if(rs.next()) {
-				usuario = new UsuarioWeb();
-				usuario.setNomUsu(rs.getString("nom_usu"));
-				//usuario.setPass(passwd);//no obtengo la password
-				usuario.setPersona(pp.obtenerPersGenerico(conn, rs.getLong("id_persona")));
+			try (ResultSet rs = ps.executeQuery()) {
+				if(rs.next()) {
+					usuario = new UsuarioWeb();
+					usuario.setNomUsu(rs.getString("nom_usu"));
+					//usuario.setPass(passwd);//no obtengo la password
+					usuario.setPersona(pp.obtenerPersGenerico(conn, rs.getLong("id_persona")));
+				}
 			}
 		} catch (SQLException e) {
 			logger.fatal("Excepcion al obtenerUsuario: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-			closeRs(rs);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al obtenerUsuario: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
 		}
 		return usuario;
 	}
@@ -74,20 +76,21 @@ public class PersistenciaUsuario extends Conector implements IPersUsuario, CnstQ
 	@Override
 	public Long obtenerUsuarioPersActual(Connection conn, String nombreUsuario) throws PersistenciaException {
 		logger.info("Ejecucion de obtenerUsuario para: " + nombreUsuario);
-		ResultSet rs = null;
 		Long idPers = null;
 		try {
 			PreparedStatement ps = conn.prepareStatement(QRY_OBT_USR_PERSACT);
 			ps.setString(1, nombreUsuario);
-			rs = ps.executeQuery();
-			if(rs.next()) {
-				idPers = rs.getLong("id_persona");
+			try (ResultSet rs = ps.executeQuery()) {
+				if(rs.next()) {
+					idPers = rs.getLong("id_persona");
+				}
 			}
 		} catch (SQLException e) {
-			logger.fatal("Excepcion al obtenerUsuario: " + e.getMessage(), e);
+			logger.fatal("Excepcion al obtenerUsuarioPersActual: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-			closeRs(rs);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al obtenerUsuarioPersActual: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
 		}
 		return idPers;
 	}
@@ -105,6 +108,9 @@ public class PersistenciaUsuario extends Conector implements IPersUsuario, CnstQ
 		} catch (SQLException e) {
 			logger.fatal("Excepcion al guardarUsuario: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al guardarUsuario: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
 		}
 		return resultado;
 	}
@@ -120,6 +126,9 @@ public class PersistenciaUsuario extends Conector implements IPersUsuario, CnstQ
 			resultado = ps.executeUpdate();
 		} catch (SQLException e) {
 			logger.fatal("Excepcion al modificarUsuarioSinPasswd: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al modificarUsuarioSinPasswd: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
 		}
 		return resultado;
@@ -137,6 +146,9 @@ public class PersistenciaUsuario extends Conector implements IPersUsuario, CnstQ
 		} catch (SQLException e) {
 			logger.fatal("Excepcion al modificarUsuarioConPasswd: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al modificarUsuarioConPasswd: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
 		}
 		return resultado;
 	}
@@ -151,6 +163,9 @@ public class PersistenciaUsuario extends Conector implements IPersUsuario, CnstQ
 			resultado = ps.executeUpdate();
 		} catch (SQLException e) {
 			logger.fatal("Excepcion al eliminarUsuario: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al eliminarUsuario: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
 		}
 		return resultado;
