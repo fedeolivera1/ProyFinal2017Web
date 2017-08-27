@@ -24,7 +24,7 @@ public class ParserResultSincPers {
 	
 	public static ResultObtPersonasNoSinc parseResultObtPersonasNoSinc(List<Persona> listaPersonasNoSinc) throws EjbException {
 		logger.debug("Se ingresa a manejar el resultado para ResultObtPersonasNoSinc...");
-		ResultObtPersonasNoSinc result = null;
+		ResultObtPersonasNoSinc result = new ResultObtPersonasNoSinc();
 		try {
 			if(listaPersonasNoSinc != null && !listaPersonasNoSinc.isEmpty()) {
 				result = new ResultObtPersonasNoSinc();

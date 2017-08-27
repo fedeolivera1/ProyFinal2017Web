@@ -27,7 +27,7 @@ public interface GpWebStatelessLocal {
 //	public UsuarioWeb obtenerUsuarioPorId(String nombreUsuario, String password) throws PersistenciaException;
 	public Integer guardarUsuario(UsuarioWeb usr) throws PersistenciaException;
 	public Integer modificarUsuario(UsuarioWeb usr, Boolean modificaPasswd) throws PersistenciaException;
-	public Integer eliminarUsuario(UsuarioWeb usr) throws PersistenciaException;
+//	public Integer eliminarUsuario(UsuarioWeb usr) throws PersistenciaException;
 	
 	/**
 	 * persona

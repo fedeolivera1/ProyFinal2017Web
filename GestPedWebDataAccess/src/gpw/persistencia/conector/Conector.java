@@ -7,8 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-import javax.sql.DataSource;
-
 import org.apache.log4j.Logger;
 
 import gpw.db.generic.GenSqlExecType;
@@ -24,53 +22,7 @@ public abstract class Conector {
 	protected static final Character S_CHAR = 'S';
 	protected static final Character N_CHAR = 'N';
 	
-	/**
-	 * Hace rollback de la conexion activa
-	 */
-//	public static void rollbackConn(Connection conn) {
-//		try {
-//			conn.rollback();
-//		} catch (SQLException e) {
-//			logger.error(e.getMessage(), e);
-//		}
-//	}
-	
-	/**
-	 * @param nameOp
-	 * cierra la conexion activa, y hace commit de la misma
-	 */
-	public static void closeConn(final DataSource ds, final PreparedStatement ps) {
-		if (null != ds) {
-			try {
-				ds.getConnection().close();
-			} catch (final SQLException e) {
-				logger.fatal(e.getMessage(), e);
-			}
-		}
-		if (null != ps) {
-			try {
-				ps.close();
-			} catch (final SQLException e) {
-				logger.fatal(e.getMessage(), e);
-			}
-		}
-	}
-	
-	/**
-	 * @param ResultSet
-	 * cierra el resultset de consulta
-	 */
-//	public static void closeRs(final ResultSet rs) {
-//		try {
-//			if(rs != null && !rs.isClosed()) {
-//				rs.close();
-//			}
-//			logger.debug("Se cierra ResultSet. Thread: " + Thread.currentThread().getId());
-//		} catch (SQLException e) {
-//			logger.fatal("ERROR - Conector al cerrar resultset." + e.getMessage(), e);
-//		}
-//	}
-	
+
 	/**
 	 * @param GenSqlSelectType
 	 * 	recibe un tipo de dato GenSqlSelectType, para obtener el statement y los datos de 
@@ -120,12 +72,12 @@ public abstract class Conector {
  			logger.debug("Ejecucion query: " + genType.getStatement());
 			retorno = ps.executeUpdate();
 		} catch (SQLException e) {
-			logger.error("Excepcion de SQL al ejecutar 'executeNonQuery': " + e.getMessage() + 
+			logger.fatal("Excepcion de SQL al ejecutar 'executeNonQuery': " + e.getMessage() + 
 			"\n -- SQLCode: " + e.getErrorCode() + 
 			"\n -- Cause: " + e.getCause(), e);
 			throw new ConectorException(e.getMessage(), e);
 		} catch (Exception e) {
-			logger.error("Excepcion genérica al ejecutar 'executeNonQuery': " + e.getMessage(), e);
+			logger.fatal("Excepcion GENERICA al ejecutar 'executeNonQuery': " + e.getMessage(), e);
 			throw new ConectorException(e.getMessage(), e);
 		}
 		return retorno;
@@ -213,7 +165,7 @@ public abstract class Conector {
 			logger.fatal("Excepcion en fillPreparedStatement : " + e.getMessage(), e);
 			throw new ConectorException(e.getMessage(), e);
 		} catch (Exception e) {
-			logger.fatal("Excepcion no controlada en fillPreparedStatement: " + e.getMessage(), e);
+			logger.fatal("Excepcion GENERICA en fillPreparedStatement: " + e.getMessage(), e);
 			throw new ConectorException(e.getMessage(), e);
 		}
 	}

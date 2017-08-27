@@ -306,6 +306,7 @@ function cargarDatosProd() {
 						$("#prodPrecio").val('');
 						var form = $('#pedidoForm');
 						form.find('[name="prodPrecio"]').val(response.precioVta).end();
+						cargarModalInfoProd(response);
 					}, error: function (response) {
 						bootstrap_alert.danger(response.responseText);
 					}
@@ -314,6 +315,15 @@ function cargarDatosProd() {
 		}
 		fillDatosProd();
 	});
+}
+
+function cargarModalInfoProd(response) {
+	$('#modalInfoProd').find('.modal-title').html('<strong>Informacion detallada del producto:&nbsp;</strong>' + response.nombre);
+	$('#modalInfoProd').find('.modal-body').html('<strong>ID:&nbsp;</strong>' + response.idProducto + '<br>' +
+												'<strong>Descripcion:&nbsp;</strong>' + response.descripcion + '<br>' +
+												'<strong>Presentacion:&nbsp;</strong>' + response.cantUnidad + '&nbsp;' + response.unidad.nombre + '<br>' +
+												'<strong>Iva:&nbsp;</strong>' + response.aplIva + '<br>' +
+												'<strong>Precio:&nbsp;</strong>' + response.precioVta);
 }
 
 function agregarItemPed() {

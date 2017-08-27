@@ -67,7 +67,7 @@
 	
 <fieldset>
 <legend>Pedidos</legend>
-
+	<!-- FORM 1 -->
   	<form class="form-horizontal">
 		<div class="form-group col-md-12">
 		  <label class="col-md-4 control-label" for="tipoPedido">Pedido:</label>
@@ -83,56 +83,79 @@
 	   		</div>
 	  	</div>
   	</form>
+  	<!-- Modal -->
+  	<div class="container">
+	  <div class="modal fade" id="modalInfoProd" role="dialog">
+	    <div class="modal-dialog">
+	      <!-- Modal content-->
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	          <h4 class="modal-title"></h4>
+	        </div>
+	        <div class="modal-body">
+	          <p></p>
+	        </div>
+	        <div class="modal-footer">
+	          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        </div>
+	      </div>
+	      
+	    </div>
+	  </div>
+  	</div>
+  	<!-- FORM 2 -->
   	<form class="form-horizontal" action="ServletObtPedido" method="GET" id="obtPedidoForm" data-toggle="validator">
-		  	<!-- 	DIV PEDIDO EXISTENTE -->
-		  	<div id="divPedExistente" class="oculto" style="display:none">
-				<div class="form-group col-md-12">
-				  <label class="col-md-4 control-label" for="pedExistentes">Rango de fechas</label>
-					<div class="col-md-2">
-						<div class="col-md-12 input-group date" id="dtpPedDesde">
-				            <input type="text" id="fecPedDesde" name="fecPedDesde" class="form-control"/>
-				            <span class="input-group-addon">
-				                <span class="glyphicon glyphicon-calendar"></span>
-				            </span>
-			        	</div>
-						<div class="help-block with-errors"></div>
-				  	</div>
-				    <div class="col-md-2">
-						<div class="col-md-12 input-group date" id="dtpPedHasta">
-				            <input type="text" id="fecPedHasta" name="fecPedHasta" class="form-control"/>
-				            <span class="input-group-addon">
-				                <span class="glyphicon glyphicon-calendar"></span>
-				            </span>
-			        	</div>
-						<div class="help-block with-errors"></div>
-				  	</div>
-				</div>
-				<div class="form-group col-md-12">
-					<label class="col-md-4 control-label" for="pedExistentes">Estado</label>
-					 <div class="col-md-2">
+	  	<!-- 	DIV PEDIDO EXISTENTE -->
+	  	<div id="divPedExistente" class="oculto" style="display:none">
+			<div class="form-group col-md-12">
+			  <label class="col-md-4 control-label" for="pedExistentes">Rango de fechas</label>
+				<div class="col-md-2">
+					<div class="col-md-12 input-group date" id="dtpPedDesde">
+			            <input type="text" id="fecPedDesde" name="fecPedDesde" class="form-control"/>
+			            <span class="input-group-addon">
+			                <span class="glyphicon glyphicon-calendar"></span>
+			            </span>
+		        	</div>
+					<div class="help-block with-errors"></div>
+			  	</div>
+			    <div class="col-md-2">
+					<div class="col-md-12 input-group date" id="dtpPedHasta">
+			            <input type="text" id="fecPedHasta" name="fecPedHasta" class="form-control"/>
+			            <span class="input-group-addon">
+			                <span class="glyphicon glyphicon-calendar"></span>
+			            </span>
+		        	</div>
+					<div class="help-block with-errors"></div>
+			  	</div>
+			</div>
+			<div class="form-group col-md-12">
+				<label class="col-md-4 control-label" for="pedExistentes">Estado</label>
+				 <div class="col-md-2">
 <!-- 						<select id="selEstadoPed" name="selEstadoPed" class="selectpicker" data-style="btn-default" title="Seleccione..."> -->
-						<select id="selEstadoPed" name="selEstadoPed" class="form-control">
-							<option value="P">Pendiente</option>
-			      			<option value="R">Revision</option>
-			      			<option value="C">Confirmado</option>
-			      			<option value="X">Rechazado</option>
-			      			<option value="A">Anulado</option>
-					    </select>
-					 </div>
-					 <div class="col-md-2">
-					    <button type="button" id="obtenerPedido" name="obtenerPedido" class="btn btn-primary">Obtener</button>
-					 </div>
+					<select id="selEstadoPed" name="selEstadoPed" class="form-control">
+						<option value="P">Pendiente</option>
+		      			<option value="R">Revision</option>
+		      			<option value="C">Confirmado</option>
+		      			<option value="X">Rechazado</option>
+		      			<option value="A">Anulado</option>
+				    </select>
+				 </div>
+				 <div class="col-md-2">
+				    <button type="button" id="obtenerPedido" name="obtenerPedido" class="btn btn-primary">Obtener</button>
+				 </div>
+			</div>
+		  	<!-- Select Basic [tipoProd]-->
+			<div class="form-group col-md-12">
+				<label class="col-md-4 control-label" for="pedExistentes">Pedidos existentes</label>
+				<div class="col-md-4">
+				  <select id="selPedExist" name="selPedExist" class="form-control" onchange="seleccionPedidoExist();">
+				  </select>
 				</div>
-			  	<!-- Select Basic [tipoProd]-->
-				<div class="form-group col-md-12">
-					<label class="col-md-4 control-label" for="pedExistentes">Pedidos existentes</label>
-					<div class="col-md-4">
-					  <select id="selPedExist" name="selPedExist" class="form-control" onchange="seleccionPedidoExist();">
-					  </select>
-					</div>
-				</div>
-		  	</div>
+			</div>
+	  	</div>
   	</form>
+  	<!-- FORM 3 -->
    	<form class="form-horizontal" action="ServletPedido" method="POST" id="pedidoForm" data-toggle="validator">
 			<!-- Select Basic [tipoProd]-->
 			<div class="form-group col-md-12">
@@ -150,10 +173,13 @@
 				    <select id="selProd" name="selProd" class="form-control" onchange="cargarDatosProd(this);">
 				    </select>
 				  </div>
+				  <div class="col-md-1">
+				    <button type="button" class="btn btn-default btn-md" id="infoProd">Info</button>
+				  </div>
 				</div>
 				<!-- Text input [Precio] y [Cantidad]-->
 				<div class="form-group col-md-12">
-					<label class="col-md-4 control-label" for="Precio">Precio</label>  
+					<label class="col-md-4 control-label" for="Precio">Precio</label>
 					<div class="col-md-1">
 						<input id="prodPrecio" name="prodPrecio" type="text" placeholder="0" class="form-control input-md" readonly>
 					</div>
@@ -246,6 +272,10 @@ $(document).ready(function() {
 // 	$('.selectpicker').selectpicker();
 	$('#divPedExistente').find('*').hide();
 	$('#divPedExistente').hide();
+
+	$("#infoProd").click(function(){
+        $("#modalInfoProd").modal({show: true});
+    });
 	
 	//datetimepicker con fecha y hora, intervalos de 30 min, fecha minima hoy
 	$('#dtpPedProg').datetimepicker({

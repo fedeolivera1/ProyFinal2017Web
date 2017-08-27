@@ -45,7 +45,6 @@ import gpw.interfaces.persona.IPersPersona;
 import gpw.interfaces.producto.IPersProducto;
 import gpw.interfaces.producto.IPersTipoProd;
 import gpw.interfaces.producto.IPersUnidad;
-import gpw.persistencia.conector.Conector;
 import gpw.persistencia.pedido.PersistenciaPedido;
 import gpw.persistencia.pedido.PersistenciaPedidoLinea;
 import gpw.persistencia.persona.PersistenciaPersona;
@@ -85,9 +84,8 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 
 	private static Logger logger = Logger.getLogger(SincronizadorStateless.class);
 	
-	@Resource(mappedName="java:jboss/datasources/dsGestPedWeb")
+	@Resource(lookup="java:jboss/datasources/dsGestPedWeb")
 	private DataSource ds;
-	private Connection conn;
 	@Resource 
     private EJBContext context;
 	
@@ -146,8 +144,8 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 		String mensaje = null;
 		PreparedStatement sentencia = null;
 		String consulta = "SELECT (1) FROM unidad";
-		try {
-			sentencia = ds.getConnection().prepareStatement(consulta, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+		try (Connection conn = ds.getConnection()) {
+			sentencia = conn.prepareStatement(consulta, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			try (ResultSet resultado = sentencia.executeQuery()) {
 				if(resultado.next()) {
 					mensaje = "Servicio funcional";
@@ -158,8 +156,6 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 		} catch (SQLException e) {
 			logger.fatal("Excepcion en EJB > obtPersonasNoSinc: " + e.getMessage(), e);
 			mensaje = e.getMessage();
-		} finally {
-			Conector.closeConn(ds, sentencia);
 		}
 		return mensaje;
 	}
@@ -173,15 +169,15 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ResultObtPersonasNoSinc obtPersonasNoSinc(ParamObtPersonasNoSinc param) {
 		ResultObtPersonasNoSinc result = new ResultObtPersonasNoSinc();
 		List<Persona> listaPersona = new ArrayList<>();
-		try {
+		try (Connection conn = ds.getConnection()) {
 			if(ParamGenValidator.validarParam(param, result)) {
 				Fecha fechaDesde = new Fecha(param.getFechaDesde(), Fecha.AMD);
 				Fecha fechaHasta = new Fecha(param.getFechaHasta(), Fecha.AMD);
 				//se obtiene conexion y se van a buscar listas de personas
-				conn = ds.getConnection();
 				List<PersonaFisica> listaPf = getInterfacePersona().obtPersonaFisicaNoSinc(conn, fechaDesde, fechaHasta);
 				listaPersona.addAll((List<Persona>) (List<? extends Persona>) listaPf);
 				List<PersonaJuridica> listaPj = getInterfacePersona().obtPersonaJuridicaNoSinc(conn, fechaDesde, fechaHasta);
@@ -192,8 +188,6 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 			context.setRollbackOnly();
 			logger.fatal("Excepcion en EJB > obtPersonasNoSinc: " + e.getMessage(), e);
 			result.getErroresServ().add(new ErrorServicio(ErroresServicioCod.CODERR_EXCEP, e.getMessage()));
-		} finally {
-			Conector.closeConn(ds, null);
 		}
 		return result;
 	}
@@ -202,12 +196,11 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 	 * 
 	 */
 	@Override
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ResultRecPersonasASinc recPersonasASinc(ParamRecPersonasASinc param) {
 		ResultRecPersonasASinc result = new ResultRecPersonasASinc();
 		Map<Long, EstadoSinc> mapResultados = null;
-		try {
-			
+		try (Connection conn = ds.getConnection()) {
 			if(ParamGenValidator.validarParam(param, result)) {
 				List<Long> listaPersSincOk = null;
 //				SincronizadorStatelessLocal sincSl = LookUps.lookUpEjb();
@@ -218,7 +211,6 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 						listaPersSincOk.add(paramPers.getIdPersona());
 //						}
 				}
-				conn = ds.getConnection();
 				if(listaPersSincOk != null && !listaPersSincOk.isEmpty()) {
 					mapResultados = new HashMap<>();
 					for(Long idPers : listaPersSincOk) {
@@ -240,8 +232,6 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 			context.setRollbackOnly();
 			logger.fatal("Excepcion en EJB > obtPersonasNoSinc: " + e.getMessage(), e);
 			result.getErroresServ().add(new ErrorServicio(ErroresServicioCod.CODERR_EXCEP, e.getMessage()));
-		} finally {
-			Conector.closeConn(ds, null);
 		}
 		return result;
 	}
@@ -254,10 +244,10 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 	 * 
 	 */
 	@Override
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ResultRecProductosASinc recProductosASinc(ParamRecProductosASinc param) {
 		ResultRecProductosASinc result = new ResultRecProductosASinc();
-		try {
+		try (Connection conn = ds.getConnection()) {
 			if(ParamGenValidator.validarParam(param, result)) {
 				List<TipoProd> listaTipoProd = new ArrayList<>();
 				List<Unidad> listaUnidad = new ArrayList<>();
@@ -277,7 +267,6 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 				}
 				//
 				HlpSincProd hsp = new HlpSincProd();
-				conn = ds.getConnection();
 				if(listaProducto != null && !listaProducto.isEmpty()) {
 					if(listaTipoProd != null && !listaTipoProd.isEmpty()) {
 						for(TipoProd tp : listaTipoProd) {
@@ -332,7 +321,7 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 					for(Producto prod : listaProducto) {
 						Integer resQry = 0;
 						if(Estado.A.equals(prod.getEstadoProd())) { // << chequeo si el producto tiene estado 'activo' (existente)
-							if(controlarDatosProducto(prod)) {
+							if(controlarDatosProducto(conn, prod)) {
 								logger.debug("El control de los productos funciona ok, se procede con la sincronizacion web...");
 								if(getInterfaceProducto().checkExistProducto(conn, prod.getIdProducto())) {
 									logger.debug("El producto ya existe en base web, se actualiza...");
@@ -369,8 +358,6 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 			context.setRollbackOnly();
 			logger.fatal("Excepcion en EJB > recProductosSinc: " + e.getMessage(), e);
 			result.getErroresServ().add(new ErrorServicio(ErroresServicioCod.CODERR_EXCEP, e.getMessage()));
-		} finally {
-			Conector.closeConn(ds, null);
 		}
 		return result;
 	}
@@ -387,11 +374,10 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 	public ResultObtPedidosNoSinc obtPedidosNoSinc(ParamObtPedidosNoSinc param) {
 		ResultObtPedidosNoSinc result = new ResultObtPedidosNoSinc();
 		List<Pedido> listaPedido = new ArrayList<>();
-		try {
+		try (Connection conn = ds.getConnection()) {
 			if(ParamGenValidator.validarParam(param, result)) {
 				Fecha fechaDesde = new Fecha(param.getFechaDesde(), Fecha.AMD);
 				Fecha fechaHasta = new Fecha(param.getFechaHasta(), Fecha.AMD);
-				conn = ds.getConnection();
 				//obtengo lista de pedidos NO SINC de base web
 				listaPedido = getInterfacePedido().obtenerListaPedidoNoSinc(conn, fechaDesde, fechaHasta);
 				if(listaPedido != null && !listaPedido.isEmpty()) {
@@ -413,8 +399,6 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 			context.setRollbackOnly();
 			logger.fatal("Excepcion en EJB > obtPedidosNoSinc: " + e.getMessage(), e);
 			result.getErroresServ().add(new ErrorServicio(ErroresServicioCod.CODERR_EXCEP, e.getMessage()));
-		} finally {
-			Conector.closeConn(ds, null);
 		}
 		return result;
 	}
@@ -426,9 +410,8 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ResultRecPedidosASinc recPedidosASinc(ParamRecPedidosASinc param) {
 		ResultRecPedidosASinc result = new ResultRecPedidosASinc();
-		try {
+		try (Connection conn = ds.getConnection()) {
 			if(ParamGenValidator.validarParam(param, result)) {
-				conn = ds.getConnection();
 				List<Pedido> listaPedidoASinc = ParserPedido.parsePedido(param);
 				for(Pedido pedido : listaPedidoASinc) {
 					ResultPedidoASinc resultPas = new ResultPedidoASinc();
@@ -463,8 +446,6 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 			context.setRollbackOnly();
 			logger.fatal("Excepcion en EJB > recPedidosASinc: " + e.getMessage(), e);
 			result.getErroresServ().add(new ErrorServicio(ErroresServicioCod.CODERR_EXCEP, e.getMessage()));
-		} finally {
-			Conector.closeConn(ds, null);
 		}
 		return result;
 	}
@@ -479,7 +460,7 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 	 * @return
 	 * @throws EjbException
 	 */
-	private Boolean controlarDatosProducto(Producto prod) throws EjbException {
+	private Boolean controlarDatosProducto(Connection conn, Producto prod) throws EjbException {
 		Boolean resultado = true;
 		try {
 			resultado = getInterfaceTipoProd().checkExistTipoProd(conn, prod.getTipoProd().getIdTipoProd());

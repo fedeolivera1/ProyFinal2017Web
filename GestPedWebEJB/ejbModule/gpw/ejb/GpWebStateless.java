@@ -8,6 +8,8 @@ import javax.annotation.Resource;
 import javax.ejb.EJBContext;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.sql.DataSource;
@@ -36,7 +38,6 @@ import gpw.interfaces.persona.IPersTipoDoc;
 import gpw.interfaces.producto.IPersProducto;
 import gpw.interfaces.producto.IPersTipoProd;
 import gpw.interfaces.usuario.IPersUsuario;
-import gpw.persistencia.conector.Conector;
 import gpw.persistencia.pedido.PersistenciaPedido;
 import gpw.persistencia.pedido.PersistenciaPedidoLinea;
 import gpw.persistencia.persona.PersistenciaDepLoc;
@@ -57,9 +58,8 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 
 	private static Logger logger = Logger.getLogger(GpWebStateless.class);
 	
-	@Resource(mappedName="java:jboss/datasources/dsGestPedWeb")
+	@Resource(lookup="java:jboss/datasources/dsGestPedWeb")
 	private DataSource ds;
-	private Connection conn;
 	@Resource 
 	private EJBContext context;
 	
@@ -133,43 +133,39 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 	/*****************************************************************************************************************************************************/
     
     @Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
     public String loginUsuario(String nombreUsuario, String password) throws PersistenciaException {
     	logger.info("Se ingresa a loginUsuario para " + nombreUsuario);
     	String usuario = null;
-    	try {
-    		conn = ds.getConnection();
+    	try (Connection conn = ds.getConnection()) {
     		usuario = getInterfaceUsuario().loginUsuario(conn, nombreUsuario, password);
     	} catch (PersistenciaException | SQLException e) {
     		logger.fatal("Excepcion en GpWebStateless > loginUsuario: " + e.getMessage(), e);
     		throw new PersistenciaException(e);
-    	} finally {
-    		Conector.closeConn(ds, null);
     	}
     	return usuario;
     }
     
-	@Override
+    @Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public UsuarioWeb obtenerUsuario(String nombreUsuario) throws PersistenciaException {
 		logger.info("Se ingresa a obtenerUsuario para " + nombreUsuario);
 		UsuarioWeb usuario = null;
-		try {
-			conn = ds.getConnection();
+		try (Connection conn = ds.getConnection()) {
 			usuario = getInterfaceUsuario().obtenerUsuario(conn, nombreUsuario);
 		} catch (PersistenciaException | SQLException e) {
 			logger.fatal("Excepcion en GpWebStateless > obtenerUsuario: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-    		Conector.closeConn(ds, null);
-    	}
+		}
 		return usuario;
 	}
 
-	@Override
+    @Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Integer guardarUsuario(UsuarioWeb usr) throws PersistenciaException {
 		logger.info("Se ingresa a guardarUsuario para " + usr.getNomUsu());
 		Integer resultado = null;
-		try {
-			conn = ds.getConnection();
+		try (Connection conn = ds.getConnection()) {
 			usr.getPersona().setOrigen(Origen.W);
 			usr.getPersona().setSinc(Sinc.N);
 			if(usr.getPersona() instanceof PersonaFisica) {
@@ -184,18 +180,16 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 			context.setRollbackOnly();
 			logger.fatal("Excepcion en GpWebStateless > guardarUsuario: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-    		Conector.closeConn(ds, null);
-    	}
+		}
 		return resultado;
 	}
 
-	@Override
+    @Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Integer modificarUsuario(UsuarioWeb usr, Boolean modificaPasswd) throws PersistenciaException {
 		logger.info("Se ingresa a modificarUsuario para " + usr.getNomUsu());
 		Integer resultado = null;
-		try {
-			conn = ds.getConnection();
+		try (Connection conn = ds.getConnection()) {
 			usr.getPersona().setOrigen(Origen.W);
 			usr.getPersona().setSinc(Sinc.N);
 			Long idPersonaActual = getInterfaceUsuario().obtenerUsuarioPersActual(conn, usr.getNomUsu());
@@ -227,116 +221,104 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 			context.setRollbackOnly();
 			logger.fatal("Excepcion en GpWebStateless > modificarUsuario: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-    		Conector.closeConn(ds, null);
-    	}
+		}
 		return resultado;
 	}
 
-	@Override
-	public Integer eliminarUsuario(UsuarioWeb usr) throws PersistenciaException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//    @Override
+//	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+//	public Integer eliminarUsuario(UsuarioWeb usr) throws PersistenciaException {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	/*****************************************************************************************************************************************************/
 	/* PERSONA */
 	/*****************************************************************************************************************************************************/
 	
 	//tipo doc
-	@Override
+    @Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public TipoDoc obtenerTipoDocPorId(Integer id) throws PersistenciaException {
 		logger.info("Se ingresa a obtenerTipoDocPorId...");
 		TipoDoc tipoDoc = null;
-		try {
-			conn = ds.getConnection();
+		try (Connection conn = ds.getConnection()) {
 			tipoDoc = getInterfaceTipoDoc().obtenerTipoDocPorId(conn, id);
 		} catch (PersistenciaException | SQLException e) {
 			logger.fatal("Excepcion en GpWebStateless > obtenerTipoDocPorId: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-    		Conector.closeConn(ds, null);
-    	}
+		}
 		return tipoDoc;
 	}
-	@Override
+    
+    @Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public List<TipoDoc> obtenerListaTipoDoc() throws PersistenciaException {
 		logger.info("Se ingresa a obtenerListaTipoDoc...");
 		List<TipoDoc> listaTd = null;
-		try {
-			conn = ds.getConnection();
+		try (Connection conn = ds.getConnection()) {
 			listaTd = getInterfaceTipoDoc().obtenerListaTipoDoc(conn);
 		} catch (PersistenciaException | SQLException e) {
 			logger.fatal("Excepcion en GpWebStateless > obtenerListaTipoDoc: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-    		Conector.closeConn(ds, null);
-    	}
+		}
 		return listaTd;
 	}
 	
 	//dep y loc
-	@Override
+    @Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public List<Departamento> obtenerListaDepartamentos() throws PersistenciaException {
 		logger.info("Se ingresa a obtenerListaDepartamentos...");
 		List<Departamento> listaDep = null;
-		try {
-			conn = ds.getConnection();
+		try (Connection conn = ds.getConnection()) {
 			listaDep = getInterfaceDepLoc().obtenerListaDepartamentos(conn);
 		} catch (PersistenciaException | SQLException e) {
 			logger.fatal("Excepcion en GpWebStateless > obtenerListaDepartamentos: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-    		Conector.closeConn(ds, null);
-    	}
+		}
 		return listaDep;
 	}
 
-	@Override
+    @Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Departamento obtenerDepartamentoPorId(Integer id) throws PersistenciaException {
 		logger.info("Se ingresa a obtenerDepartamentoPorId...");
 		Departamento dep = null;
-		try {
-			conn = ds.getConnection();
+		try (Connection conn = ds.getConnection()) {
 			dep = getInterfaceDepLoc().obtenerDepartamentoPorId(conn, id);
 		} catch (PersistenciaException | SQLException e) {
 			logger.fatal("Excepcion en GpWebStateless > obtenerDepartamentoPorId: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-    		Conector.closeConn(ds, null);
-    	}
+		}
 		return dep;
 	}
 
-	@Override
+    @Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public List<Localidad> obtenerListaLocPorDep(Integer idDep) throws PersistenciaException {
 		logger.info("Se ingresa a obtenerListaLocPorDep...");
 		List<Localidad> listaLoc = null;
-		try {
-			conn = ds.getConnection();
+		try (Connection conn = ds.getConnection()) {
 			listaLoc = getInterfaceDepLoc().obtenerListaLocPorDep(conn, idDep);
 		} catch (PersistenciaException | SQLException e) {
 			logger.fatal("Excepcion en GpWebStateless > obtenerListaLocPorDep: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-    		Conector.closeConn(ds, null);
-    	}
+		}
 		return listaLoc;
 	}
 
-	@Override
+    @Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Localidad obtenerLocalidadPorId(Integer idLoc) throws PersistenciaException {
 		logger.info("Se ingresa a obtenerLocalidadPorId...");
 		Localidad loc = null;
-		try {
-			conn = ds.getConnection();
+		try (Connection conn = ds.getConnection()) {
 			loc = getInterfaceDepLoc().obtenerLocalidadPorId(conn, idLoc);
 		} catch (PersistenciaException | SQLException e) {
 			logger.fatal("Excepcion en GpWebStateless > obtenerLocalidadPorId: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-    		Conector.closeConn(ds, null);
-    	}
+		}
 		return loc;
 	}
 	
@@ -345,51 +327,46 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 	/*****************************************************************************************************************************************************/
 	
 	//tipo prod
-	@Override
+    @Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public List<TipoProd> obtenerListaTipoProd() throws PersistenciaException {
 		logger.info("Se ingresa a obtenerListaTipoProd...");
 		List<TipoProd> listaTp = null;
-		try {
-			conn = ds.getConnection();
+		try (Connection conn = ds.getConnection()) {
 			listaTp = getInterfaceTipoProd().obtenerListaTipoProd(conn);
 		} catch (PersistenciaException | SQLException e) {
 			logger.fatal("Excepcion en GpWebStateless > obtenerListaTipoProd: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-    		Conector.closeConn(ds, null);
-    	}
+		}
 		return listaTp;
 	}
 	
 	//producto
-	@Override
+    @Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Producto obtenerProductoPorId(Integer id) throws PersistenciaException {
 		logger.info("Se ingresa a obtenerProductoPorId...");
 		Producto producto = null;
-		try {
-			conn = ds.getConnection();
+		try (Connection conn = ds.getConnection()) {
 			producto = getInterfaceProducto().obtenerProductoPorId(conn, id);
 		} catch (PersistenciaException | SQLException e) {
 			logger.fatal("Excepcion en GpWebStateless > obtenerProductoPorId: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-    		Conector.closeConn(ds, null);
-    	}
+		}
 		return producto;
 	}
-	@Override
+    
+    @Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public List<Producto> obtenerListaProductoPorTipo(Integer tipoProd) throws PersistenciaException {
 		logger.info("Se ingresa a obtenerListaProductoPorTipo...");
 		List<Producto> listaProd = null;
-		try {
-			conn = ds.getConnection();
+		try (Connection conn = ds.getConnection()) {
 			listaProd = getInterfaceProducto().obtenerListaProductoPorTipo(conn, tipoProd);
 		} catch (PersistenciaException | SQLException e) {
 			logger.fatal("Excepcion en GpWebStateless > obtenerListaProductoPorTipo: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-    		Conector.closeConn(ds, null);
-    	}
+		}
 		return listaProd;
 	}
 	
@@ -398,47 +375,43 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 	/* PEDIDO */
 	/*****************************************************************************************************************************************************/
 	
-	@Override
+    @Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Pedido obtenerPedidoPorId(Long idPersona, Fecha fechaHora) throws PersistenciaException {
 		logger.info("Se ingresa a obtenerPedidoPorId...");
 		Pedido pedido = null;
-		try {
-			conn = ds.getConnection();
+		try (Connection conn = ds.getConnection()) {
 			pedido = getInterfacePedido().obtenerPedidoPorId(conn, idPersona, fechaHora);
 		} catch (PersistenciaException | SQLException e) {
 			logger.fatal("Excepcion en GpWebStateless > obtenerPedidoPorId: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-    		Conector.closeConn(ds, null);
-    	}
+		}
 		return pedido;
 	}
 	
-	@Override
+    @Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public List<Pedido> obtenerListaPedido(EstadoPedido ep, Long idPersona, Fecha fechaDesde, Fecha fechaHasta)
 			throws PersistenciaException {
 		logger.info("Se ingresa a obtenerListaPedido...");
 		List<Pedido> listaPedido = null;
-		try {
-			conn = ds.getConnection();
+		try (Connection conn = ds.getConnection()) {
 			listaPedido = getInterfacePedido().obtenerListaPedido(conn, idPersona, ep, fechaDesde, fechaHasta);
 		} catch (PersistenciaException | SQLException e) {
 			logger.fatal("Excepcion en GpWebStateless > obtenerListaPedido: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-    		Conector.closeConn(ds, null);
-    	}
+		}
 		return listaPedido;
 	}
 	
-	@Override
+    @Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Integer guardarPedido(Pedido pedido) throws PersistenciaException {
 		logger.info("Se ingresa a guardarPedido");
 		Integer resultado = null;
-		try {
+		try (Connection conn = ds.getConnection()) {
 			if(pedido != null && pedido.getListaPedidoLinea() != null && 
 					!pedido.getListaPedidoLinea().isEmpty()) {
-				conn = ds.getConnection();
 				resultado = getInterfacePedido().guardarPedido(conn, pedido);
 				getInterfacePedidoLinea().guardarListaPedidoLinea(conn, pedido.getListaPedidoLinea());
 			}
@@ -446,20 +419,18 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 			context.setRollbackOnly();
 			logger.fatal("Excepcion en GpWebStateless > guardarPedido: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-    		Conector.closeConn(ds, null);
-    	}
+		}
 		return resultado;
 	}
 	
-	@Override
+    @Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Integer modificarPedido(Pedido pedido, List<PedidoLinea> lineaLineasNuevas) throws PersistenciaException {
 		logger.info("Se ingresa a modificarPedido");
 		Integer resultado = null;
-		try {
+		try (Connection conn = ds.getConnection()) {
 			if(pedido != null && pedido.getListaPedidoLinea() != null && 
 					!pedido.getListaPedidoLinea().isEmpty()) {
-				conn = ds.getConnection();
 				resultado = getInterfacePedido().modificarPedido(conn, pedido);
 				getInterfacePedidoLinea().eliminarListaPedidoLinea(conn, pedido);
 				pedido.setListaPedidoLinea(lineaLineasNuevas);
@@ -469,27 +440,23 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 			context.setRollbackOnly();
 			logger.fatal("Excepcion en GpWebStateless > modificarPedido: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-    		Conector.closeConn(ds, null);
-    	}
+		}
 		return resultado;
 	}
 	
-	@Override
+    @Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Integer modificarEstadoPedido(Pedido pedido) throws PersistenciaException {
 		logger.info("Se ingresa a modificarEstadoPedido");
 		Integer resultado = null;
-		try {
+		try (Connection conn = ds.getConnection()) {
 			if(pedido != null) {
-				conn = ds.getConnection();
 				resultado = getInterfacePedido().modificarEstadoPedido(conn, pedido);
 			}
 		} catch (PersistenciaException | SQLException e) {
 			context.setRollbackOnly();
 			logger.fatal("Excepcion en GpWebStateless > modificarEstadoPedido: " + e.getMessage(), e);
 			throw new PersistenciaException(e);
-		} finally {
-			Conector.closeConn(ds, null);
 		}
 		return resultado;
 	}
