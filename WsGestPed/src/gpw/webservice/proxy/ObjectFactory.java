@@ -189,6 +189,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ParamPedidoConfirmado }
+     * 
+     */
+    public ParamPedidoConfirmado createParamPedidoConfirmado() {
+        return new ParamPedidoConfirmado();
+    }
+
+    /**
      * Create an instance of {@link ParamPedidoASinc }
      * 
      */
@@ -210,6 +218,14 @@ public class ObjectFactory {
      */
     public ResultRecPedidosASinc createResultRecPedidosASinc() {
         return new ResultRecPedidosASinc();
+    }
+
+    /**
+     * Create an instance of {@link ResultPedidoConfirmado }
+     * 
+     */
+    public ResultPedidoConfirmado createResultPedidoConfirmado() {
+        return new ResultPedidoConfirmado();
     }
 
     /**

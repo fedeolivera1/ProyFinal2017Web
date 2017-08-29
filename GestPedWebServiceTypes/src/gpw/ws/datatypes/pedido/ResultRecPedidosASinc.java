@@ -12,9 +12,19 @@ import gpw.ws.datatypes.errors.ErrorServicio;
 public class ResultRecPedidosASinc implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	private List<ResultPedidoConfirmado> listaPedidoConfirmado;
 	private List<ResultPedidoASinc> listaPedidoSinc;
 	private List<ErrorServicio> erroresServ;
 	
+	public List<ResultPedidoConfirmado> getListaPedidoConfirmado() {
+		if(listaPedidoConfirmado == null) {
+			listaPedidoConfirmado = new ArrayList<>();
+		}
+		return listaPedidoConfirmado;
+	}
+	public void setListaPedidoConfirmado(List<ResultPedidoConfirmado> listaPedidoConfirmado) {
+		this.listaPedidoConfirmado = listaPedidoConfirmado;
+	}
 	public List<ResultPedidoASinc> getListaPedidoSinc() {
 		if(listaPedidoSinc == null) {
 			listaPedidoSinc = new ArrayList<>();

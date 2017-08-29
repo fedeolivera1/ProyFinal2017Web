@@ -1,9 +1,15 @@
 package gpw.webservice;
 
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
+import javax.xml.ws.WebServiceContext;
+import javax.xml.ws.handler.MessageContext;
 
 import org.jboss.logging.Logger;
 
@@ -24,9 +30,17 @@ import gpw.ws.datatypes.producto.ResultRecProductosASinc;
 public class WsGestPed {
 
 	private static Logger logger = Logger.getLogger(WsGestPed.class);
+	@Resource
+	WebServiceContext wsctx;
 	
 	@WebMethod(operationName = "servicioFuncional", action = "servicioFuncional", exclude = false)
 	public String servicioFuncional() {
+		MessageContext mctx = wsctx.getMessageContext();
+		
+		Map http_headers = (Map) mctx.get(MessageContext.HTTP_REQUEST_HEADERS);
+        List userList = (List) http_headers.get("Username");
+        List passList = (List) http_headers.get("Password");
+		
 		SincronizadorStatelessLocal sincSl = LookUps.lookUpEjb();
 		String retorno = sincSl.servicioFuncional();
 		return retorno;

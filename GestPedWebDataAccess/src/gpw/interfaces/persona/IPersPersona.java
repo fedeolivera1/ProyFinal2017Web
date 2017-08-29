@@ -6,6 +6,7 @@ import java.util.List;
 import gpw.dominio.persona.Persona;
 import gpw.dominio.persona.PersonaFisica;
 import gpw.dominio.persona.PersonaJuridica;
+import gpw.dominio.util.Sinc;
 import gpw.exceptions.PersistenciaException;
 import gpw.types.Fecha;
 
@@ -21,8 +22,9 @@ public interface IPersPersona {
 	public List<PersonaJuridica> obtPersonaJuridicaNoSinc(Connection conn, Fecha fechaDesde, Fecha fechaHasta) throws PersistenciaException;
 	public Integer guardarPersJuridica(Connection conn, PersonaJuridica pj) throws PersistenciaException;
 	public Integer modificarPersJuridica(Connection conn, PersonaJuridica pj) throws PersistenciaException;
-	//gen
-	public Integer actualizarPersonaSinc(Connection conn, Long idPersona) throws PersistenciaException;
+	//generico
 	public Persona obtenerPersGenerico(Connection conn, Long idPersona) throws PersistenciaException;
+	public Boolean checkExistPersona(Connection conn, Long idPersona) throws PersistenciaException;
+	public Integer actualizarPersonaSinc(Connection conn, Long idPersona, Sinc sinc, Fecha ultAct) throws PersistenciaException;
 	
 }

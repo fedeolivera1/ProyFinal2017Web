@@ -5,7 +5,6 @@ import java.util.List;
 
 import gpw.dominio.pedido.EstadoPedido;
 import gpw.dominio.pedido.Pedido;
-import gpw.dominio.util.Sinc;
 import gpw.exceptions.PersistenciaException;
 import gpw.types.Fecha;
 
@@ -19,6 +18,6 @@ public interface IPersPedido {
 	public Integer modificarEstadoPedido(Connection conn, Pedido pedido) throws PersistenciaException;
 	public Integer eliminarPedido(Connection conn, Pedido pedido) throws PersistenciaException;
 	public Boolean checkExistPedido(Connection conn, Pedido pedido) throws PersistenciaException;
-	public Integer actualizarPedidoSinc(Connection conn, Long idPersona, Fecha fechaHora, Sinc sinc) throws PersistenciaException;
+	public Integer actualizarPedidoSinc(Connection conn, Pedido pedido) throws PersistenciaException;
 	
 }

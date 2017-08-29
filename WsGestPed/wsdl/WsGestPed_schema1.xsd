@@ -123,7 +123,16 @@
 
   <xs:complexType name="ParamRecPedidosASinc">
     <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="listaPedidoConfirmado" nillable="true" type="tns:ParamPedidoConfirmado"></xs:element>
       <xs:element maxOccurs="unbounded" minOccurs="0" name="listaPedidosASinc" nillable="true" type="tns:ParamPedidoASinc"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ParamPedidoConfirmado">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="estadoSinc" type="xs:int"></xs:element>
+      <xs:element minOccurs="0" name="fechaHora" type="xs:dateTime"></xs:element>
+      <xs:element minOccurs="0" name="idPersona" type="xs:long"></xs:element>
     </xs:sequence>
   </xs:complexType>
 
@@ -159,7 +168,16 @@
   <xs:complexType name="ResultRecPedidosASinc">
     <xs:sequence>
       <xs:element maxOccurs="unbounded" minOccurs="0" name="erroresServ" nillable="true" type="tns:ErrorServicio"></xs:element>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="listaPedidoConfirmado" nillable="true" type="tns:ResultPedidoConfirmado"></xs:element>
       <xs:element maxOccurs="unbounded" minOccurs="0" name="listaPedidoSinc" nillable="true" type="tns:ResultPedidoASinc"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ResultPedidoConfirmado">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="estadoSinc" type="xs:int"></xs:element>
+      <xs:element minOccurs="0" name="fechaHora" type="xs:dateTime"></xs:element>
+      <xs:element minOccurs="0" name="idPersona" type="xs:long"></xs:element>
     </xs:sequence>
   </xs:complexType>
 

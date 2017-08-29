@@ -427,7 +427,9 @@
 		            console.log(data);
 		            // redirecting
 		            if(data === "success") {
-		            	bootstrap_alert.success('Ingreso del usuario ok.');
+		            	bootstrap_alert.success('Registro del usuario ok.');
+		            } else if(data === "exists") {
+		            	bootstrap_alert.warning('La persona ya se encuentra registrada en el sistema.');
 		            } else if(data === "warning") {
 		            	bootstrap_alert.warning('Han surgido problemas y no se ingresó el usuario.');
 			        }

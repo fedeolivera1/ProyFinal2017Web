@@ -19,6 +19,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
+ *         &lt;element name="listaPedidoConfirmado" type="{http://localhost:8080}ParamPedidoConfirmado" maxOccurs="unbounded" minOccurs="0"/&gt;
  *         &lt;element name="listaPedidosASinc" type="{http://localhost:8080}ParamPedidoASinc" maxOccurs="unbounded" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
@@ -30,12 +31,44 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ParamRecPedidosASinc", propOrder = {
+    "listaPedidoConfirmado",
     "listaPedidosASinc"
 })
 public class ParamRecPedidosASinc {
 
     @XmlElement(nillable = true)
+    protected List<ParamPedidoConfirmado> listaPedidoConfirmado;
+    @XmlElement(nillable = true)
     protected List<ParamPedidoASinc> listaPedidosASinc;
+
+    /**
+     * Gets the value of the listaPedidoConfirmado property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the listaPedidoConfirmado property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getListaPedidoConfirmado().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link ParamPedidoConfirmado }
+     * 
+     * 
+     */
+    public List<ParamPedidoConfirmado> getListaPedidoConfirmado() {
+        if (listaPedidoConfirmado == null) {
+            listaPedidoConfirmado = new ArrayList<ParamPedidoConfirmado>();
+        }
+        return this.listaPedidoConfirmado;
+    }
 
     /**
      * Gets the value of the listaPedidosASinc property.

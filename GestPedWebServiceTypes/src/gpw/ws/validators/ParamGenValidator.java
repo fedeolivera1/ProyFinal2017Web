@@ -7,6 +7,7 @@ import gpw.ws.datatypes.errors.ErrorServicio;
 import gpw.ws.datatypes.errors.ErroresServicioCod;
 import gpw.ws.datatypes.pedido.ParamObtPedidosNoSinc;
 import gpw.ws.datatypes.pedido.ParamPedidoASinc;
+import gpw.ws.datatypes.pedido.ParamPedidoConfirmado;
 import gpw.ws.datatypes.pedido.ParamRecPedidosASinc;
 import gpw.ws.datatypes.pedido.ResultObtPedidosNoSinc;
 import gpw.ws.datatypes.pedido.ResultRecPedidosASinc;
@@ -169,6 +170,16 @@ public class ParamGenValidator {
 			ErrorServicio error = new ErrorServicio(ErroresServicioCod.CODERR_VAL_PARAM, "El parametro no puede ser nulo.");
 			listaErrores.add(error);
 		} else {
+			//dato opcional, solamente debería venir seteado si hubieron pedidos web a sincronizar
+			if(param.getListaPedidoConfirmado() != null && !param.getListaPedidoConfirmado().isEmpty()) {
+				for(ParamPedidoConfirmado paramPc : param.getListaPedidoConfirmado()) {
+					if(paramPc.getIdPersona() == null || paramPc.getFechaHora() == null || paramPc.getEstadoSinc() == null) {
+						ErrorServicio error = new ErrorServicio(ErroresServicioCod.CODERR_VAL_PARAM, "Alguno de los datos de pedido confirmado es nulo.");
+						listaErrores.add(error);
+					}
+				}
+			}
+			//dato obligatorio
 			if(param.getListaPedidosASinc().isEmpty()) {
 				ErrorServicio error = new ErrorServicio(ErroresServicioCod.CODERR_VAL_PARAM, "La lista de parametros de pedido no puede ser vacía.");
 				listaErrores.add(error);

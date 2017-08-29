@@ -64,4 +64,6 @@ public interface CnstQryPersona {
 	public static final String QRY_UPDATE_PJ = "UPDATE pers_juridica "
 													+ "SET nombre = ?, razon_social = ?, bps = ?, bse = ?, es_prov = ? "
 													+ "WHERE rut = ?";
+	
+	public static final String QRY_CHECK_EXIST_PERS = "SELECT (1) AS existe FROM persona WHERE id_persona = ?";
 }

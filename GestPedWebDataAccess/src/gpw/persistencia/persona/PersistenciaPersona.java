@@ -302,11 +302,11 @@ public class PersistenciaPersona extends Conector implements IPersPersona, CnstQ
 	}
 	
 	@Override
-	public Integer actualizarPersonaSinc(Connection conn, Long idPersona) throws PersistenciaException {
+	public Integer actualizarPersonaSinc(Connection conn, Long idPersona, Sinc sinc, Fecha ultAct) throws PersistenciaException {
 		try {
 			GenSqlExecType genExec = new GenSqlExecType(QRY_UPDATE_PERS_SINC);
-			genExec.setParam(Sinc.S.getAsChar());
-			genExec.setParam(new Fecha(Fecha.AMDHMS));
+			genExec.setParam(sinc.getAsChar());
+			genExec.setParam(ultAct);
 			genExec.setParam(idPersona);
 			resultado = (Integer) runGeneric(conn, genExec);
 		} catch (ConectorException e) {
@@ -317,6 +317,26 @@ public class PersistenciaPersona extends Conector implements IPersPersona, CnstQ
 			throw new PersistenciaException(e);
 		}
 		return resultado;
+	}
+	
+	@Override
+	public Boolean checkExistPersona(Connection conn, Long idPersona) throws PersistenciaException {
+		try {
+			GenSqlSelectType genSel = new GenSqlSelectType(QRY_CHECK_EXIST_PERS);
+			genSel.setParam(idPersona);
+			try (ResultSet rs = (ResultSet) runGeneric(conn, genSel)) {
+				if(rs.next()) {
+					return true;
+				}
+			}
+		} catch (ConectorException | SQLException e) {
+			logger.fatal("Excepcion al checkExistPersona: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		} catch (Exception e) {
+			logger.fatal("Excepcion GENERICA al checkExistPersona: " + e.getMessage(), e);
+			throw new PersistenciaException(e);
+		}
+		return false;
 	}
 	
 	/***************************************************/

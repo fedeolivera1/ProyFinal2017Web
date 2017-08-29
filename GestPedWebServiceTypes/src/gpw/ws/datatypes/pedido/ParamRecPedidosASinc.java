@@ -9,8 +9,15 @@ import javax.xml.bind.annotation.XmlType;
 public class ParamRecPedidosASinc implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	private List<ParamPedidoConfirmado> listaPedidoConfirmado;
 	private List<ParamPedidoASinc> listaPedidosASinc;
 	
+	public List<ParamPedidoConfirmado> getListaPedidoConfirmado() {
+		return listaPedidoConfirmado;
+	}
+	public void setListaPedidoConfirmado(List<ParamPedidoConfirmado> listaPedidoConfirmado) {
+		this.listaPedidoConfirmado = listaPedidoConfirmado;
+	}
 	public List<ParamPedidoASinc> getListaPedidosASinc() {
 		return listaPedidosASinc;
 	}

@@ -55,9 +55,11 @@ import gpw.types.Fecha;
 import gpw.ws.datatypes.errors.ErrorServicio;
 import gpw.ws.datatypes.errors.ErroresServicioCod;
 import gpw.ws.datatypes.pedido.ParamObtPedidosNoSinc;
+import gpw.ws.datatypes.pedido.ParamPedidoConfirmado;
 import gpw.ws.datatypes.pedido.ParamRecPedidosASinc;
 import gpw.ws.datatypes.pedido.ResultObtPedidosNoSinc;
 import gpw.ws.datatypes.pedido.ResultPedidoASinc;
+import gpw.ws.datatypes.pedido.ResultPedidoConfirmado;
 import gpw.ws.datatypes.pedido.ResultRecPedidosASinc;
 import gpw.ws.datatypes.persona.ParamObtPersonasNoSinc;
 import gpw.ws.datatypes.persona.ParamPersonaSinc;
@@ -200,10 +202,10 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 	public ResultRecPersonasASinc recPersonasASinc(ParamRecPersonasASinc param) {
 		ResultRecPersonasASinc result = new ResultRecPersonasASinc();
 		Map<Long, EstadoSinc> mapResultados = null;
+		Fecha ultAct = new Fecha(Fecha.AMDHMS);
 		try (Connection conn = ds.getConnection()) {
 			if(ParamGenValidator.validarParam(param, result)) {
 				List<Long> listaPersSincOk = null;
-//				SincronizadorStatelessLocal sincSl = LookUps.lookUpEjb();
 				listaPersSincOk = new ArrayList<>();
 				for(ParamPersonaSinc paramPers : param.getListaPersSinc()) {
 					logger.info("Se agrega nueva persona al sincronizador - idPersona: " + paramPers.getIdPersona());
@@ -214,7 +216,7 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 				if(listaPersSincOk != null && !listaPersSincOk.isEmpty()) {
 					mapResultados = new HashMap<>();
 					for(Long idPers : listaPersSincOk) {
-						Integer resultado = getInterfacePersona().actualizarPersonaSinc(conn, idPers);
+						Integer resultado = getInterfacePersona().actualizarPersonaSinc(conn, idPers, Sinc.S, ultAct);
 						mapResultados.put(idPers, resultado > 0 ? EstadoSinc.O : EstadoSinc.E);
 					}
 				}
@@ -247,6 +249,7 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ResultRecProductosASinc recProductosASinc(ParamRecProductosASinc param) {
 		ResultRecProductosASinc result = new ResultRecProductosASinc();
+		Fecha ultAct = new Fecha(Fecha.AMDHMS);
 		try (Connection conn = ds.getConnection()) {
 			if(ParamGenValidator.validarParam(param, result)) {
 				List<TipoProd> listaTipoProd = new ArrayList<>();
@@ -326,6 +329,7 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 								if(getInterfaceProducto().checkExistProducto(conn, prod.getIdProducto())) {
 									logger.debug("El producto ya existe en base web, se actualiza...");
 									prod.setSinc(Sinc.S);
+									prod.setUltAct(ultAct);
 									resQry = getInterfaceProducto().modificarProducto(conn, prod);
 								} else {
 									logger.debug("El producto no existe en base web, se agrega...");
@@ -337,6 +341,7 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 							}
 						} else { // << caso producto con estado 'Eliminado', fue dado de baja
 							prod.setSinc(Sinc.S);
+							prod.setUltAct(ultAct);
 							resQry = getInterfaceProducto().desactivarProducto(conn, prod);
 						}
 						//chequeo si genero un movimiento en la base
@@ -385,12 +390,9 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 						List<PedidoLinea> listaPedidoLin = getInterfacePedidoLinea().obtenerListaPedidoLinea(conn, pedido);
 						pedido.setListaPedidoLinea(listaPedidoLin);
 						/*
-						 * actualizo el pedido a sincronizado, el mismo ya está listo para viajar por WS a dsk
-						 * en caso de problemas en cualquiera de los updates, se hace rollback de todo
+						 * a este punto no se marca como sincronizado ya que el pedido tiene que ir al sist DSK e insertarse o act, 
+						 * luego que vuelve (en el metodo rec) si se marcara como SINC 
 						 */
-						//FIXME arreglar esto, no puede marcarse como sincronizado a esta altura.
-//						pedido.setSinc(Sinc.S);
-//						getInterfacePedido().actualizarPedidoSinc(conn, pedido.getPersona().getIdPersona(), pedido.getFechaHora(), pedido.getSinc());
 					}
 					result = ParserResultSincPedido.parseResultObtPedidosNoSinc(listaPedido);
 				}
@@ -412,6 +414,39 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 		ResultRecPedidosASinc result = new ResultRecPedidosASinc();
 		try (Connection conn = ds.getConnection()) {
 			if(ParamGenValidator.validarParam(param, result)) {
+				Fecha ultAct = new Fecha(Fecha.AMDHMS);
+				/*
+				 * recorro pedidos que viajaron (NO SINC) al sistema dsk y volvieron sin errores para
+				 * proceder a marcarlos en el sistema web como SINC
+				 */
+				if(param.getListaPedidoConfirmado() != null && !param.getListaPedidoConfirmado().isEmpty()) {
+					for(ParamPedidoConfirmado paramPc : param.getListaPedidoConfirmado()) {
+						Long idPersona = paramPc.getIdPersona();
+						EstadoSinc estadoSinc = EstadoSinc.getEstadoSincPorInt(paramPc.getEstadoSinc());
+						Fecha fechaHora = new Fecha(paramPc.getFechaHora(), Fecha.AMDHMS);
+						if(EstadoSinc.O.equals(estadoSinc)) {
+							Pedido pedido = getInterfacePedido().obtenerPedidoPorId(conn, paramPc.getIdPersona(), fechaHora);
+							pedido.setSinc(Sinc.S);
+							pedido.setUltAct(ultAct);
+							Integer resSinc = getInterfacePedido().actualizarPedidoSinc(conn, pedido);
+							ResultPedidoConfirmado resultPc = new ResultPedidoConfirmado();
+							resultPc.setIdPersona(pedido.getPersona().getIdPersona());
+							resultPc.setFechaHora(pedido.getFechaHora().getAsXMLGregorianCalendar(Fecha.AMDHMS));
+							if(resSinc > 0) {
+								resultPc.setEstadoSinc(EstadoSinc.O.getAsInt());
+								logger.info("El pedido con los datos: [" + idPersona + "|" + fechaHora.toString() + "] fue sincronizado correctamente en el sistema WEB.");
+							} else {
+								resultPc.setEstadoSinc(EstadoSinc.E.getAsInt());
+								logger.warn("Ocurrió un problema al sincronizar el pedido con los datos: [" + idPersona + "|" + fechaHora.toString() + "].");
+							}
+							result.getListaPedidoConfirmado().add(resultPc);
+						} else {
+							logger.warn("El pedido con los datos: [" + idPersona + "|" + fechaHora.toString() + "] ha retornado error de sincronizacion desde "
+									+ "el sistema DSK.");
+						}
+					}
+				}
+				/**/
 				List<Pedido> listaPedidoASinc = ParserPedido.parsePedido(param);
 				for(Pedido pedido : listaPedidoASinc) {
 					ResultPedidoASinc resultPas = new ResultPedidoASinc();
@@ -424,6 +459,7 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 						getInterfacePedidoLinea().guardarListaPedidoLinea(conn, pedido.getListaPedidoLinea());
 						//modifico datos del pedido
 						pedido.setSinc(Sinc.S);
+						pedido.setUltAct(ultAct);
 						Integer resQry = getInterfacePedido().modificarPedido(conn, pedido);
 						if(resQry > 0) {
 							resultPas.setIdPersona(pedido.getPersona().getIdPersona());

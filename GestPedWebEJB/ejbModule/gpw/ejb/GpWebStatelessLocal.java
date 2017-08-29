@@ -27,7 +27,6 @@ public interface GpWebStatelessLocal {
 //	public UsuarioWeb obtenerUsuarioPorId(String nombreUsuario, String password) throws PersistenciaException;
 	public Integer guardarUsuario(UsuarioWeb usr) throws PersistenciaException;
 	public Integer modificarUsuario(UsuarioWeb usr, Boolean modificaPasswd) throws PersistenciaException;
-//	public Integer eliminarUsuario(UsuarioWeb usr) throws PersistenciaException;
 	
 	/**
 	 * persona
@@ -40,6 +39,8 @@ public interface GpWebStatelessLocal {
 	public Departamento obtenerDepartamentoPorId(Integer id) throws PersistenciaException;
 	public List<Localidad> obtenerListaLocPorDep(Integer idDep) throws PersistenciaException;
 	public Localidad obtenerLocalidadPorId(Integer idLoc) throws PersistenciaException;
+	//generico
+	public Boolean checkExistPersona(Long idPersona) throws PersistenciaException;
 	
 	/**
 	 * producto

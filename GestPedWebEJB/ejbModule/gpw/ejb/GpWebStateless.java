@@ -224,13 +224,22 @@ public class GpWebStateless implements GpWebStatelessRemote, GpWebStatelessLocal
 		}
 		return resultado;
 	}
+    
+    
 
-//    @Override
-//	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-//	public Integer eliminarUsuario(UsuarioWeb usr) throws PersistenciaException {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+    @Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public Boolean checkExistPersona(Long idPersona) throws PersistenciaException {
+    	logger.info("Se ingresa a checkExistePersona...");
+    	Boolean checkExist = false;
+    	try (Connection conn = ds.getConnection()) {
+    		checkExist = getInterfacePersona().checkExistPersona(conn, idPersona);
+    	} catch (PersistenciaException | SQLException e) {
+    		logger.fatal("Excepcion en GpWebStateless > loginUsuario: " + e.getMessage(), e);
+    		throw new PersistenciaException(e);
+    	}
+    	return checkExist;
+	}
 
 	/*****************************************************************************************************************************************************/
 	/* PERSONA */

@@ -152,6 +152,7 @@ public class ServletPersona extends HttpServlet {
 	        HttpSession session = request.getSession();
 	        String usrSession = (String) session.getAttribute("usuario");
 	        Integer resultado = 0;
+	        Boolean existePersona = false;
 	        if(usrSession != null && usrSession.equalsIgnoreCase(usr.getNomUsu())) {
 	        	//usuario existente, modifica
 	        	Boolean modifPasswd = false;
@@ -162,10 +163,13 @@ public class ServletPersona extends HttpServlet {
 	        	resultado = gpwStLoc.modificarUsuario(usr, modifPasswd);
 	        } else {
 	        	//usuario nuevo, agrega y setea sesion
-	        	usr.setPass(passwdReg1);
-	        	resultado = gpwStLoc.guardarUsuario(usr);
-	        	session.setAttribute("usuario", usr.getNomUsu());
-	        	session.setAttribute("id", session.getId());
+	        	existePersona = gpwStLoc.checkExistPersona(usr.getPersona().getIdPersona()); 
+	        	if(!existePersona) {
+	        		usr.setPass(passwdReg1);
+	        		resultado = gpwStLoc.guardarUsuario(usr);
+	        		session.setAttribute("usuario", usr.getNomUsu());
+	        		session.setAttribute("id", session.getId());
+	        	}
 	        }
 	        
 			if(resultado > 0) {
@@ -173,7 +177,11 @@ public class ServletPersona extends HttpServlet {
 				response.setCharacterEncoding("UTF-8");
 				response.getWriter().write("success");
 	        } else {
-	        	response.getWriter().write("warning");
+	        	if(existePersona) {
+	        		response.getWriter().write("exists");
+	        	} else {
+	        		response.getWriter().write("warning");
+	        	}
 	        }
 		} catch (PersistenciaException e) {
 			logger.fatal("Excepcion en ServletPersona > processRequestPOST: " + e.getMessage(), e);

@@ -302,13 +302,14 @@ public class PersistenciaPedido extends Conector implements IPersPedido, CnstQry
 	}
 
 	@Override
-	public Integer actualizarPedidoSinc(Connection conn, Long idPersona, Fecha fechaHora, Sinc sinc) throws PersistenciaException {
+	public Integer actualizarPedidoSinc(Connection conn, Pedido pedido) throws PersistenciaException {
 		Integer resultado = null;
 		try {
 			GenSqlExecType genExec = new GenSqlExecType(QRY_UPDATE_SINC_PEDIDO);
-			genExec.setParam(sinc.getAsChar());
-			genExec.setParam(idPersona);
-			genExec.setParam(fechaHora);
+			genExec.setParam(pedido.getSinc().getAsChar());
+			genExec.setParam(pedido.getUltAct());
+			genExec.setParam(pedido.getPersona().getIdPersona());
+			genExec.setParam(pedido.getFechaHora());
 			resultado = (Integer) runGeneric(conn, genExec);
 		} catch (ConectorException e) {
 			logger.error("Excepcion al actualizarPedidoSinc: " + e.getMessage(), e);
