@@ -20,7 +20,7 @@ public class ParamProductoASinc implements Serializable {
 	//Unidad
 	private Integer unidad;
 	//
-	private Integer cantUnidad;
+	private Float cantUnidad;
 	//AplicaIva
 	private String aplIva;
 	//
@@ -66,10 +66,10 @@ public class ParamProductoASinc implements Serializable {
 	public void setUnidad(Integer unidad) {
 		this.unidad = unidad;
 	}
-	public Integer getCantUnidad() {
+	public Float getCantUnidad() {
 		return cantUnidad;
 	}
-	public void setCantUnidad(Integer cantUnidad) {
+	public void setCantUnidad(Float cantUnidad) {
 		this.cantUnidad = cantUnidad;
 	}
 	public String getAplIva() {

@@ -15,7 +15,7 @@ public class Producto implements Serializable {
 	private String nombre;
 	private String descripcion;
 	private Unidad unidad;
-	private Integer cantUnidad;
+	private Float cantUnidad;
 	private AplicaIva aplIva;
 	private Double precioVta;
 	private Sinc sinc;
@@ -65,10 +65,10 @@ public class Producto implements Serializable {
 		this.unidad = unidad;
 	}
 	
-	public Integer getCantUnidad() {
+	public Float getCantUnidad() {
 		return cantUnidad;
 	}
-	public void setCantUnidad(Integer cantUnidad) {
+	public void setCantUnidad(Float cantUnidad) {
 		this.cantUnidad = cantUnidad;
 	}
 	

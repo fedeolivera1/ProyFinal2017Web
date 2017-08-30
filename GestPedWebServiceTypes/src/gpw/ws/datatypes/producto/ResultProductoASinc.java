@@ -23,8 +23,5 @@ public class ResultProductoASinc implements Serializable {
 	public void setEstadoSinc(Integer estadoSinc) {
 		this.estadoSinc = estadoSinc;
 	}
-	
-	
 
-	
 }

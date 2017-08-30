@@ -19,7 +19,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="aplIva" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="cantUnidad" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/&gt;
+ *         &lt;element name="cantUnidad" type="{http://www.w3.org/2001/XMLSchema}float" minOccurs="0"/&gt;
  *         &lt;element name="codigo" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="descripcion" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="estadoProd" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/&gt;
@@ -56,7 +56,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 public class ParamProductoASinc {
 
     protected String aplIva;
-    protected Integer cantUnidad;
+    protected Float cantUnidad;
     protected String codigo;
     protected String descripcion;
     protected Integer estadoProd;
@@ -98,10 +98,10 @@ public class ParamProductoASinc {
      * 
      * @return
      *     possible object is
-     *     {@link Integer }
+     *     {@link Float }
      *     
      */
-    public Integer getCantUnidad() {
+    public Float getCantUnidad() {
         return cantUnidad;
     }
 
@@ -110,10 +110,10 @@ public class ParamProductoASinc {
      * 
      * @param value
      *     allowed object is
-     *     {@link Integer }
+     *     {@link Float }
      *     
      */
-    public void setCantUnidad(Integer value) {
+    public void setCantUnidad(Float value) {
         this.cantUnidad = value;
     }
 

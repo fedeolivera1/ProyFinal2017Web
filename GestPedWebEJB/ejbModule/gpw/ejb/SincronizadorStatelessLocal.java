@@ -17,12 +17,9 @@ import gpw.ws.datatypes.producto.ResultRecProductosASinc;
 public interface SincronizadorStatelessLocal {
 	
 	public String servicioFuncional();
-
 	public ResultObtPersonasNoSinc obtPersonasNoSinc(ParamObtPersonasNoSinc param);
 	public ResultRecPersonasASinc recPersonasASinc(ParamRecPersonasASinc param);
-	
 	public ResultRecProductosASinc recProductosASinc(ParamRecProductosASinc param);
-
 	public ResultObtPedidosNoSinc obtPedidosNoSinc(ParamObtPedidosNoSinc param);
 	public ResultRecPedidosASinc recPedidosASinc(ParamRecPedidosASinc param);
 }

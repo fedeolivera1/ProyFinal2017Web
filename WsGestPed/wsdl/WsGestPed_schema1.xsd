@@ -304,7 +304,7 @@
   <xs:complexType name="ParamProductoASinc">
     <xs:sequence>
       <xs:element minOccurs="0" name="aplIva" type="xs:string"></xs:element>
-      <xs:element minOccurs="0" name="cantUnidad" type="xs:int"></xs:element>
+      <xs:element minOccurs="0" name="cantUnidad" type="xs:float"></xs:element>
       <xs:element minOccurs="0" name="codigo" type="xs:string"></xs:element>
       <xs:element minOccurs="0" name="descripcion" type="xs:string"></xs:element>
       <xs:element minOccurs="0" name="estadoProd" type="xs:int"></xs:element>
