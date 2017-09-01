@@ -36,7 +36,7 @@ public class ServletPedido extends HttpServlet {
 	private final static String CHAR_EMPTY = "";
 	private final static String CHAR_SPLIT_PEDIDO = "~";
 	private final static String CHAR_SPLIT_LINEA = ";";
-	private final static String ACCION_CONFIRMAR = "C";
+	private final static String ACCION_PRECONF = "F";
 	private final static String ACCION_RECHAZAR = "X";
 	private final static String ACCION_ANULAR = "A";
 	private final static String ACCION_ACTUALIZAR = "U";
@@ -182,9 +182,9 @@ public class ServletPedido extends HttpServlet {
 					} else {
 						response.getWriter().write("error");
 					}
-				/*caso pedido en estado REVISION, para CONFIRMAR o RECHAZAR*/
+				/*caso pedido en estado REVISION, para PRECONFIRMAR o RECHAZAR*/
 				} else if( EstadoPedido.R.equals(pedido.getEstado()) && 
-						(ACCION_CONFIRMAR.equalsIgnoreCase(accion) || ACCION_RECHAZAR.equalsIgnoreCase(accion)) ) {
+						(ACCION_PRECONF.equalsIgnoreCase(accion) || ACCION_RECHAZAR.equalsIgnoreCase(accion)) ) {
 					pedido.setEstado(EstadoPedido.getEstadoPedidoPorChar(accion.charAt(0)));
 					pedido.setSinc(Sinc.N);
 					pedido.setUltAct(new Fecha(Fecha.AMDHMS));

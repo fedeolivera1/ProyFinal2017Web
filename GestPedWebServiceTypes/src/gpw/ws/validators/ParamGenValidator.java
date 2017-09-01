@@ -179,11 +179,8 @@ public class ParamGenValidator {
 					}
 				}
 			}
-			//dato obligatorio
-			if(param.getListaPedidosASinc().isEmpty()) {
-				ErrorServicio error = new ErrorServicio(ErroresServicioCod.CODERR_VAL_PARAM, "La lista de parametros de pedido no puede ser vacía.");
-				listaErrores.add(error);
-			} else {
+			//dato opcional, vendrá si hubieron cambios en pedidos web desde el dsk
+			if(param.getListaPedidosASinc() != null && !param.getListaPedidosASinc().isEmpty()) {
 				for(ParamPedidoASinc paramPas : param.getListaPedidosASinc()) {
 					if(paramPas.getIdPersona() == null) {
 						ErrorServicio error = new ErrorServicio(ErroresServicioCod.CODERR_VAL_PARAM, "El idPersona no puede ser nulo.");

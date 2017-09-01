@@ -28,7 +28,7 @@ public class ParserResultSincPedido {
 					ResultPedidoNoSinc resultPns = new ResultPedidoNoSinc();
 					resultPns.setIdPersona(pedido.getPersona().getIdPersona());
 					resultPns.setFechaHora(pedido.getFechaHora().getAsXMLGregorianCalendar(Fecha.AMDHMS));
-					resultPns.setEstado(pedido.getEstado().getEstadoPedido());
+					resultPns.setEstado(String.valueOf(pedido.getEstado().getAsChar()));
 					resultPns.setFechaProg(pedido.getFechaProg() != null ? pedido.getFechaProg().getAsXMLGregorianCalendar(Fecha.AMD) : null);
 					resultPns.setHoraProg(pedido.getHoraProg() != null ? pedido.getHoraProg().getHoraAsXMLGregorianCalendar() : null);
 					resultPns.setOrigen(String.valueOf(pedido.getOrigen().getAsChar()));

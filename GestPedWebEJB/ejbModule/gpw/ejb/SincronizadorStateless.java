@@ -417,7 +417,7 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 				Fecha ultAct = new Fecha(Fecha.AMDHMS);
 				/*
 				 * recorro pedidos que viajaron (NO SINC) al sistema dsk y volvieron sin errores para
-				 * proceder a marcarlos en el sistema web como SINC
+				 * proceder a confirmarlos en el sistema web como SINC
 				 */
 				if(param.getListaPedidoConfirmado() != null && !param.getListaPedidoConfirmado().isEmpty()) {
 					for(ParamPedidoConfirmado paramPc : param.getListaPedidoConfirmado()) {

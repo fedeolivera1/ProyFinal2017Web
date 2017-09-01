@@ -136,6 +136,7 @@
 					<select id="selEstadoPed" name="selEstadoPed" class="form-control">
 						<option value="P">Pendiente</option>
 		      			<option value="R">Revision</option>
+		      			<option value="F">PreConfirmado</option>
 		      			<option value="C">Confirmado</option>
 		      			<option value="X">Rechazado</option>
 		      			<option value="A">Anulado</option>
@@ -241,7 +242,7 @@
 			  <div class="col-md-4">
 			  	<button type="button" id="generarPedido" name="generarPedido" class="btn btn-info" onclick="envioPed();">Generar</button>
 			  	<button type="button" id="actualizarPedido" name="actualizarPedido" class="btn btn-default" onclick="actualizarPed('U');" disabled>Actualizar</button>
-			  	<button type="button" id="confirmarPedido" name="confirmarPedido" class="btn btn-default" onclick="actualizarPed('C');" disabled>Confirmar</button>
+			  	<button type="button" id="preconfPedido" name="preconfPedido" class="btn btn-default" onclick="actualizarPed('F');" disabled>PreConfirmar</button>
 			  	<button type="button" id="rechazarPedido" name="rechazarPedido" class="btn btn-default" onclick="actualizarPed('X');" disabled>Rechazar</button>
 			  	<button type="button" id="anularPedido" name="anularPedido" class="btn btn-default" onclick="actualizarPed('A');" disabled>Anular</button>
 			  </div>

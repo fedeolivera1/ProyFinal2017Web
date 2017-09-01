@@ -19,7 +19,7 @@ public interface CnstQryPedido {
 	public static final String QRY_SELECT_PEDIDO_NO_SINC = "SELECT p.id_persona, p.fecha_hora, p.estado, p.fecha_prog, p.hora_prog, p.origen, "
 													+ "p.total, p.sinc, p.ult_act "
 												+ "FROM pedido p "
-												+ "WHERE p.estado IN ('P', 'M') "
+												+ "WHERE p.estado IN ('P', 'F', 'X') "
 												+ "AND (p.fecha_hora::date BETWEEN ? AND ?) "
 												+ "AND sinc = 'N' "
 												+ "ORDER BY p.fecha_hora DESC";

@@ -538,8 +538,8 @@ function manejarControlesPorEstadoPed(estado) {
 		document.getElementById("actualizarPedido").disabled = false;
 		$("#actualizarPedido").removeClass("btn-default").addClass("btn-primary");
 		
-		document.getElementById("confirmarPedido").disabled = true;
-		$("#confirmarPedido").removeClass("btn-success").addClass("btn-default");
+		document.getElementById("preconfPedido").disabled = true;
+		$("#preconfPedido").removeClass("btn-success").addClass("btn-default");
 		
 		document.getElementById("rechazarPedido").disabled = true;
 		$("#rechazarPedido").removeClass("btn-warning").addClass("btn-default");
@@ -555,8 +555,8 @@ function manejarControlesPorEstadoPed(estado) {
 		document.getElementById("actualizarPedido").disabled = true;
 		$("#actualizarPedido").removeClass("btn-primary").addClass("btn-default");
 		
-		document.getElementById("confirmarPedido").disabled = false;
-		$("#confirmarPedido").removeClass("btn-default").addClass("btn-success");
+		document.getElementById("preconfPedido").disabled = false;
+		$("#preconfPedido").removeClass("btn-default").addClass("btn-success");
 		
 		document.getElementById("rechazarPedido").disabled = false;
 		$("#rechazarPedido").removeClass("btn-default").addClass("btn-warning");
@@ -572,8 +572,8 @@ function manejarControlesPorEstadoPed(estado) {
 		document.getElementById("actualizarPedido").disabled = true;
 		$("#actualizarPedido").removeClass("btn-primary").addClass("btn-default");
 		
-		document.getElementById("confirmarPedido").disabled = true;
-		$("#confirmarPedido").removeClass("btn-success").addClass("btn-default");
+		document.getElementById("preconfPedido").disabled = true;
+		$("#preconfPedido").removeClass("btn-success").addClass("btn-default");
 		
 		document.getElementById("rechazarPedido").disabled = true;
 		$("#rechazarPedido").removeClass("btn-warning").addClass("btn-default");
@@ -674,7 +674,7 @@ function ceroNum(i) {
 /**********************************************************************************************************************************************/
 function devolverClaseTablaSegunEstado(estado) {
 	var clase = 'default';
-	if(estado === 'C') {//confirmado
+	if(estado === 'C' || estado === 'F') {//confirmado o preconf
 		clase = 'success';
 	} else if(estado === 'A') {//anulado
 		clase = 'danger';
