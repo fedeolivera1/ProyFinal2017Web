@@ -225,6 +225,7 @@ function cargarDatosPers() {
 		        form.find('[name="selDep"]').val(response.persona.localidad.departamento.idDepartamento).end();
 //		        $("#selDep").trigger("change");
 		        console.log('previo a carga de LOC datos:' + response.persona.localidad.idLocalidad + ' ' + response.persona.localidad.nombreLocalidad);
+		        cargarCbxLoc(response.persona.localidad.departamento.idDepartamento);
 		        form.find('[name="selLoc"]').val(response.persona.localidad.idLocalidad).end();
 	    	}
         }, error: function (response) {
