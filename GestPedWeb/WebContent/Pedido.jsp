@@ -12,8 +12,6 @@
     <!-- Bootstrap -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
-    <!-- BS selectpicker css-->
-<!-- 	<link rel="stylesheet" href="bootstrap/css/bootstrap-select.min.css"> -->
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -33,12 +31,6 @@
     <script type="text/javascript" src="bootstrap/js/bootstrap-datetimepicker.es.js"></script>
     <!--     Validator -->
     <script type="text/javascript" src="bootstrap/js/validator.js"></script>
-    
-	<!-- BS selectpicker JS -->
-<!-- 	<script type="text/javascript" src="bootstrap/js/bootstrap-select.min.js"></script> -->
-	
-	<!-- BS selectpicker LANG JS -->
-<!-- 	<script type="text/javascript" src="bootstrap/lang/defaults-es_ES.min.js"></script> -->
     
 </head>
 <body>
@@ -132,7 +124,6 @@
 			<div class="form-group col-md-12">
 				<label class="col-md-4 control-label" for="pedExistentes">Estado</label>
 				 <div class="col-md-2">
-<!-- 						<select id="selEstadoPed" name="selEstadoPed" class="selectpicker" data-style="btn-default" title="Seleccione..."> -->
 					<select id="selEstadoPed" name="selEstadoPed" class="form-control">
 						<option value="P">Pendiente</option>
 		      			<option value="R">Revision</option>
@@ -270,7 +261,6 @@
 //document ready
 $(document).ready(function() {
 
-// 	$('.selectpicker').selectpicker();
 	$('#divPedExistente').find('*').hide();
 	$('#divPedExistente').hide();
 
@@ -303,7 +293,6 @@ $(document).ready(function() {
         language: 'es'
 	});
 
-	
     $.ajax({
         type: "POST",
         url: "ServletObtTipoProd",

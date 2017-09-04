@@ -72,6 +72,7 @@ import gpw.ws.datatypes.producto.ParamRecProductosASinc;
 import gpw.ws.datatypes.producto.ParamTipoProdASinc;
 import gpw.ws.datatypes.producto.ParamUnidadASinc;
 import gpw.ws.datatypes.producto.ResultRecProductosASinc;
+import gpw.ws.datatypes.wsfunc.ResultServFuncional;
 import gpw.ws.parsers.ParserPedido;
 import gpw.ws.parsers.ParserProducto;
 import gpw.ws.validators.ParamGenValidator;
@@ -142,24 +143,28 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
     }
     
 	
-	public String servicioFuncional() {
+	public ResultServFuncional servicioFuncional() {
+		ResultServFuncional result = new ResultServFuncional();
 		String mensaje = null;
 		PreparedStatement sentencia = null;
-		String consulta = "SELECT (1) FROM unidad";
+		String consulta = "SELECT 1";
 		try (Connection conn = ds.getConnection()) {
 			sentencia = conn.prepareStatement(consulta, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			try (ResultSet resultado = sentencia.executeQuery()) {
 				if(resultado.next()) {
 					mensaje = "Servicio funcional";
+					result.setResultado(mensaje);
 				} else {
-					mensaje = "Servicio NO DISPONIBLE";
+					ErrorServicio error = new ErrorServicio(ErroresServicioCod.CODERR_WS_INDISPONIBLE, 
+							ErroresServicioCod.WSERR_WS_INDISPONIBLE);
+					result.setError(error);
 				}
 			}
 		} catch (SQLException e) {
 			logger.fatal("Excepcion en EJB > obtPersonasNoSinc: " + e.getMessage(), e);
 			mensaje = e.getMessage();
 		}
-		return mensaje;
+		return result;
 	}
 
 	/***************************************************************************************************************************/

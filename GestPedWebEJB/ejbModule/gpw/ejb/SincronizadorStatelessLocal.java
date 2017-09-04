@@ -12,11 +12,12 @@ import gpw.ws.datatypes.persona.ResultObtPersonasNoSinc;
 import gpw.ws.datatypes.persona.ResultRecPersonasASinc;
 import gpw.ws.datatypes.producto.ParamRecProductosASinc;
 import gpw.ws.datatypes.producto.ResultRecProductosASinc;
+import gpw.ws.datatypes.wsfunc.ResultServFuncional;
 
 @Local
 public interface SincronizadorStatelessLocal {
 	
-	public String servicioFuncional();
+	public ResultServFuncional servicioFuncional();
 	public ResultObtPersonasNoSinc obtPersonasNoSinc(ParamObtPersonasNoSinc param);
 	public ResultRecPersonasASinc recPersonasASinc(ParamRecPersonasASinc param);
 	public ResultRecProductosASinc recProductosASinc(ParamRecProductosASinc param);

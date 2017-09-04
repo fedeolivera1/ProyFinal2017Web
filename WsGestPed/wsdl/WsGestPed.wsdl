@@ -5,6 +5,10 @@
   <import namespace="http://localhost:8080" schemaLocation="WsGestPed_schema1.xsd"></import>
 </schema>
   </wsdl:types>
+  <wsdl:message name="servFuncional">
+    <wsdl:part name="parameters" element="tns:servFuncional">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="obtenerPedidosNoSincResponse">
     <wsdl:part name="parameters" element="tns:obtenerPedidosNoSincResponse">
     </wsdl:part>
@@ -33,12 +37,8 @@
     <wsdl:part name="parameters" element="tns:recibirPedidosASinc">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="servicioFuncional">
-    <wsdl:part name="parameters" element="tns:servicioFuncional">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="servicioFuncionalResponse">
-    <wsdl:part name="parameters" element="tns:servicioFuncionalResponse">
+  <wsdl:message name="servFuncionalResponse">
+    <wsdl:part name="parameters" element="tns:servFuncionalResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="obtenerPedidosNoSinc">
@@ -54,6 +54,12 @@
     </wsdl:part>
   </wsdl:message>
   <wsdl:portType name="WsGestPed">
+    <wsdl:operation name="servFuncional">
+      <wsdl:input name="servFuncional" message="tns:servFuncional">
+    </wsdl:input>
+      <wsdl:output name="servFuncionalResponse" message="tns:servFuncionalResponse">
+    </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="obtenerPersonasNoSinc">
       <wsdl:input name="obtenerPersonasNoSinc" message="tns:obtenerPersonasNoSinc">
     </wsdl:input>
@@ -64,12 +70,6 @@
       <wsdl:input name="recibirPedidosASinc" message="tns:recibirPedidosASinc">
     </wsdl:input>
       <wsdl:output name="recibirPedidosASincResponse" message="tns:recibirPedidosASincResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="servicioFuncional">
-      <wsdl:input name="servicioFuncional" message="tns:servicioFuncional">
-    </wsdl:input>
-      <wsdl:output name="servicioFuncionalResponse" message="tns:servicioFuncionalResponse">
     </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="obtenerPedidosNoSinc">
@@ -93,6 +93,15 @@
   </wsdl:portType>
   <wsdl:binding name="WsGestPedSoapBinding" type="tns:WsGestPed">
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="servFuncional">
+      <soap:operation soapAction="servFuncional" style="document"/>
+      <wsdl:input name="servFuncional">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="servFuncionalResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="obtenerPersonasNoSinc">
       <soap:operation soapAction="obtenerPersonasNoSinc" style="document"/>
       <wsdl:input name="obtenerPersonasNoSinc">
@@ -108,15 +117,6 @@
         <soap:body use="literal"/>
       </wsdl:input>
       <wsdl:output name="recibirPedidosASincResponse">
-        <soap:body use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="servicioFuncional">
-      <soap:operation soapAction="servicioFuncional" style="document"/>
-      <wsdl:input name="servicioFuncional">
-        <soap:body use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="servicioFuncionalResponse">
         <soap:body use="literal"/>
       </wsdl:output>
     </wsdl:operation>

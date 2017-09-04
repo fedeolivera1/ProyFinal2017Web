@@ -81,10 +81,11 @@ function cargarCbxDep() {
         		$('#selDep').append($('<option></option>').val(this['idDepartamento']).html(this['nombreDepartamento']));
         	});
 //        	$('#selDep').trigger('change');
-        	//inmediatamente a la carga de dep, cargo las loc.
-        	cargarCbxLoc();
         }, error: function (response) {
         	bootstrap_alert.danger(response.responseText);
+        }, complete: function() {
+        	//inmediatamente a la carga de dep, cargo las loc.
+        	cargarCbxLoc($('#selDep').val(), undefined);
         }
     });
 }
@@ -93,32 +94,25 @@ function cargarCbxDep() {
  * personas
  * carga de select con localidades
  */
-function cargarCbxLoc() {
-	console.log('entra a cargarCbxLoc');
-	$(function() {
-		var fillCbxLoc = function() {
-			var selected = $('#selDep').val();
-			console.log('entra a fill de localidad con dep=' + selected);
-			if(selected != null) {
-				var data = "idDep=" + selected;
-				$.ajax({
-					type: "POST",
-					url: "ServletObtLoc",
-					data: data,
-					success: function(response) {
-						$('#selLoc').empty();
-						$.each(response, function () {
-							$("#selLoc").append($("<option></option>").val(this['idLocalidad']).html(this['nombreLocalidad']));
-						});
-//						$('#selLoc').trigger('change');
-					}, error: function (response) {
-						bootstrap_alert.danger(response.responseText);
-					}
+function cargarCbxLoc(idDep) {
+	console.log('entra a fill de localidad con dep=' + idDep);
+	if(idDep != null) {
+		var data = "idDep=" + idDep;
+		$.ajax({
+			type: "POST",
+			url: "ServletObtLoc",
+			data: data,
+			async: false,
+			success: function(response) {
+				$('#selLoc').empty();
+				$.each(response, function () {
+					$("#selLoc").append($("<option></option>").val(this['idLocalidad']).html(this['nombreLocalidad']));
 				});
+			}, error: function (response) {
+				bootstrap_alert.danger(response.responseText);
 			}
-		}
-		fillCbxLoc();
-	});
+		});
+	}
 }
 
 /**
@@ -229,9 +223,8 @@ function cargarDatosPers() {
 		        form.find('[name="celular"]').val(response.persona.celular).end();
 		        console.log('previo a carga de DEP datos:' + response.persona.localidad.departamento.idDepartamento + ' ' + response.persona.localidad.departamento.nombreDepartamento);
 		        form.find('[name="selDep"]').val(response.persona.localidad.departamento.idDepartamento).end();
-		        $("#selDep").trigger("change");
+//		        $("#selDep").trigger("change");
 		        console.log('previo a carga de LOC datos:' + response.persona.localidad.idLocalidad + ' ' + response.persona.localidad.nombreLocalidad);
-		        cargarCbxLoc(response.persona.localidad.idLocalidad);
 		        form.find('[name="selLoc"]').val(response.persona.localidad.idLocalidad).end();
 	    	}
         }, error: function (response) {

@@ -25,6 +25,7 @@ import gpw.ws.datatypes.persona.ResultObtPersonasNoSinc;
 import gpw.ws.datatypes.persona.ResultRecPersonasASinc;
 import gpw.ws.datatypes.producto.ParamRecProductosASinc;
 import gpw.ws.datatypes.producto.ResultRecProductosASinc;
+import gpw.ws.datatypes.wsfunc.ResultServFuncional;
 
 @WebService(targetNamespace = "http://localhost:8080", portName = "WsGestPed", serviceName = "WsGestPed")
 public class WsGestPed {
@@ -34,22 +35,22 @@ public class WsGestPed {
 	WebServiceContext wsCtx;
 	MessageContext msgCtx;
 
-	private static final String ERRVAL = "Error de autenticacion! Compruebe credenciales.";
 	
-	@WebMethod(operationName = "servicioFuncional", action = "servicioFuncional", exclude = false)
-	public String servicioFuncional() {
+	@WebMethod(operationName = "servFuncional", action = "servFuncional", exclude = false)
+	@WebResult(name = "resultServFuncional")
+	public ResultServFuncional servFuncional() {
 		logger.info("<<< # WS # >>> Inicia operacion servicioFuncional...");
+		ResultServFuncional result = new ResultServFuncional();
 		msgCtx = wsCtx.getMessageContext();
-		String retorno;
 		if(Authenticator.authenticateWsCAll(msgCtx)) {
 			SincronizadorStatelessLocal sincSl = LookUps.lookUpEjb();
-			retorno = sincSl.servicioFuncional();
+			result = sincSl.servicioFuncional();
 		} else {
-			retorno = ERRVAL;
+			result.setError(new ErrorServicio(ErroresServicioCod.CODERR_WSAUTH, ErroresServicioCod.WSERR_AUTH));
 			logger.warn("WARNING WsGestPed > servicioFuncional: Se registra un error al autenticar las credenciales");
 		}
 		logger.info("<<< # WS # >>> Finaliza operacion servicioFuncional...");
-		return retorno;
+		return result;
 	}
 	
 	@WebMethod(operationName = "obtenerPersonasNoSinc", action = "obtenerPersonasNoSinc", exclude = false)
@@ -62,7 +63,7 @@ public class WsGestPed {
 			SincronizadorStatelessLocal sincSl = LookUps.lookUpEjb();
 			result = sincSl.obtPersonasNoSinc(paramObtPersonasNoSinc);
 		} else {
-			ErrorServicio errorServ = new ErrorServicio(ErroresServicioCod.CODERR_WSAUTH, ERRVAL);
+			ErrorServicio errorServ = new ErrorServicio(ErroresServicioCod.CODERR_WSAUTH, ErroresServicioCod.WSERR_AUTH);
 			result.getErroresServ().add(errorServ);
 			logger.warn("WARNING WsGestPed > obtenerPersonasNoSinc: Se registra un error al autenticar las credenciales");
 		}
@@ -81,7 +82,7 @@ public class WsGestPed {
 			SincronizadorStatelessLocal sincSl = LookUps.lookUpEjb();
 			result = sincSl.recPersonasASinc(paramRecPersonasASinc);
 		} else {
-			ErrorServicio errorServ = new ErrorServicio(ErroresServicioCod.CODERR_WSAUTH, ERRVAL);
+			ErrorServicio errorServ = new ErrorServicio(ErroresServicioCod.CODERR_WSAUTH, ErroresServicioCod.WSERR_AUTH);
 			result.getErroresServ().add(errorServ);
 			logger.warn("WARNING WsGestPed > recibirPersonasASinc: Se registra un error al autenticar las credenciales");
 		}
@@ -100,7 +101,7 @@ public class WsGestPed {
 			SincronizadorStatelessLocal sincSl = LookUps.lookUpEjb();
 			result = sincSl.recProductosASinc(paramRecProductosASinc);
 		} else {
-			ErrorServicio errorServ = new ErrorServicio(ErroresServicioCod.CODERR_WSAUTH, ERRVAL);
+			ErrorServicio errorServ = new ErrorServicio(ErroresServicioCod.CODERR_WSAUTH, ErroresServicioCod.WSERR_AUTH);
 			result.getErroresServ().add(errorServ);
 			logger.warn("WARNING WsGestPed > recibirProductosASinc: Se registra un error al autenticar las credenciales");
 		}
@@ -118,7 +119,7 @@ public class WsGestPed {
 			SincronizadorStatelessLocal sincSl = LookUps.lookUpEjb();
 			result = sincSl.obtPedidosNoSinc(paramObtPedidosNoSinc);
 		} else {
-			ErrorServicio errorServ = new ErrorServicio(ErroresServicioCod.CODERR_WSAUTH, ERRVAL);
+			ErrorServicio errorServ = new ErrorServicio(ErroresServicioCod.CODERR_WSAUTH, ErroresServicioCod.WSERR_AUTH);
 			result.getErroresServ().add(errorServ);
 			logger.warn("WARNING WsGestPed > obtenerPedidosNoSinc: Se registra un error al autenticar las credenciales");
 		}
@@ -136,7 +137,7 @@ public class WsGestPed {
 			SincronizadorStatelessLocal sincSl = LookUps.lookUpEjb();
 			result = sincSl.recPedidosASinc(paramRecPedidosASinc);
 		} else {
-			ErrorServicio errorServ = new ErrorServicio(ErroresServicioCod.CODERR_WSAUTH, ERRVAL);
+			ErrorServicio errorServ = new ErrorServicio(ErroresServicioCod.CODERR_WSAUTH, ErroresServicioCod.WSERR_AUTH);
 			result.getErroresServ().add(errorServ);
 			logger.warn("WARNING WsGestPed > recibirPedidosASinc: Se registra un error al autenticar las credenciales");
 		}

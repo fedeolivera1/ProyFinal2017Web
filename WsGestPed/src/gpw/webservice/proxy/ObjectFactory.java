@@ -34,8 +34,8 @@ public class ObjectFactory {
     private final static QName _RecibirPersonasASincResponse_QNAME = new QName("http://localhost:8080", "recibirPersonasASincResponse");
     private final static QName _RecibirProductosASinc_QNAME = new QName("http://localhost:8080", "recibirProductosASinc");
     private final static QName _RecibirProductosASincResponse_QNAME = new QName("http://localhost:8080", "recibirProductosASincResponse");
-    private final static QName _ServicioFuncional_QNAME = new QName("http://localhost:8080", "servicioFuncional");
-    private final static QName _ServicioFuncionalResponse_QNAME = new QName("http://localhost:8080", "servicioFuncionalResponse");
+    private final static QName _ServFuncional_QNAME = new QName("http://localhost:8080", "servFuncional");
+    private final static QName _ServFuncionalResponse_QNAME = new QName("http://localhost:8080", "servFuncionalResponse");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: gpw.webservice.proxy
@@ -125,19 +125,35 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ServicioFuncional }
+     * Create an instance of {@link ServFuncional }
      * 
      */
-    public ServicioFuncional createServicioFuncional() {
-        return new ServicioFuncional();
+    public ServFuncional createServFuncional() {
+        return new ServFuncional();
     }
 
     /**
-     * Create an instance of {@link ServicioFuncionalResponse }
+     * Create an instance of {@link ServFuncionalResponse }
      * 
      */
-    public ServicioFuncionalResponse createServicioFuncionalResponse() {
-        return new ServicioFuncionalResponse();
+    public ServFuncionalResponse createServFuncionalResponse() {
+        return new ServFuncionalResponse();
+    }
+
+    /**
+     * Create an instance of {@link ResultServFuncional }
+     * 
+     */
+    public ResultServFuncional createResultServFuncional() {
+        return new ResultServFuncional();
+    }
+
+    /**
+     * Create an instance of {@link ErrorServicio }
+     * 
+     */
+    public ErrorServicio createErrorServicio() {
+        return new ErrorServicio();
     }
 
     /**
@@ -154,14 +170,6 @@ public class ObjectFactory {
      */
     public ResultObtPersonasNoSinc createResultObtPersonasNoSinc() {
         return new ResultObtPersonasNoSinc();
-    }
-
-    /**
-     * Create an instance of {@link ErrorServicio }
-     * 
-     */
-    public ErrorServicio createErrorServicio() {
-        return new ErrorServicio();
     }
 
     /**
@@ -455,21 +463,21 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ServicioFuncional }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ServFuncional }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://localhost:8080", name = "servicioFuncional")
-    public JAXBElement<ServicioFuncional> createServicioFuncional(ServicioFuncional value) {
-        return new JAXBElement<ServicioFuncional>(_ServicioFuncional_QNAME, ServicioFuncional.class, null, value);
+    @XmlElementDecl(namespace = "http://localhost:8080", name = "servFuncional")
+    public JAXBElement<ServFuncional> createServFuncional(ServFuncional value) {
+        return new JAXBElement<ServFuncional>(_ServFuncional_QNAME, ServFuncional.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ServicioFuncionalResponse }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ServFuncionalResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://localhost:8080", name = "servicioFuncionalResponse")
-    public JAXBElement<ServicioFuncionalResponse> createServicioFuncionalResponse(ServicioFuncionalResponse value) {
-        return new JAXBElement<ServicioFuncionalResponse>(_ServicioFuncionalResponse_QNAME, ServicioFuncionalResponse.class, null, value);
+    @XmlElementDecl(namespace = "http://localhost:8080", name = "servFuncionalResponse")
+    public JAXBElement<ServFuncionalResponse> createServFuncionalResponse(ServFuncionalResponse value) {
+        return new JAXBElement<ServFuncionalResponse>(_ServFuncionalResponse_QNAME, ServFuncionalResponse.class, null, value);
     }
 
 }

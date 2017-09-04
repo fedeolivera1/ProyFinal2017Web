@@ -303,7 +303,7 @@
 		<div class="form-group col-md-12">
 		  <label class="col-md-4 control-label" for="Departamento">Departamento</label>
 		  <div class="col-md-4" id="div-sel-dep">
-		    <select id="selDep" name="selDep" class="form-control" title="Seleccione departamento..." onchange="cargarCbxLoc();">
+		    <select id="selDep" name="selDep" class="form-control" title="Seleccione departamento..." onchange="cargarCbxLoc(this.value);">
 		    </select>
 		  </div>
 		</div>
@@ -354,17 +354,7 @@
             	bootstrap_alert.danger(response.responseText);
             }
 	    });
-// 	    $.ajax({
-//             type: "POST",
-//             url: "ServletObtDep",
-//             contentType: "application/json",              
-//             dataType: "json",
-//             success: function(response) {
-// 				cargarCbxDep(response);
-//             }, error: function (response) {
-//             	bootstrap_alert.danger(response.responseText);
-//             }
-// 	    });
+
 	    seleccionTipoPers();
 		cargarDatosPers();
 	});

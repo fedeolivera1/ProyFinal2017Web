@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
@@ -34,16 +35,18 @@ public class ServletObtTipoProd extends HttpServlet {
 	 */
 	private void processRequestPOST(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			GpWebStatelessLocal gpwStLoc = LookUps.lookUpGpWebStateless();
-			List<TipoProd> listaTp = gpwStLoc.obtenerListaTipoProd();
-			final Gson gson = new Gson();
-			final Type tipoListaTp = new TypeToken<List<TipoProd>>(){}.getType();
-			final String listaTpJson = gson.toJson(listaTp, tipoListaTp);
-			System.out.print(listaTpJson);
-			response.setContentType("application/json");
-			response.setCharacterEncoding("UTF-8");
-//			//ajax mode
-			response.getWriter().write(listaTpJson);
+			HttpSession session = request.getSession();
+			if(session.getAttribute("usuario") != null) {
+				GpWebStatelessLocal gpwStLoc = LookUps.lookUpGpWebStateless();
+				List<TipoProd> listaTp = gpwStLoc.obtenerListaTipoProd();
+				final Gson gson = new Gson();
+				final Type tipoListaTp = new TypeToken<List<TipoProd>>(){}.getType();
+				final String listaTpJson = gson.toJson(listaTp, tipoListaTp);
+				System.out.print(listaTpJson);
+				response.setContentType("application/json");
+				response.setCharacterEncoding("UTF-8");
+				response.getWriter().write(listaTpJson);
+			}
 		} catch (PersistenciaException e) {
 			logger.fatal("Excepcion en ServletObtTipoProd > processRequest: " + e.getMessage(), e);
 			response.setStatus(500);

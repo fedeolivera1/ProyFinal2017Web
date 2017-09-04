@@ -11,13 +11,13 @@ public class ClientSample {
 	        System.out.println("Create Web Service...");
 	        WsGestPed port1 = service1.getWsGestPed();
 	        System.out.println("Call Web Service Operation...");
+	        System.out.println("Server said: " + port1.servFuncional());
 	        System.out.println("Server said: " + port1.obtenerPersonasNoSinc(null));
 	        //Please input the parameters instead of 'null' for the upper method!
 	
 	        System.out.println("Server said: " + port1.recibirPedidosASinc(null));
 	        //Please input the parameters instead of 'null' for the upper method!
 	
-	        System.out.println("Server said: " + port1.servicioFuncional());
 	        System.out.println("Server said: " + port1.obtenerPedidosNoSinc(null));
 	        //Please input the parameters instead of 'null' for the upper method!
 	
@@ -30,13 +30,13 @@ public class ClientSample {
 	        System.out.println("Create Web Service...");
 	        WsGestPed port2 = service1.getWsGestPed();
 	        System.out.println("Call Web Service Operation...");
+	        System.out.println("Server said: " + port2.servFuncional());
 	        System.out.println("Server said: " + port2.obtenerPersonasNoSinc(null));
 	        //Please input the parameters instead of 'null' for the upper method!
 	
 	        System.out.println("Server said: " + port2.recibirPedidosASinc(null));
 	        //Please input the parameters instead of 'null' for the upper method!
 	
-	        System.out.println("Server said: " + port2.servicioFuncional());
 	        System.out.println("Server said: " + port2.obtenerPedidosNoSinc(null));
 	        //Please input the parameters instead of 'null' for the upper method!
 	
