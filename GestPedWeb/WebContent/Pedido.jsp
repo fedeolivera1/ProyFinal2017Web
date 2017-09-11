@@ -230,7 +230,7 @@
 			<!-- Buttons [Generar-Modificar pedido]-->
 			<div class="form-group col-md-12">
 			  <label class="col-md-4 control-label" for="registrar"></label>
-			  <div class="col-md-4">
+			  <div class="col-md-6">
 			  	<button type="button" id="generarPedido" name="generarPedido" class="btn btn-info" onclick="envioPed();">Generar</button>
 			  	<button type="button" id="actualizarPedido" name="actualizarPedido" class="btn btn-default" onclick="actualizarPed('U');" disabled>Actualizar</button>
 			  	<button type="button" id="preconfPedido" name="preconfPedido" class="btn btn-default" onclick="actualizarPed('F');" disabled>PreConfirmar</button>
