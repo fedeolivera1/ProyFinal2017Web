@@ -13,6 +13,7 @@ import org.jboss.logging.Logger;
 import gpw.ejb.SincronizadorStatelessLocal;
 import gpw.ejblookup.LookUps;
 import gpw.webservice.security.Authenticator;
+import gpw.webservice.util.CnstWs;
 import gpw.ws.datatypes.errors.ErrorServicio;
 import gpw.ws.datatypes.errors.ErroresServicioCod;
 import gpw.ws.datatypes.pedido.ParamObtPedidosNoSinc;
@@ -27,7 +28,7 @@ import gpw.ws.datatypes.producto.ParamRecProductosASinc;
 import gpw.ws.datatypes.producto.ResultRecProductosASinc;
 import gpw.ws.datatypes.wsfunc.ResultServFuncional;
 
-@WebService(targetNamespace = "http://localhost:8080", portName = "WsGestPed", serviceName = "WsGestPed")
+@WebService(targetNamespace = CnstWs.TNS, portName = CnstWs.PORTNAME, serviceName = CnstWs.WSNAME)
 public class WsGestPed {
 
 	private static Logger logger = Logger.getLogger(WsGestPed.class);
@@ -35,6 +36,7 @@ public class WsGestPed {
 	WebServiceContext wsCtx;
 	MessageContext msgCtx;
 
+	/*******************************************************************************************/
 	
 	@WebMethod(operationName = "servFuncional", action = "servFuncional", exclude = false)
 	@WebResult(name = "resultServFuncional")

@@ -246,8 +246,9 @@
 %>
 	<div class="container">
 		<div class="panel-heading" align="center">
-			<h2><b><font color="black">Usuario no autorizado a acceder al recurso.</font></b></h2><br>
-			<a href="login.jsp">Volver al login</a>
+			<h2><b><font color="black">Debe ser un Usuario registrado para acceder a este recurso.</font></b></h2><br>
+			<a href="login.jsp">Volver al login</a><br>
+			<a href="registroPersona.jsp">Registrarme</a><br>
 			<hr>
 		</div>
 	</div>

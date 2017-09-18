@@ -123,12 +123,6 @@ public class ServletPedido extends HttpServlet {
 			String keyPedido = request.getParameter("keyPedido");
 			String accion = request.getParameter("accion"); 
 			
-//				HttpSession httpSession = request.getSession();
-			//obtengo usuario de sesion para conocer la persona
-//				String usr = (String) httpSession.getAttribute("usuario");
-			//levanto obj usuarioweb de persistencia a partir del usuario de sesion
-//				UsuarioWeb usuario = gpwStLoc.obtenerUsuario(usr);
-			
 			String[] keyPedidoSpl = keyPedido.split(";");
 			Long idPersona = Long.valueOf(keyPedidoSpl[0]);
 			String fechaHoraStr = keyPedidoSpl[1];

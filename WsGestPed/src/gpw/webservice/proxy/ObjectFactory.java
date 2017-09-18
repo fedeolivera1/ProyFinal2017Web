@@ -24,18 +24,18 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _ObtenerPedidosNoSinc_QNAME = new QName("http://localhost:8080", "obtenerPedidosNoSinc");
-    private final static QName _ObtenerPedidosNoSincResponse_QNAME = new QName("http://localhost:8080", "obtenerPedidosNoSincResponse");
-    private final static QName _ObtenerPersonasNoSinc_QNAME = new QName("http://localhost:8080", "obtenerPersonasNoSinc");
-    private final static QName _ObtenerPersonasNoSincResponse_QNAME = new QName("http://localhost:8080", "obtenerPersonasNoSincResponse");
-    private final static QName _RecibirPedidosASinc_QNAME = new QName("http://localhost:8080", "recibirPedidosASinc");
-    private final static QName _RecibirPedidosASincResponse_QNAME = new QName("http://localhost:8080", "recibirPedidosASincResponse");
-    private final static QName _RecibirPersonasASinc_QNAME = new QName("http://localhost:8080", "recibirPersonasASinc");
-    private final static QName _RecibirPersonasASincResponse_QNAME = new QName("http://localhost:8080", "recibirPersonasASincResponse");
-    private final static QName _RecibirProductosASinc_QNAME = new QName("http://localhost:8080", "recibirProductosASinc");
-    private final static QName _RecibirProductosASincResponse_QNAME = new QName("http://localhost:8080", "recibirProductosASincResponse");
-    private final static QName _ServFuncional_QNAME = new QName("http://localhost:8080", "servFuncional");
-    private final static QName _ServFuncionalResponse_QNAME = new QName("http://localhost:8080", "servFuncionalResponse");
+    private final static QName _ObtenerPedidosNoSinc_QNAME = new QName("http://192.168.1.2:8080", "obtenerPedidosNoSinc");
+    private final static QName _ObtenerPedidosNoSincResponse_QNAME = new QName("http://192.168.1.2:8080", "obtenerPedidosNoSincResponse");
+    private final static QName _ObtenerPersonasNoSinc_QNAME = new QName("http://192.168.1.2:8080", "obtenerPersonasNoSinc");
+    private final static QName _ObtenerPersonasNoSincResponse_QNAME = new QName("http://192.168.1.2:8080", "obtenerPersonasNoSincResponse");
+    private final static QName _RecibirPedidosASinc_QNAME = new QName("http://192.168.1.2:8080", "recibirPedidosASinc");
+    private final static QName _RecibirPedidosASincResponse_QNAME = new QName("http://192.168.1.2:8080", "recibirPedidosASincResponse");
+    private final static QName _RecibirPersonasASinc_QNAME = new QName("http://192.168.1.2:8080", "recibirPersonasASinc");
+    private final static QName _RecibirPersonasASincResponse_QNAME = new QName("http://192.168.1.2:8080", "recibirPersonasASincResponse");
+    private final static QName _RecibirProductosASinc_QNAME = new QName("http://192.168.1.2:8080", "recibirProductosASinc");
+    private final static QName _RecibirProductosASincResponse_QNAME = new QName("http://192.168.1.2:8080", "recibirProductosASincResponse");
+    private final static QName _ServFuncional_QNAME = new QName("http://192.168.1.2:8080", "servFuncional");
+    private final static QName _ServFuncionalResponse_QNAME = new QName("http://192.168.1.2:8080", "servFuncionalResponse");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: gpw.webservice.proxy
@@ -376,7 +376,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link ObtenerPedidosNoSinc }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://localhost:8080", name = "obtenerPedidosNoSinc")
+    @XmlElementDecl(namespace = "http://192.168.1.2:8080", name = "obtenerPedidosNoSinc")
     public JAXBElement<ObtenerPedidosNoSinc> createObtenerPedidosNoSinc(ObtenerPedidosNoSinc value) {
         return new JAXBElement<ObtenerPedidosNoSinc>(_ObtenerPedidosNoSinc_QNAME, ObtenerPedidosNoSinc.class, null, value);
     }
@@ -385,7 +385,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link ObtenerPedidosNoSincResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://localhost:8080", name = "obtenerPedidosNoSincResponse")
+    @XmlElementDecl(namespace = "http://192.168.1.2:8080", name = "obtenerPedidosNoSincResponse")
     public JAXBElement<ObtenerPedidosNoSincResponse> createObtenerPedidosNoSincResponse(ObtenerPedidosNoSincResponse value) {
         return new JAXBElement<ObtenerPedidosNoSincResponse>(_ObtenerPedidosNoSincResponse_QNAME, ObtenerPedidosNoSincResponse.class, null, value);
     }
@@ -394,7 +394,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link ObtenerPersonasNoSinc }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://localhost:8080", name = "obtenerPersonasNoSinc")
+    @XmlElementDecl(namespace = "http://192.168.1.2:8080", name = "obtenerPersonasNoSinc")
     public JAXBElement<ObtenerPersonasNoSinc> createObtenerPersonasNoSinc(ObtenerPersonasNoSinc value) {
         return new JAXBElement<ObtenerPersonasNoSinc>(_ObtenerPersonasNoSinc_QNAME, ObtenerPersonasNoSinc.class, null, value);
     }
@@ -403,7 +403,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link ObtenerPersonasNoSincResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://localhost:8080", name = "obtenerPersonasNoSincResponse")
+    @XmlElementDecl(namespace = "http://192.168.1.2:8080", name = "obtenerPersonasNoSincResponse")
     public JAXBElement<ObtenerPersonasNoSincResponse> createObtenerPersonasNoSincResponse(ObtenerPersonasNoSincResponse value) {
         return new JAXBElement<ObtenerPersonasNoSincResponse>(_ObtenerPersonasNoSincResponse_QNAME, ObtenerPersonasNoSincResponse.class, null, value);
     }
@@ -412,7 +412,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link RecibirPedidosASinc }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://localhost:8080", name = "recibirPedidosASinc")
+    @XmlElementDecl(namespace = "http://192.168.1.2:8080", name = "recibirPedidosASinc")
     public JAXBElement<RecibirPedidosASinc> createRecibirPedidosASinc(RecibirPedidosASinc value) {
         return new JAXBElement<RecibirPedidosASinc>(_RecibirPedidosASinc_QNAME, RecibirPedidosASinc.class, null, value);
     }
@@ -421,7 +421,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link RecibirPedidosASincResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://localhost:8080", name = "recibirPedidosASincResponse")
+    @XmlElementDecl(namespace = "http://192.168.1.2:8080", name = "recibirPedidosASincResponse")
     public JAXBElement<RecibirPedidosASincResponse> createRecibirPedidosASincResponse(RecibirPedidosASincResponse value) {
         return new JAXBElement<RecibirPedidosASincResponse>(_RecibirPedidosASincResponse_QNAME, RecibirPedidosASincResponse.class, null, value);
     }
@@ -430,7 +430,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link RecibirPersonasASinc }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://localhost:8080", name = "recibirPersonasASinc")
+    @XmlElementDecl(namespace = "http://192.168.1.2:8080", name = "recibirPersonasASinc")
     public JAXBElement<RecibirPersonasASinc> createRecibirPersonasASinc(RecibirPersonasASinc value) {
         return new JAXBElement<RecibirPersonasASinc>(_RecibirPersonasASinc_QNAME, RecibirPersonasASinc.class, null, value);
     }
@@ -439,7 +439,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link RecibirPersonasASincResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://localhost:8080", name = "recibirPersonasASincResponse")
+    @XmlElementDecl(namespace = "http://192.168.1.2:8080", name = "recibirPersonasASincResponse")
     public JAXBElement<RecibirPersonasASincResponse> createRecibirPersonasASincResponse(RecibirPersonasASincResponse value) {
         return new JAXBElement<RecibirPersonasASincResponse>(_RecibirPersonasASincResponse_QNAME, RecibirPersonasASincResponse.class, null, value);
     }
@@ -448,7 +448,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link RecibirProductosASinc }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://localhost:8080", name = "recibirProductosASinc")
+    @XmlElementDecl(namespace = "http://192.168.1.2:8080", name = "recibirProductosASinc")
     public JAXBElement<RecibirProductosASinc> createRecibirProductosASinc(RecibirProductosASinc value) {
         return new JAXBElement<RecibirProductosASinc>(_RecibirProductosASinc_QNAME, RecibirProductosASinc.class, null, value);
     }
@@ -457,7 +457,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link RecibirProductosASincResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://localhost:8080", name = "recibirProductosASincResponse")
+    @XmlElementDecl(namespace = "http://192.168.1.2:8080", name = "recibirProductosASincResponse")
     public JAXBElement<RecibirProductosASincResponse> createRecibirProductosASincResponse(RecibirProductosASincResponse value) {
         return new JAXBElement<RecibirProductosASincResponse>(_RecibirProductosASincResponse_QNAME, RecibirProductosASincResponse.class, null, value);
     }
@@ -466,7 +466,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link ServFuncional }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://localhost:8080", name = "servFuncional")
+    @XmlElementDecl(namespace = "http://192.168.1.2:8080", name = "servFuncional")
     public JAXBElement<ServFuncional> createServFuncional(ServFuncional value) {
         return new JAXBElement<ServFuncional>(_ServFuncional_QNAME, ServFuncional.class, null, value);
     }
@@ -475,7 +475,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link ServFuncionalResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://localhost:8080", name = "servFuncionalResponse")
+    @XmlElementDecl(namespace = "http://192.168.1.2:8080", name = "servFuncionalResponse")
     public JAXBElement<ServFuncionalResponse> createServFuncionalResponse(ServFuncionalResponse value) {
         return new JAXBElement<ServFuncionalResponse>(_ServFuncionalResponse_QNAME, ServFuncionalResponse.class, null, value);
     }

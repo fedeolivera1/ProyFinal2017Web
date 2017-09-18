@@ -26,7 +26,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="fechaProg" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/&gt;
  *         &lt;element name="horaProg" type="{http://www.w3.org/2001/XMLSchema}time" minOccurs="0"/&gt;
  *         &lt;element name="idPersona" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
- *         &lt;element name="listaPedidoLinea" type="{http://localhost:8080}ParamPedidoLinea" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *         &lt;element name="listaPedidoLinea" type="{http://192.168.1.2:8080}ParamPedidoLinea" maxOccurs="unbounded" minOccurs="0"/&gt;
  *         &lt;element name="origen" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="sinc" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="total" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/&gt;
