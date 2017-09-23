@@ -46,8 +46,8 @@
 	    <div id="alert_placeholder"></div>
 	</div>
     <div class="container">
-
 		<div class="panel-heading" align="center">
+			<img src="assets/img/logo.png" class="img-fluid" alt="Responsive image">
 			<h2><b><font color="black">Gestor de Pedidos WEB</font> </b></h2>
 		</div>
 		<form class="form-signin" action="ServletLogin" method="POST" id="loginForm">

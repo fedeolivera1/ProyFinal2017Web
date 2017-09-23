@@ -41,7 +41,11 @@
  	<nav class="navbar navbar-default">
 	  <div class="container-fluid">
 	    <div class="navbar-header">
-	      <a class="navbar-brand">Gestor de Pedidos WEB</a>
+		    <a class="navbar-brand" title="YAMETL SRL" alt="YAMETL SRL">
+	        	<img style="max-width: 50px; margin-top: -15px;"
+	             src="assets/img/icon_md.png">
+	    	</a>
+	      	<a class="navbar-brand">Gestor de Pedidos WEB</a>
 	    </div>
 	    <ul class="nav navbar-nav">
 	      <li class="active"><a href="#">Mis Datos</a></li>
@@ -435,6 +439,12 @@
 	var $confirm  = $('#passwdReg2')
 	$password.on('input', function (e) {
 	  $confirm.attr('required', !!$password.val())
+	});
+
+	$("#limpiar").on("click",function(event) { 
+		//devuelvo el valor de cliente persona al tipo
+		$('#tipoPers').val('F');
+		$('#tipoPers').trigger('change');
 	});
 
 </script>

@@ -37,18 +37,21 @@ public class ServletObtProducto extends HttpServlet {
 	 */
 	protected void processRequestPOST_list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			Integer idTipoProd = (request.getParameter("idTipoProd") != null ? Integer.valueOf(request.getParameter("idTipoProd")) : -1);
-			GpWebStatelessLocal gpwStLoc = LookUps.lookUpGpWebStateless();
-			List<Producto> listaProd = gpwStLoc.obtenerListaProductoPorTipo(idTipoProd);
-			final Gson gson = new Gson();
-			final Type tipoListaProd = new TypeToken<List<Producto>>(){}.getType();
-			final String listaProdJson = gson.toJson(listaProd, tipoListaProd);
-			logger.debug("Lista de productos JSON: " + listaProdJson);
-			
-			response.setContentType("application/json");
-			response.setCharacterEncoding("UTF-8");
-			//ajax mode
-			response.getWriter().write(listaProdJson);
+			Integer idTipoProd = ((request.getParameter("idTipoProd") != null && !request.getParameter("idTipoProd").equals("null")) ? 
+					Integer.valueOf(request.getParameter("idTipoProd")) : -1);
+			if(idTipoProd != null) {
+				GpWebStatelessLocal gpwStLoc = LookUps.lookUpGpWebStateless();
+				List<Producto> listaProd = gpwStLoc.obtenerListaProductoPorTipo(idTipoProd);
+				final Gson gson = new Gson();
+				final Type tipoListaProd = new TypeToken<List<Producto>>(){}.getType();
+				final String listaProdJson = gson.toJson(listaProd, tipoListaProd);
+				logger.debug("Lista de productos JSON: " + listaProdJson);
+				
+				response.setContentType("application/json");
+				response.setCharacterEncoding("UTF-8");
+				//ajax mode
+				response.getWriter().write(listaProdJson);
+			}
 		} catch (PersistenciaException e) {
 			logger.fatal("Excepcion en ServletObtProducto > processRequestPOST: " + e.getMessage(), e);
 			response.setStatus(500);

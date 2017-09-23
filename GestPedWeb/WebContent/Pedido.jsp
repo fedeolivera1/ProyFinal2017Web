@@ -42,6 +42,10 @@
 	<nav class="navbar navbar-default">
 	  <div class="container-fluid">
 	    <div class="navbar-header">
+	    	<a class="navbar-brand" title="YAMETL SRL" alt="YAMETL SRL">
+	        	<img style="max-width: 50px; margin-top: -15px;"
+	             src="assets/img/icon_md.png">
+	    	</a>
 	      <a class="navbar-brand">Gestor de Pedidos WEB</a>
 	    </div>
 	    <ul class="nav navbar-nav">

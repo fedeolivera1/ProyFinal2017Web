@@ -195,6 +195,10 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 			context.setRollbackOnly();
 			logger.fatal("Excepcion en EJB > obtPersonasNoSinc: " + e.getMessage(), e);
 			result.getErroresServ().add(new ErrorServicio(ErroresServicioCod.CODERR_EXCEP, e.getMessage()));
+		} catch (Exception e) {
+			context.setRollbackOnly();
+			logger.fatal("Excepcion GENERICA en EJB > obtPersonasNoSinc: " + e.getMessage(), e);
+			result.getErroresServ().add(new ErrorServicio(ErroresServicioCod.CODERR_EXCEP, e.getMessage()));
 		}
 		return result;
 	}
@@ -237,7 +241,11 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 			}
 		} catch (PersistenciaException | SQLException e) {
 			context.setRollbackOnly();
-			logger.fatal("Excepcion en EJB > obtPersonasNoSinc: " + e.getMessage(), e);
+			logger.fatal("Excepcion en EJB > recPersonasASinc: " + e.getMessage(), e);
+			result.getErroresServ().add(new ErrorServicio(ErroresServicioCod.CODERR_EXCEP, e.getMessage()));
+		} catch (Exception e) {
+			context.setRollbackOnly();
+			logger.fatal("Excepcion GENERICA en EJB > recPersonasASinc: " + e.getMessage(), e);
 			result.getErroresServ().add(new ErrorServicio(ErroresServicioCod.CODERR_EXCEP, e.getMessage()));
 		}
 		return result;
@@ -368,6 +376,10 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 			context.setRollbackOnly();
 			logger.fatal("Excepcion en EJB > recProductosSinc: " + e.getMessage(), e);
 			result.getErroresServ().add(new ErrorServicio(ErroresServicioCod.CODERR_EXCEP, e.getMessage()));
+		} catch (Exception e) {
+			context.setRollbackOnly();
+			logger.fatal("Excepcion GENERICA en EJB > recProductosSinc: " + e.getMessage(), e);
+			result.getErroresServ().add(new ErrorServicio(ErroresServicioCod.CODERR_EXCEP, e.getMessage()));
 		}
 		return result;
 	}
@@ -405,6 +417,10 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 		} catch (PersistenciaException | SQLException | EjbException e) {
 			context.setRollbackOnly();
 			logger.fatal("Excepcion en EJB > obtPedidosNoSinc: " + e.getMessage(), e);
+			result.getErroresServ().add(new ErrorServicio(ErroresServicioCod.CODERR_EXCEP, e.getMessage()));
+		} catch (Exception e) {
+			context.setRollbackOnly();
+			logger.fatal("Excepcion GENERICA en EJB > obtPedidosNoSinc: " + e.getMessage(), e);
 			result.getErroresServ().add(new ErrorServicio(ErroresServicioCod.CODERR_EXCEP, e.getMessage()));
 		}
 		return result;
@@ -486,6 +502,10 @@ public class SincronizadorStateless implements SincronizadorStatelessRemote, Sin
 		} catch (PersistenciaException | SQLException | ParsersException e) {
 			context.setRollbackOnly();
 			logger.fatal("Excepcion en EJB > recPedidosASinc: " + e.getMessage(), e);
+			result.getErroresServ().add(new ErrorServicio(ErroresServicioCod.CODERR_EXCEP, e.getMessage()));
+		} catch (Exception e) {
+			context.setRollbackOnly();
+			logger.fatal("Excepcion GENERICA en EJB > recPedidosASinc: " + e.getMessage(), e);
 			result.getErroresServ().add(new ErrorServicio(ErroresServicioCod.CODERR_EXCEP, e.getMessage()));
 		}
 		return result;
