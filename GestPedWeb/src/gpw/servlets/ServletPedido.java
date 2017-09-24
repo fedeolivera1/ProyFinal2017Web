@@ -132,7 +132,8 @@ public class ServletPedido extends HttpServlet {
 			if(pedido != null) {
 			
 				/*caso modifica pedido PENDIENTE (solo modifica el pedido, no modifica su estado, vuelve a sinc = 'N')*/
-				if( EstadoPedido.P.equals(pedido.getEstado()) && ACCION_ACTUALIZAR.equalsIgnoreCase(accion) ) {
+				if( EstadoPedido.P.equals(pedido.getEstado()) && ACCION_ACTUALIZAR.equalsIgnoreCase(accion) &&
+						Sinc.N.equals(pedido.getSinc()) ) {
 					
 					String pedidoStr = request.getParameter("pedido");
 					String fechaHoraProgStr = request.getParameter("fechaHoraProg");
@@ -190,8 +191,9 @@ public class ServletPedido extends HttpServlet {
 					} else {
 						response.getWriter().write("warning");
 					}
-				/*caso pedido en estado PENDIENTE, para ANULAR*/
-				} else if( EstadoPedido.P.equals(pedido.getEstado()) && ACCION_ANULAR.equalsIgnoreCase(accion) ) {
+				/*caso pedido en estado PENDIENTE, para ANULAR (NO SINC)*/
+				} else if( EstadoPedido.P.equals(pedido.getEstado()) && ACCION_ANULAR.equalsIgnoreCase(accion) &&
+						Sinc.N.equals(pedido.getSinc())) {
 					pedido.setEstado(EstadoPedido.A);
 					pedido.setSinc(Sinc.N);
 					pedido.setUltAct(new Fecha(Fecha.AMDHMS));

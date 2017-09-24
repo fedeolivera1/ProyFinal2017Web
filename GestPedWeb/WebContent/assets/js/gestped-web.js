@@ -523,9 +523,9 @@ function cargarCbxPedExistentes() {
 	});
 }
 
-function manejarControlesPorEstadoPed(estado) {
+function manejarControlesPorEstadoPed(estado, sinc) {
 	//generarPedido, actualizarPedido, confirmarPedido, rechazarPedido, anularPedido
-	if(estado === 'P') {//pendiente
+	if(estado === 'P' && sinc === 'N') {//pendiente (no sincronizado)
 		document.getElementById("generarPedido").disabled = true;
 		$("#generarPedido").removeClass("btn-info").addClass("btn-default");
 		
@@ -591,6 +591,7 @@ function seleccionPedidoExist() {
 			success: function(response) {
 				var lineasPedido = response.listaPedidoLinea;
 				var estadoPed = response.estado;
+				var sinc = response.sinc;
 				var fechaHoraEst = '';
 				if(response.fechaProg !== undefined) {
 					console.log('entra a dateParser: ' + response.fechaProg.time);
@@ -602,7 +603,7 @@ function seleccionPedidoExist() {
 				}
 				console.log('fechaHoraEst=' + fechaHoraEst);
 				$("#estadoPedido").val(estadoPed);
-				manejarControlesPorEstadoPed(estadoPed);
+				manejarControlesPorEstadoPed(estadoPed, sinc);
 				//se limpia la tabla
 				$("#cargaTabla").empty();
 				$("#pedProg").val('');
