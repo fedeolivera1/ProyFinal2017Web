@@ -1,4 +1,4 @@
-<xs:schema xmlns:tns="http://192.168.1.2:8080" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://192.168.1.2:8080" version="1.0">
+<xs:schema xmlns:tns="http://localhost:8080" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" targetNamespace="http://localhost:8080" version="1.0">
 
   <xs:element name="obtenerPedidosNoSinc" type="tns:obtenerPedidosNoSinc"></xs:element>
 

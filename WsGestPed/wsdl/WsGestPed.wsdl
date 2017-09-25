@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions name="WsGestPed" targetNamespace="http://192.168.1.2:8080" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://192.168.1.2:8080" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+<wsdl:definitions name="WsGestPed" targetNamespace="http://localhost:8080" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://localhost:8080" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
   <wsdl:types>
 <schema xmlns="http://www.w3.org/2001/XMLSchema">
-  <import namespace="http://192.168.1.2:8080" schemaLocation="WsGestPed_schema1.xsd"></import>
+  <import namespace="http://localhost:8080" schemaLocation="WsGestPed_schema1.xsd"></import>
 </schema>
   </wsdl:types>
   <wsdl:message name="servFuncional">

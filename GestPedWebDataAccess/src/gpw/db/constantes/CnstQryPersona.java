@@ -25,7 +25,7 @@ public interface CnstQryPersona {
 													+ "INNER JOIN persona p "
 													+ "ON pf.documento = p.id_persona "
 													+ "WHERE p.sinc = 'N' "
-													+ "AND p.fecha_reg::date BETWEEN ? AND ?";
+													+ "AND p.ult_act::date BETWEEN ? AND ?";
 	
 	public static final String QRY_SELECT_PJ_NOSINC = "SELECT pj.rut, pj.nombre, pj.razon_social, pj.bps, pj.bse, pj.es_prov, p.direccion, p.puerta, p.solar, "
 														+ "p.manzana, p.km, p.complemento, p.telefono, p.celular, p.email, p.fecha_reg, p.tipo, "
@@ -34,7 +34,7 @@ public interface CnstQryPersona {
 													+ "INNER JOIN persona p "
 													+ "ON pj.rut = p.id_persona "
 													+ "WHERE p.sinc = 'N'"
-													+ "AND p.fecha_reg::date BETWEEN ? AND ?";
+													+ "AND p.ult_act::date BETWEEN ? AND ?";
 	
 	public static final String QRY_SELECT_PERS_GENERIC = "SELECT tipo FROM persona WHERE id_persona = ?";
 	

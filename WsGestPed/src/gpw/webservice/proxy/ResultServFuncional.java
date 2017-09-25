@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="error" type="{http://192.168.1.2:8080}ErrorServicio" minOccurs="0"/&gt;
+ *         &lt;element name="error" type="{http://localhost:8080}ErrorServicio" minOccurs="0"/&gt;
  *         &lt;element name="resultado" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
